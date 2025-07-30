@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axiosPublic from "../api/axiosPublic";
-import Button from "../components/Button";
 import Logo from "../assets/Logo.svg";
+import StatusEmail from "../components/StatusEmail";
+
+import successAnimation from "../animations/success.json";
+import errorAnimation from "../animations/error.json";
+import loadingAnimation from "../animations/loading.json";
  
 const ConfirmarCorreo = () => {
   const [estado, setEstado] = useState("verificando");
-
+  const hasVerified = useRef(false);
   useEffect(() => {
-    const confirmarCorreo = async () => {
+    const solicitudConfirmarCorreo = async () => {
+      if (hasVerified.current) return;
       const params = new URLSearchParams(window.location.search);
       const token = params.get("token");
 
@@ -17,6 +22,7 @@ const ConfirmarCorreo = () => {
       }
 
       try {
+        hasVerified.current = true;
         const response = await axiosPublic.post("/auth/verify-email/", {
           token,
         });
@@ -31,8 +37,18 @@ const ConfirmarCorreo = () => {
       }
     };
 
-    confirmarCorreo();
+    solicitudConfirmarCorreo();
   }, []);
+
+  const handleVolverInicio = () => {
+    window.location.href = "/";
+  };
+
+  const animations = {
+    verificando: loadingAnimation,
+    exito: successAnimation,
+    error: errorAnimation,
+  };
 
   return (
     <div className="min-h-screen flex flex-col justify-center sm:py-12">
@@ -42,29 +58,11 @@ const ConfirmarCorreo = () => {
             <div className="flex flex-col items-center text-center">
               <img src={Logo} alt="Logo" className="w-24 h-24 mb-4" />
               <h1 className="text-2xl font-bold mb-4">Confirmar Correo</h1>
-              {estado === "verificando" && (
-                <p className="text-gray-600 mb-6">
-                  Verificando tu correo electrónico...
-                </p>
-              )}
-              {estado === "exito" && (
-                <>
-                  <p className="text-gray-600 mb-6">
-                    ✅ ¡Correo verificado con éxito! Ahora puedes iniciar
-                    sesión.
-                  </p>
-                  <Button onClick={() => (window.location.href = "/")}>
-                    Volver al Inicio
-                  </Button>
-                </>
-              )}
-
-              {estado === "error" && (
-                <p className="text-gray-600 mb-6">
-                  ❌ Error al verificar el correo. El token no es válido o ha
-                  expirado.
-                </p>
-              )}
+              <StatusEmail
+                estado={estado}
+                onVolverInicio={handleVolverInicio}
+                animations={animations}
+              />
             </div>
           </div>
         </div>

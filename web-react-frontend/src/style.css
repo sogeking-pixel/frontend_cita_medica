@@ -1,2 +1,21 @@
 @import "tailwindcss";
 
+.status-email-container {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.status-email-enter {
+  opacity: 0;
+}
+
+.status-email-enter-active {
+  opacity: 1;
+}
+
+.status-email-exit {
+  opacity: 1;
+}
+
+.status-email-exit-active {
+  opacity: 0;
+}
