@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
-import ConfirmarCorreo from "../pages/ConfirsmarCorreo";
+import ConfirmarCorreo from "../pages/ConfirmarCorreo";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import NotFound from "../pages/NotFound";

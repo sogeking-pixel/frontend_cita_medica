@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosPublic from "../api/axiosPublic";
+import Button from "../components/Button";
+import Logo from "../assets/Logo.svg";
  
 const ConfirmarCorreo = () => {
   const [estado, setEstado] = useState("verificando");
@@ -15,7 +17,7 @@ const ConfirmarCorreo = () => {
       }
 
       try {
-        const response = await axiosPublic.post("/auth/confirmar-correo/", {
+        const response = await axiosPublic.post("/auth/verify-email/", {
           token,
         });
         if (response.status === 200) {
@@ -33,21 +35,40 @@ const ConfirmarCorreo = () => {
   }, []);
 
   return (
-    <div style={{ padding: "2rem", textAlign: "center" }}>
-      {estado === "verificando" && <p>Verificando tu correo electrónico...</p>}
-      {estado === "exito" && (
-        <div>
-          <h2>✅ ¡Correo verificado con éxito!</h2>
-          <p>Ahora puedes iniciar sesión.</p>
-          <a href="/login">Ir a iniciar sesión</a>
+    <div className="min-h-screen flex flex-col justify-center sm:py-12">
+      <div className="relative py-3 sm:max-w-7xl h-screen justify-center content-center sm:h-auto sm:mx-auto ">
+        <div className="relative px-10 py-10 bg-white content-center  sm:h-auto shadow-lg sm:rounded-3xl sm:w-100 sm:p-12">
+          <div className="max-w-md mx-auto">
+            <div className="flex flex-col items-center text-center">
+              <img src={Logo} alt="Logo" className="w-24 h-24 mb-4" />
+              <h1 className="text-2xl font-bold mb-4">Confirmar Correo</h1>
+              {estado === "verificando" && (
+                <p className="text-gray-600 mb-6">
+                  Verificando tu correo electrónico...
+                </p>
+              )}
+              {estado === "exito" && (
+                <>
+                  <p className="text-gray-600 mb-6">
+                    ✅ ¡Correo verificado con éxito! Ahora puedes iniciar
+                    sesión.
+                  </p>
+                  <Button onClick={() => (window.location.href = "/")}>
+                    Volver al Inicio
+                  </Button>
+                </>
+              )}
+
+              {estado === "error" && (
+                <p className="text-gray-600 mb-6">
+                  ❌ Error al verificar el correo. El token no es válido o ha
+                  expirado.
+                </p>
+              )}
+            </div>
+          </div>
         </div>
-      )}
-      {estado === "error" && (
-        <div>
-          <h2>❌ Error al verificar el correo</h2>
-          <p>El token no es válido o ha expirado.</p>
-        </div>
-      )}
+      </div>
     </div>
   );
 };
