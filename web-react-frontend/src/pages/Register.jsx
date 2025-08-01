@@ -3,6 +3,7 @@ import InputForm from "../components/InputForm";
 import Logo from "../assets/Logo.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axiosPublic from "../api/axiosPublic";
 import AlertMessage from "../components/AlertMessage";
 import SuccessMessage from "../components/SuccessMessage";
@@ -195,6 +196,14 @@ function Register() {
                         "Crear"
                       )}
                     </Button>
+                  </div>
+                  <div className="text-center">
+                    <Link
+                      to="/"
+                      className="text-cyan-500 hover:text-cyan-700 font-semibold text-sm"
+                    >
+                      Volver al inicio de sesión
+                    </Link>
                   </div>
                 </div>
               </div>
