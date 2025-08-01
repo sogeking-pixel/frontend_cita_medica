@@ -32,7 +32,7 @@ const StatusEmail = ({ estado, onVolverInicio, animations }) => {
       <Lottie
         animationData={animations[currentEstado]}
         style={{ height: 150 }}
-        loop={true}
+        loop={currentEstado === "verificando"}
       />
       <p className="text-gray-600 mb-6 max-w-sm">{mensajes[currentEstado]}</p>
       {currentEstado === "exito" && (
