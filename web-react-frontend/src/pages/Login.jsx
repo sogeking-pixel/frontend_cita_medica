@@ -51,29 +51,29 @@ function Login() {
                   <div className="relative"></div>
                   <div className="relative">
                     <InputForm
-                      label="Email Address"
+                      label="Correo Electronico"
                       id="email"
                       name="email"
-                      placeholder="Email address"
+                      placeholder="tucorreo@ejemplo.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                   <div className="relative">
                     <InputForm
-                      label="Password"
+                      label="Contraseña"
                       id="password"
                       name="password"
                       type="password"
-                      placeholder="Password"
+                      placeholder="********"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
                   <div className="relative">
-                    <div className="text-gray-500 text-sm">
+                    <div className="text-gray-500 text-sm text-center">
                       <a
-                        href="/register"
+                        href="/Forgetpassword"
                         className="text-cyan-500 hover:text-cyan-700 font-semibold"
                       >
                         Olvide mi contraseña
