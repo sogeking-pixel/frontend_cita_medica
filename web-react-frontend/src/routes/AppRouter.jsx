@@ -4,7 +4,7 @@ import ConfirmarCorreo from "../pages/ConfirmarCorreo";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import NotFound from "../pages/NotFound";
-
+import ForgetPassword from "../pages/ForgetPassword";
 // Componente de ruta protegida
 import { ProtectedRoute } from "./ProtectedRoute";
 
@@ -17,6 +17,7 @@ function AppRouter() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/confirmar-correo" element={<ConfirmarCorreo />} />
+      <Route path="/forgetpassword" element={<ForgetPassword />} />
 
       {/* --- Rutas Protegidas --- */}
       {/* Cualquier ruta dentro de ProtectedRoute requerirá autenticación */}
