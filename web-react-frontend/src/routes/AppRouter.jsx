@@ -42,6 +42,22 @@ function AppRouter() {
             </PublicRoute>
           }
         />
+        <Route
+          path="/forgetpassword"
+          element={
+            <PublicRoute>
+              <ForgetPassword />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/CreateNewPassword"
+          element={
+            <PublicRoute>
+              <CreateNewPassword />
+            </PublicRoute>
+          }
+        />
 
         {/* --- Rutas Protegidas --- */}
         <Route
