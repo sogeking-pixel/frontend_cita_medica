@@ -11,21 +11,19 @@ apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");
     if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 
 apiClient.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   async (error) => {
+    if (!error.response) return Promise.reject(error);
+
     const originalRequest = error.config;
 
     if (error.response.status === 401 && !originalRequest._retry) {
@@ -34,6 +32,9 @@ apiClient.interceptors.response.use(
       try {
         // Intentamos refrescar el token
         const refreshToken = localStorage.getItem("refreshToken");
+
+        if (!refreshToken) throw new Error("No refresh token available");
+
         const rs = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/token/refresh/`,
           {
             refreshToken: refreshToken,
@@ -43,10 +44,8 @@ apiClient.interceptors.response.use(
         const { accessToken } = rs.data;
         localStorage.setItem("accessToken", accessToken);
 
-        apiClient.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${accessToken}`;
-        originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
+        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+
         return apiClient(originalRequest);
       } catch (_error) {
         console.error("Session expired. Please login again.");
