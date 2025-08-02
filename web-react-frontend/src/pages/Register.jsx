@@ -116,7 +116,7 @@ function Register() {
                       label="Nombres Completos"
                       id="firstName"
                       name="firstName"
-                      placeholder="Nombres Completos"
+                      placeholder="Ej: Ana María"
                       value={nombres}
                       onChange={(e) => setNombres(e.target.value)}
                     />
@@ -126,7 +126,7 @@ function Register() {
                       label="Apellidos Completos"
                       id="lastName"
                       name="lastName"
-                      placeholder="Apellidos Completos"
+                      placeholder="Ej: Rodríguez Pérez"
                       value={apellidos}
                       onChange={(e) => setApellidos(e.target.value)}
                     />
@@ -154,7 +154,7 @@ function Register() {
                   </div>
                   <div className="relative">
                     <InputForm
-                      label="Email Address"
+                      label="Correo Electronico"
                       id="email"
                       name="email"
                       placeholder="Email address"
@@ -164,7 +164,7 @@ function Register() {
                   </div>
                   <div className="relative">
                     <InputForm
-                      label="Password"
+                      label="Contraseña"
                       id="password"
                       name="password"
                       type="password"
@@ -175,7 +175,7 @@ function Register() {
                   </div>
                   <div className="relative">
                     <InputForm
-                      label="Confirmar Password"
+                      label="Confirmar Contraseña"
                       id="confirmPassword"
                       name="confirmPassword"
                       type="password"
