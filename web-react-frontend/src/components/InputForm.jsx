@@ -3,7 +3,7 @@ function InputForm({ label, type = "text", value, onChange, placeholder, name, i
     <>
      <label
         htmlFor={id}
-        className="block text-sm font-medium text-gray-700 font-['Outfit'] mb-3 text-left"
+        className="block text-base font-medium text-gray-700 font-['Outfit'] mb-3 text-left"
       >
         {label}
       </label>
