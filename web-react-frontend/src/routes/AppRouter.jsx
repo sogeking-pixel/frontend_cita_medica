@@ -1,76 +1,43 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "../pages/Home";
-import ConfirmarCorreo from "../pages/ConfirmarCorreo";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
 import NotFound from "../pages/NotFound";
-import ForgetPassword from "../pages/ForgetPassword";
-import CreateNewPassword from "../pages/CreateNewPassword";
+
 import { AuthProvider } from "../context/AuthContext";
 // Componente de ruta protegida
 import { ProtectedRoute } from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
+import { publicRoutes, protectedRoutes, freeRoutes } from "./routesConfig";
 
 
 function AppRouter() {
   return (
     <AuthProvider>
       <Routes>
-        {/* --- Rutas Públicas --- */}
-        <Route path="/confirmar-correo" element={<ConfirmarCorreo />} />
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <PublicRoute>
-              <Register />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/forgetpassword"
-          element={
-            <PublicRoute>
-              <ForgetPassword />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/forgetpassword"
-          element={
-            <PublicRoute>
-              <ForgetPassword />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/CreateNewPassword"
-          element={
-            <PublicRoute>
-              <CreateNewPassword />
-            </PublicRoute>
-          }
-        />
+        {/* --- Rutas Libres --- */}
+        {freeRoutes.map((route) => (
+          <Route key={route.path} path={route.path} element={route.element} />
+        ))}
 
-        {/* --- Rutas Protegidas --- */}
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
+        {/* --- Rutas Públicas --- */}
+        {publicRoutes.map((route) => (
+          <Route
+            key={route.path}
+            path={route.path}
+            element={<PublicRoute>{route.element}</PublicRoute>}
+          />
+        ))}
+
+        {/* --- Rutas Públicas --- */}
+        {protectedRoutes.map((route) => (
+          <Route
+            key={route.path}
+            path={route.path}
+            element={<ProtectedRoute>{route.element}</ProtectedRoute>}
+          />
+        ))}
 
         {/* --- Ruta para Páginas no Encontradas --- */}
         <Route path="*" element={<NotFound />} />
+        
       </Routes>
     </AuthProvider>
   );

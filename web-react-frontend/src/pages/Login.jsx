@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AlertMessage from "../components/AlertMessage";
 import { useAuth } from "../context/AuthContext";
+import { getRoute } from "../routes/routesConfig";
 
 function Login() {
 
@@ -34,7 +35,7 @@ function Login() {
         const result = await login({ email, password });
         
         if (result.success) {
-          navigate("/");
+          navigate(getRoute("Dashboard").path);
         }
         else {
           setMensajes(result.message || "Error al iniciar sesión.");
@@ -94,7 +95,7 @@ function Login() {
                   <div className="relative">
                     <div className="text-gray-500 text-sm text-center">
                       <a
-                        href="/Forgetpassword"
+                        href={getRoute("Forget Password").path}
                         className="text-cyan-500 hover:text-cyan-700 font-semibold"
                       >
                         Olvide mi contraseña
@@ -124,7 +125,7 @@ function Login() {
               <div className="text-gray-500 text-sm">
                 ¿No tienes una cuenta?{" "}
                 <a
-                  href="/register"
+                  href={getRoute("Register").path}
                   className="text-cyan-500 hover:text-cyan-700 font-semibold"
                 >
                   Regístrate

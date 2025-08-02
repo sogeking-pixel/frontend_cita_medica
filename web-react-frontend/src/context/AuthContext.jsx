@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axiosPublic from "../api/axiosPublic";
 import apiClient from "../api/axiosPrivate";
-
+import { getRoute } from "../routes/routesConfig";
 
 const AuthContext = createContext();
 
@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
 
     // Verificamos el token y obtenemos datos de usuario
     apiClient
-      .get("/auth/me/")
+      .get("/me/")
       .then((res) => {
         setUser(res.data);
       })
@@ -57,7 +57,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     setUser(null);
-    window.location.href = "/login";
+    window.location.href = getRoute("Login").path; 
   };
 
   return (

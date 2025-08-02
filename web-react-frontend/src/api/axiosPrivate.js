@@ -1,4 +1,6 @@
 import axios from "axios";
+import { getRoute } from "../routes/routesConfig";
+
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL, 
@@ -52,7 +54,7 @@ apiClient.interceptors.response.use(
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         // Redirección forzada
-        window.location.href = "/login/";
+        window.location.href = getRoute("Login").path;
         return Promise.reject(_error);
       }
     }
