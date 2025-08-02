@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import axiosPublic from "../api/axiosPublic";
 import Logo from "../assets/Logo.svg";
 import StatusEmail from "../components/StatusEmail";
-
+import { getRoute } from "../routes/routesConfig";
 import successAnimation from "../animations/success.json";
 import errorAnimation from "../animations/error.json";
 import loadingAnimation from "../animations/loading.json";
@@ -41,7 +41,7 @@ const ConfirmarCorreo = () => {
   }, []);
 
   const handleVolverInicio = () => {
-    window.location.href = "/";
+    window.location.href = getRoute('Login').path;
   };
 
   const animations = {

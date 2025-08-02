@@ -2,12 +2,16 @@ import Logo from "../assets/logo.svg";
 import NavItem from "../components/NavItem";
 import NavItemSm from "../components/NavItemSm";
 import PhotoPaciente from "../assets/paciente.svg";
+import { getRoute } from "../routes/routesConfig";
 
 export default function Header() {
     return (
       <nav class="bg-white border-gray-200 ">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-          <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+          <a
+            href={getRoute("Dashboard").path}
+            class="flex items-center space-x-3 rtl:space-x-reverse"
+          >
             <img src={Logo} class="h-8" alt="Logo" />
             <span class="self-center text-2xl font-semibold whitespace-nowrap ">
               CitaExpress
@@ -39,10 +43,19 @@ export default function Header() {
                   name@flowbite.com
                 </span>
               </div>
-              <ul class="py-2" aria-labelledby="user-menu-button">  
-                <NavItemSm href="/" children="Inicio" />
-                <NavItemSm href="/" children="Historial Medico" />
-                <NavItemSm href="/" children="Agendar Cita" />
+              <ul class="py-2" aria-labelledby="user-menu-button">
+                <NavItemSm
+                  href={getRoute("Dashboard").path}
+                  children="Inicio"
+                />
+                <NavItemSm
+                  href={getRoute("Dashboard").path}
+                  children="Historial Medico"
+                />
+                <NavItemSm
+                  href={getRoute("Dashboard").path}
+                  children="Agendar Cita"
+                />
               </ul>
             </div>
             <button

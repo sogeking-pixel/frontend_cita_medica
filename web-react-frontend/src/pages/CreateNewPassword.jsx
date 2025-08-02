@@ -6,6 +6,7 @@ import Logo from "../assets/Logo.svg";
 import NewPassIcon from "../assets/NewPassIcon.svg";
 import PasswordConfirmation from "../animations/PasswordConfirmation.json";
 import Lottie from 'lottie-react';
+import { getRoute } from '../routes/routesConfig';
 
 export default function CreateNewPassword() {
   const [newPassword, setNewPassword] = useState('');
@@ -82,7 +83,7 @@ export default function CreateNewPassword() {
                       </Button>
 
                       <div className="text-center">
-                        <Link to="/" className="text-cyan-500 hover:text-cyan-700 font-semibold text-sm">
+                        <Link to={getRoute("Login").path} className="text-cyan-500 hover:text-cyan-700 font-semibold text-sm">
                           Volver al inicio de sesión
                         </Link>
                       </div>

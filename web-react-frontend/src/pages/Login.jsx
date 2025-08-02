@@ -1,10 +1,11 @@
 import Button from "../components/Button";
 import InputForm from "../components/InputForm";
-import axiosPublic from "../api/axiosPublic";
 import Logo from "../assets/Logo.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AlertMessage from "../components/AlertMessage";
+import { useAuth } from "../context/AuthContext";
+import { getRoute } from "../routes/routesConfig";
 
 function Login() {
 
@@ -13,7 +14,10 @@ function Login() {
     const navigate = useNavigate();
     const [mensajes, setMensajes] = useState("");
     const [errorVisible, setErrorVisible] = useState(false);
-    const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  
+  const { login } = useAuth();
+
     const handleLogin = async (e) => {
       e.preventDefault();
       if (!email || !password) {
@@ -27,33 +31,20 @@ function Login() {
       try {
         // Hacemos la llamada a la API a través de nuestra instancia `apiClient`
         setLoading(true);
-        const response = await axiosPublic.post("/auth/login/", {
-          email,
-          password,
-        });
 
-        console.log("Login response:", response.data);
-
-        if(response.status !== 200) {
-          throw new Error("Error al iniciar sesión");
+        const result = await login({ email, password });
+        
+        if (result.success) {
+          navigate(getRoute("Dashboard").path);
         }
-
-        // La API debería devolver los tokens
-        const { accessToken, refreshToken } = response.data;
-
-
-        // Guardamos los tokens en el localStorage
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
-
-        navigate("/");
+        else {
+          setMensajes(result.message || "Error al iniciar sesión.");
+          setErrorVisible(true);
+        }
+        
       } catch (error) {
         console.error("Error al iniciar sesión:", error);
-        if (error.response && error.response.data) {
-          setMensajes(error.response.data.detail || "Error al iniciar sesión.");
-        } else {
-          setMensajes("Error de conexión. Por favor, inténtalo de nuevo.");
-        }
+        setMensajes("Error de conexión. Por favor, inténtalo de nuevo.");
         setErrorVisible(true);
       } finally {
         setLoading(false);
@@ -104,7 +95,7 @@ function Login() {
                   <div className="relative">
                     <div className="text-gray-500 text-sm text-center">
                       <a
-                        href="/Forgetpassword"
+                        href={getRoute("Forget Password").path}
                         className="text-cyan-500 hover:text-cyan-700 font-semibold"
                       >
                         Olvide mi contraseña
@@ -134,7 +125,7 @@ function Login() {
               <div className="text-gray-500 text-sm">
                 ¿No tienes una cuenta?{" "}
                 <a
-                  href="/register"
+                  href={getRoute("Register").path}
                   className="text-cyan-500 hover:text-cyan-700 font-semibold"
                 >
                   Regístrate

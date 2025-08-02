@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import axiosPublic from "../api/axiosPublic";
 import AlertMessage from "../components/AlertMessage";
 import SuccessMessage from "../components/SuccessMessage";
+import { getRoute } from "../routes/routesConfig";
 
 function Register() {
   
@@ -85,7 +86,7 @@ function Register() {
           <SuccessMessage
             title="¡Cuenta creada correctamente!"
             message="Hemos enviado un correo de confirmación. Por favor revisa tu bandeja de entrada."
-            onClose={() => (window.location.href = "/")}
+            onClose={() => (window.location.href = getRoute("Login").path)}
             buttonText="Ir al inicio"
           />
         ) : (
@@ -199,7 +200,7 @@ function Register() {
                   </div>
                   <div className="text-center">
                     <Link
-                      to="/"
+                      to={getRoute("Login").path}
                       className="text-cyan-500 hover:text-cyan-700 font-semibold text-sm"
                     >
                       Volver al inicio de sesión
