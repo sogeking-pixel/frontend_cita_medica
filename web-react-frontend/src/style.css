@@ -8,6 +8,20 @@
   }
 }
 
+@keyframes slowZoom{
+
+from {
+  transform: scale(1);
+}
+to {
+  transform: scale(1.10);
+}
+}
+
+.slow-zoom{
+  animation: slowZoom 10s forwards;
+  
+}
 
 
 .status-email-container {
