@@ -5,7 +5,7 @@ import ConfirmarCorreo from "../pages/ConfirmarCorreo";
 import Register from "../pages/Register";
 import ForgetPassword from "../pages/ForgetPassword";
 import CreateNewPassword from "../pages/CreateNewPassword";
-
+import CitaFinish from "../pages/CitaFinish";
 
 
 export const freeRoutes = [
@@ -14,6 +14,12 @@ export const freeRoutes = [
     path: "/",
     element: <Home />,
   },
+
+  {
+    name : "CitaFinish",
+    path: "/Citafinish",
+    element: <CitaFinish />,
+  }
 ];
 
 
