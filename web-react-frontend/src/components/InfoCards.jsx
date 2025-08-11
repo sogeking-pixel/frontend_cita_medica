@@ -1,23 +1,33 @@
+import citaonline from "../assets/cita-online.png";
+import equipomedico from "../assets/equipo-medico.png";
+import puntualidad from "../assets/puntualidad.png";
+import especialidad from "../assets/especialidad.png"
+
+
 const infoCards = [
   {
     title: 'Citas en línea',
     description:
       'Ahora puedes agendar tus citas y realizar tus pagos en línea desde cualquier dispositivo.',
+    image: citaonline,
   },
   {
     title: 'Especialidades',
     description:
-      'Nos preocupamos por el bienestar y economía de nuestros pacientes, precio de consultas médicas desde 40 soles.',
+      '¡Tu salud es nuestra prioridad! Atención médica especializada enfocada en tu bienestar y cuidado integral.',
+      image: especialidad,
   },
   {
-    title: 'Laboratorio Clínico',
+    title: 'Equipo Médico',
     description:
-      'Tenemos convenio con el prestigioso laboratorio Synlab, reconocido a nivel mundial.',
+      'Profesionales calificados y comprometidos en ofrecer atención médica cercana, de calidad y centrada en ti.',
+      image: equipomedico,
   },
   {
-    title: 'Emergencias 24/7',
+    title: 'Atención Puntual',
     description:
-      'Atención médica de urgencia durante las 24 horas del día los 7 días de la semana.',
+      'Valoramos tu tiempo. Usamos agenda previa y protocolos para ofrecer atención puntual y eficiente.',
+    image: puntualidad,
   },
 ];
 
@@ -30,8 +40,12 @@ export default function InfoCards() {
           className="w-full max-w-xs rounded-xl bg-white px-6 py-10 shadow-lg transition hover:shadow-xl"
         >
           {/* Div circular  imagen de fondo */}
-          <div className="mx-auto mb-6 h-22 w-22 rounded-full bg-gray-200 bg-cover bg-center" style={{ backgroundImage: `url('/ruta/de/tu/imagen-${index + 1}.jpg')` }}>
-            {/* También puedes dejarlo vacío si luego usarás solo CSS */}
+          <div className="mx-auto mb-6 h-22 w-22 ">
+            <img
+              src={card.image}
+              alt={card.title}
+              className="h-full w-full object-cover"
+            />
           </div>
 
           <h3 className="text-center text-xl font-semibold text-[#48d7bf]">

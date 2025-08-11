@@ -1,5 +1,9 @@
 import React from "react";
 import Logo from "../assets/Logo.svg"
+import facebook from "../assets/facebook-Icon.svg"
+import twitter from "../assets/twitterx.svg"
+import instagram from "../assets/instagram.svg"
+
 
 export default function Footer() {
   return (
@@ -40,14 +44,14 @@ export default function Footer() {
           {/* Íconos sociales */}
           <div className="flex gap-3 mt-4">
             {/* Cada ícono en un círculo */}
-            <div className="w-10 h-10 flex items-center justify-center bg-white rounded-full">
-              <img src="" alt="Facebook" className="w-5 h-5" />
+            <div className=" flex items-center justify-center  rounded-full">
+              <img src={facebook} alt="Facebook" className="w-8 h-8" />
             </div>
-            <div className="w-10 h-10 flex items-center justify-center bg-white rounded-full">
-              <img src="" alt="Twitter" className="w-5 h-5" />
+            <div className=" flex items-center justify-center rounded-full">
+                <img src={twitter} alt="Twitter" className="w-8 h-8" />
             </div>
-            <div className="w-10 h-10 flex items-center justify-center bg-white rounded-full">
-              <img src="" alt="Instagram" className="w-5 h-5" />
+            <div className="flex items-center justify-center rounded-full">
+              <img src={instagram} alt="Instagram" className="w-8 h-8" />
             </div>
           </div>
         </div>
