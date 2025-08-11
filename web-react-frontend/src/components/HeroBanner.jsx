@@ -19,13 +19,13 @@ export default function HeroBanner({
   return (
     <div className="w-full h-[70vh] flex flex-col md:flex-row overflow-hidden relative">
       {/* Columna izquierda: texto + botón */}
-      <div className="w-full md:w-2/5 h-1/2 md:h-full bg-white flex flex-col justify-center items-center md:items-start text-center mx md:text-left px-6 md:px-10 z-10">
-      <div className="max-w-[500px] ml-auto">
-        <h1 className="text-4xl sm:text-5xl font-bold text-black mb-4">{title}</h1>
+      <div className="w-full md:w-2/5 h-1/2 md:h-full bg-[#fbfbfb] flex flex-col justify-center items-center md:items-start text-center mx md:text-left px-6 md:px-10 z-10">
+      <div className="max-w-[550px] ml-auto">
+        <h1 className="text-4xl sm:text-5xl font-bold text-[#013030e1] mb-4">{title}</h1>
         <p className="text-xl sm:text-2xl text-black mb-6">{subtitle}</p>
         <button
           onClick={onButtonClick}
-          className="px-6 py-3 bg-gradient-to-b from-[#9cb7c3ff] to-[#63a3a3ff] hover:bg-cyan-600 text-white font-bold rounded-3xl w-fit" 
+          className="px-6 py-3 bg-gradient-to-b from-[#9cb7c3ff] to-[#63a3a3ff] hover:bg-cyan-600 text-white hover:text-[#1effda]   font-bold rounded-3xl w-fit" 
         >
           {buttonText}
         </button>
@@ -56,7 +56,7 @@ export default function HeroBanner({
           className="absolute inset-0 z-20"
           style={{
             background:
-              "linear-gradient(to left, transparent 45%, rgba(255,255,255,0.7) 60%, white 95%)",
+              "linear-gradient(to left, transparent 45%, rgba(251, 251, 251, 0.7) 60%, #fbfbfb 95%)",
           }}
         />
       </div>

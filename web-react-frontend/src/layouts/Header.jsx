@@ -93,7 +93,7 @@ export default function Header() {
             <li>
             <a
       href="/"
-      className="block py-2 px-4 text-white hover:text-[#2affdbff] text-lg hover:bg-transparent"
+      className="block py-2 px-4 text-white hover:text-[#20ebc9] text-lg hover:bg-transparent"
     >
       Inicio
     </a>
@@ -103,7 +103,7 @@ export default function Header() {
       href="/"
       className="block py-2 px-4 text-white hover:text-[#2affdbff] text-lg  hover:bg-transparent"
     >
-      Historial Médico
+      Agendar Cita
     </a>
   </li>
   <li>
@@ -111,7 +111,7 @@ export default function Header() {
       href="/"
       className="block py-2 px-4 text-white hover:text-[#2affdbff] text-lg hover:bg-transparent"
     >
-      Agendar Cita
+      ¿Quienes Somos?
     </a>
   </li>
 </ul>
