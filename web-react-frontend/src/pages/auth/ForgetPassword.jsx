@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import InputForm from '../components/InputForm';
-import Button from '../components/Button';
-import Logo from "../assets/Logo.svg";
-import EmailConfirmation from "../animations/EmailConfirmation.json";
-import Lottie from 'lottie-react';
-import { getRoute } from '../routes/routesConfig';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import InputForm from "../../components/InputForm";
+import Button from "../../components/Button";
+import Logo from "../../assets/icons/Logo.svg";
+import EmailConfirmation from "../../assets/animations/EmailConfirmation.json";
+import Lottie from "lottie-react";
+import { getRoute } from "../../routes/routesConfig";
 
 export default function PasswordOlvidada() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [enlaceEnviado, setEnlaceEnviado] = useState(false);
 
   const handleRecuperar = () => {

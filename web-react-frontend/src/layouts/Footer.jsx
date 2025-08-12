@@ -1,8 +1,8 @@
 import React from "react";
-import Logo from "../assets/Logo.svg"
-import facebook from "../assets/facebook-Icon.svg"
-import twitter from "../assets/twitterx.svg"
-import instagram from "../assets/instagram.svg"
+import Logo from "../assets/icons/Logo.svg"
+import facebook from "../assets/icons/facebook-Icon.svg";
+import twitter from "../assets/icons/twitterx.svg";
+import instagram from "../assets/icons/instagram.svg";
 
 
 export default function Footer() {

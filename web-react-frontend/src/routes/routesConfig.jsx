@@ -1,12 +1,12 @@
-import Home from "../pages/Home";
-import Login from "../pages/Login";
-import Dashboard from "../pages/Dashboard";
-import ConfirmarCorreo from "../pages/ConfirmarCorreo";
-import Register from "../pages/Register";
-import ForgetPassword from "../pages/ForgetPassword";
-import CreateNewPassword from "../pages/CreateNewPassword";
-import CitaFinish from "../pages/CitaFinish";
-
+import Home from "../pages/free/Home";
+import Login from "../pages/medico/Login";
+import Dashboard from "../pages/medico/Dashboard";
+import ConfirmarCorreo from "../pages/auth/ConfirmarCorreo";
+import Register from "../pages/medico/Register";
+import ForgetPassword from "../pages/auth/ForgetPassword";
+import CreateNewPassword from "../pages/auth/CreateNewPassword";
+import CitaFinish from "../pages/paciente/CitaFinish";
+import AccessDenied from "../pages/errors/AccessDenied";
 
 export const freeRoutes = [
   {
@@ -16,18 +16,22 @@ export const freeRoutes = [
   },
 
   {
-    name : "CitaFinish",
+    name: "CitaFinish",
     path: "/Citafinish",
     element: <CitaFinish />,
-  }
+  },
+  {
+    name: "denegado",
+    path: "/denegado",
+    element: <AccessDenied />,
+  },
 ];
-
 
 export const publicRoutes = [
   {
     name: "Confirmar Correo",
     path: "/confirmar-correo",
-    element: <ConfirmarCorreo/>,
+    element: <ConfirmarCorreo />,
   },
   {
     name: "Login",
@@ -37,32 +41,31 @@ export const publicRoutes = [
   {
     name: "Register",
     path: "/register",
-    element: <Register/>,
+    element: <Register />,
   },
   {
     name: "Forget Password",
     path: "/forgetpassword",
-    element: <ForgetPassword/>,
-    },
-    {
-        name: "Create New Password",
-        path: "/forgetpassword",
-        element: <CreateNewPassword/>,
-    },
+    element: <ForgetPassword />,
+  },
+  {
+    name: "Create New Password",
+    path: "/forgetpassword",
+    element: <CreateNewPassword />,
+  },
 ];
-
 
 export const protectedRoutes = [
   {
     name: "Dashboard",
     path: "/dashboard-medico",
-    element: <Dashboard/>,
+    element: <Dashboard />,
+    roles: ["medico"],
   },
 ];
 
 export function getRoute(name) {
-  const allRoutes = [...freeRoutes,...publicRoutes, ...protectedRoutes];
+  const allRoutes = [...freeRoutes, ...publicRoutes, ...protectedRoutes];
   const route = allRoutes.find((r) => r.name === name);
   return route ? route : null;
 }
-

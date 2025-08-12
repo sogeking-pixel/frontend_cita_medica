@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import NotFound from "../pages/NotFound";
+import NotFound from "../pages/errors/NotFound";
 
 import { AuthProvider } from "../context/AuthContext";
 // Componente de ruta protegida
@@ -26,12 +26,12 @@ function AppRouter() {
           />
         ))}
 
-        {/* --- Rutas Públicas --- */}
+        {/* --- Rutas Protegidas --- */}
         {protectedRoutes.map((route) => (
           <Route
             key={route.path}
             path={route.path}
-            element={<ProtectedRoute>{route.element}</ProtectedRoute>}
+            element={<ProtectedRoute roles={route.roles}>{route.element}</ProtectedRoute>}
           />
         ))}
 

@@ -1,7 +1,7 @@
-import citaonline from "../assets/cita-online.png";
-import equipomedico from "../assets/equipo-medico.png";
-import puntualidad from "../assets/puntualidad.png";
-import especialidad from "../assets/especialidad.png"
+import citaonline from "../assets/icons/cita-online.png";
+import equipomedico from "../assets/icons/equipo-medico.png";
+import puntualidad from "../assets/icons/puntualidad.png";
+import especialidad from "../assets/icons/especialidad.png"
 
 
 const infoCards = [

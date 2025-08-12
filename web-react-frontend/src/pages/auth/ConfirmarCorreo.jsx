@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
-import axiosPublic from "../api/axiosPublic";
-import Logo from "../assets/Logo.svg";
-import StatusEmail from "../components/StatusEmail";
-import { getRoute } from "../routes/routesConfig";
-import successAnimation from "../animations/success.json";
-import errorAnimation from "../animations/error.json";
-import loadingAnimation from "../animations/loading.json";
+import axiosPublic from "../../api/axiosPublic";
+import Logo from "../../assets/icons/Logo.svg";
+import StatusEmail from "../../components/StatusEmail";
+import { getRoute } from "../../routes/routesConfig";
+import successAnimation from "../../assets/animations/success.json";
+import errorAnimation from "../../assets/animations/error.json";
+import loadingAnimation from "../../assets/animations/loading.json";
  
 const ConfirmarCorreo = () => {
   const [estado, setEstado] = useState("verificando");

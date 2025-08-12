@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Search from "../assets/Search.png";
+import Search from "../assets/icons/Search.png";
 
 
 export default function CitaForm({
