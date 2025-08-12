@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getRoute } from "../routes/routesConfig";
-import InputForm from "../components/InputForm"; 
-import Button from "../components/Button";
-import Header from "../layouts/Header";
-import Footer from "../layouts/Footer";
+import { getRoute } from "../../routes/routesConfig";
+import InputForm from "../../components/InputForm"; 
+import Button from "../../components/Button";
+import Header from "../../layouts/Header";
+import Footer from "../../layouts/Footer";
 
 
 function CitaFinish() {

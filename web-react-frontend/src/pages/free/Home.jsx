@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { useRef } from "react";
-import Header from "../layouts/Header";
-import Footer from "../layouts/Footer";
-import HeroBanner from "../components/HeroBanner";
-import InfoCards from "../components/InfoCards";
-import DoctorList from "../components/DoctorList";
-import CitaForm from "../components/CitaForm";
-import banner1 from '../assets/images/Home-Banner-1.png';
-import banner2 from '../assets/images/Home-Banner-2.png';
-import banner3 from '../assets/images/Home-Banner-3.png';
+import Header from "../../layouts/Header";
+import Footer from "../../layouts/Footer";
+import HeroBanner from "../../components/HeroBanner";
+import InfoCards from "../../components/InfoCards";
+import DoctorList from "../../components/DoctorList";
+import CitaForm from "../../components/CitaForm";
+import banner1 from "../../assets/images/banners/Home-Banner-1.png";
+import banner2 from "../../assets/images/banners/Home-Banner-2.png";
+import banner3 from "../../assets/images/banners/Home-Banner-3.png";
 
 const images = [banner1, banner2, banner3,];
 

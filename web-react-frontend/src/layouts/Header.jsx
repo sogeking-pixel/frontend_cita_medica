@@ -1,7 +1,7 @@
-import Logo from "../assets/logo.svg";
+import Logo from "../assets/icons/logo.svg";
 import NavItem from "../components/NavItem";
 import NavItemSm from "../components/NavItemSm";
-import PhotoPaciente from "../assets/paciente.svg";
+import PhotoPaciente from "../assets/icons/paciente.svg";
 import { getRoute } from "../routes/routesConfig";
 
 export default function Header() {

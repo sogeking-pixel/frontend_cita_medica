@@ -1,21 +1,21 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Button from '../components/Button';
-import InputForm from '../components/InputForm';
-import Logo from "../assets/Logo.svg";
-import NewPassIcon from "../assets/NewPassIcon.svg";
-import PasswordConfirmation from "../animations/PasswordConfirmation.json";
-import Lottie from 'lottie-react';
-import { getRoute } from '../routes/routesConfig';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import Button from "../../components/Button";
+import InputForm from "../../components/InputForm";
+import Logo from "../../assets/icons/Logo.svg";
+import NewPassIcon from "../../assets/images/NewPassIcon.svg";
+import PasswordConfirmation from "../../assets/animations/PasswordConfirmation.json";
+import Lottie from "lottie-react";
+import { getRoute } from "../../routes/routesConfig";
 
 export default function CreateNewPassword() {
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordCreated, setPasswordCreated] = useState(false);
 
   const handleCreatePassword = () => {
     if (newPassword !== confirmPassword) {
-      alert('Las contraseñas no coinciden.');
+      alert("Las contraseñas no coinciden.");
       return;
     }
 
@@ -30,28 +30,43 @@ export default function CreateNewPassword() {
           <div className="max-w-md mx-auto">
             <div className="flex flex-col items-center text-center">
               <img src={Logo} alt="Logo" className="w-18 h-24 mb-4" />
-              
+
               {passwordCreated ? (
                 <>
-                  <h1 className="text-3xl font-semibold mb-2">¡Contraseña creada!</h1>
+                  <h1 className="text-3xl font-semibold mb-2">
+                    ¡Contraseña creada!
+                  </h1>
                   <p className="text-gray-500 text-[17px] font-outfit font-medium mb-4">
                     Ahora puedes iniciar sesión con tu nueva contraseña.
                   </p>
-                 <div>
-                     <Lottie animationData={PasswordConfirmation} style={{ height: 150 }} loop={false}/>
-                 </div>
-                  
-                  <Link to="/" className="text-cyan-500 hover:text-cyan-700 font-semibold text-sm">
+                  <div>
+                    <Lottie
+                      animationData={PasswordConfirmation}
+                      style={{ height: 150 }}
+                      loop={false}
+                    />
+                  </div>
+
+                  <Link
+                    to="/"
+                    className="text-cyan-500 hover:text-cyan-700 font-semibold text-sm"
+                  >
                     Volver al inicio de sesión
                   </Link>
                 </>
               ) : (
                 <>
-                  <h1 className="text-3xl font-semibold mb-2">Crea una nueva contraseña</h1>
+                  <h1 className="text-3xl font-semibold mb-2">
+                    Crea una nueva contraseña
+                  </h1>
                   <p className="text-gray-500 text-[17px] font-outfit font-medium mb-4">
                     Introduzca su nueva contraseña para acceder a su cuenta.
                   </p>
-                  <img src={NewPassIcon} alt="NuevaContraseñaIcon" className="my-5" />
+                  <img
+                    src={NewPassIcon}
+                    alt="NuevaContraseñaIcon"
+                    className="my-5"
+                  />
 
                   <div className="divide-y divide-gray-200 w-full">
                     <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
@@ -83,7 +98,10 @@ export default function CreateNewPassword() {
                       </Button>
 
                       <div className="text-center">
-                        <Link to={getRoute("Login").path} className="text-cyan-500 hover:text-cyan-700 font-semibold text-sm">
+                        <Link
+                          to={getRoute("Login").path}
+                          className="text-cyan-500 hover:text-cyan-700 font-semibold text-sm"
+                        >
                           Volver al inicio de sesión
                         </Link>
                       </div>

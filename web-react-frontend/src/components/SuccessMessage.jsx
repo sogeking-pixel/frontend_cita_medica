@@ -1,6 +1,6 @@
 import Lottie from "lottie-react";
 import Button from "./Button";
-import successAnimation from "../animations/success.json";
+import successAnimation from "../assets/animations/success.json";
 export default function SuccessMessage({
   title,
   message,

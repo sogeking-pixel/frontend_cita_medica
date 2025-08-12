@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Doctor1 from "../assets/Doctor1.jpg"
+import Doctor1 from "../assets/images/Doctor1.jpg"
 import Button from "../components/Button";
 import { getRoute } from "../routes/routesConfig";
 

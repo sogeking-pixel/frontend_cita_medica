@@ -1,16 +1,15 @@
-import Button from "../components/Button";
-import InputForm from "../components/InputForm";
-import Logo from "../assets/Logo.svg";
+import Button from "../../components/Button";
+import InputForm from "../../components/InputForm";
+import Logo from "../../assets/icons/Logo.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import axiosPublic from "../api/axiosPublic";
-import AlertMessage from "../components/AlertMessage";
-import SuccessMessage from "../components/SuccessMessage";
-import { getRoute } from "../routes/routesConfig";
+import axiosPublic from "../../api/axiosPublic";
+import AlertMessage from "../../components/AlertMessage";
+import SuccessMessage from "../../components/SuccessMessage";
+import { getRoute } from "../../routes/routesConfig";
 
 function Register() {
-  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nombres, setNombres] = useState("");
@@ -18,18 +17,15 @@ function Register() {
   const [dni, setDni] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  
+
   const [mensajes, setMensajes] = useState("");
   const [errorVisible, setErrorVisible] = useState(false);
-
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-
   const handleRegister = async (e) => {
     e.preventDefault();
-    
 
     if (
       !email ||
@@ -49,8 +45,7 @@ function Register() {
       setErrorVisible(true);
       return;
     }
-    
-    
+
     try {
       // Hacemos la llamada a la API a través de nuestra instancia `apiClient`
       setLoading(true);
@@ -65,7 +60,9 @@ function Register() {
         fecha_nacimiento: fechaNacimiento,
       });
       if (response.status !== 201) {
-        setMensajes("Error al registrar usuario. Por favor, intente nuevamente.");
+        setMensajes(
+          "Error al registrar usuario. Por favor, intente nuevamente."
+        );
         setErrorVisible(true);
         return;
       }

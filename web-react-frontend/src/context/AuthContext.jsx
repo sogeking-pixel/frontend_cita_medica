@@ -3,7 +3,7 @@ import axiosPublic from "../api/axiosPublic";
 import apiClient from "../api/axiosPrivate";
 import { getRoute } from "../routes/routesConfig";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 
 export function AuthProvider({ children }) {
@@ -34,7 +34,6 @@ export function AuthProvider({ children }) {
       });
   }, []);
 
-  // Función para iniciar sesión
   const login = async (credentials) => {
    
     try {
@@ -52,7 +51,6 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Función para cerrar sesión
   const logout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
@@ -65,8 +63,4 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuth() {
-  return useContext(AuthContext);
 }

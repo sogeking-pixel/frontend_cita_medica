@@ -1,5 +1,5 @@
 import Lottie from "lottie-react";
-import error404 from "../animations/Error404NF.json";
+import error404 from "../../assets/animations/Error404NF.json";
 
 function NotFound() {
   return (
