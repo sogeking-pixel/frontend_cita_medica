@@ -1,0 +1,63 @@
+import React from "react";
+
+export default function Table({
+  columns = [],
+  data = [],
+  keyField = "id",
+  className = "",
+  emptyMessage = "No hay datos.",
+  title="Por default"
+}) {
+  return (
+    <div className={`bg-white shadow-lg rounded-xl p-6 ${className}`}>
+      <h2 className="text-xl font-bold text-gray-800 mb-4">{title}</h2>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm text-left text-gray-600">
+          <thead className="text-xs uppercase bg-gray-50 text-gray-500">
+            <tr>
+              {columns.map((col, i) => (
+                <th key={i} className="px-6 py-3">
+                  {col.title}
+                </th>
+              ))}
+            </tr>
+          </thead>
+
+          <tbody>
+            {data.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={columns.length}
+                  className="px-6 py-6 text-center text-gray-400"
+                >
+                  {emptyMessage}
+                </td>
+              </tr>
+            ) : (
+              data.map((row, ri) => (
+                <tr
+                  key={row[keyField] ?? ri}
+                  className="border-b hover:bg-gray-50 transition-colors"
+                >
+                  {columns.map((col, ci) => {
+                    const content = col.render
+                      ? col.render(row)
+                      : row[col.accessor];
+                    return (
+                      <td
+                        key={ci}
+                        className={`px-6 py-4 ${col.className || ""}`}
+                      >
+                        {content ?? "—"}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}

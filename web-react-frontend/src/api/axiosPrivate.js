@@ -1,6 +1,12 @@
 import axios from "axios";
 import { getRoute } from "../routes/routesConfig";
-
+import {
+  setAccessToken,
+  clearTokens,
+  getAccessToken,
+  getRefreshToken,
+  decodeToken,
+} from "../utils/jwt";
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL, 
@@ -11,7 +17,7 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("accessToken");
+    const token = getAccessToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -33,26 +39,24 @@ apiClient.interceptors.response.use(
 
       try {
         // Intentamos refrescar el token
-        const refreshToken = localStorage.getItem("refreshToken");
+        const refresh = getRefreshToken();
 
-        if (!refreshToken) throw new Error("No refresh token available");
+        if (!refresh) throw new Error("No refresh token available");
 
         const rs = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/token/refresh/`,
           {
-            refreshToken: refreshToken,
+            refresh: refresh,
           }
         );
 
-        const { accessToken } = rs.data;
-        localStorage.setItem("accessToken", accessToken);
-
-        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-
+        const { access} = rs.data;
+        setAccessToken(access);
+        originalRequest.headers.Authorization = `Bearer ${access}`;
         return apiClient(originalRequest);
+
       } catch (_error) {
         console.error("Session expired. Please login again.");
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
+        clearTokens()
         // Redirección forzada
         window.location.href = getRoute("Login").path;
         return Promise.reject(_error);

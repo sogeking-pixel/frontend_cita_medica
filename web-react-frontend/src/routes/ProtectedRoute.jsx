@@ -8,7 +8,8 @@ export const ProtectedRoute = ({ children, roles }) => {
 
   if (loading) return null;
   if (!user) return <Navigate to={getRoute("Login").path} replace />;
-  return roles.includes(user.role) ? (
+  console.log('protect path')
+  return roles.includes(user.rol) ? (
     children
   ) : (
     <Navigate to={getRoute("denegado").path} />

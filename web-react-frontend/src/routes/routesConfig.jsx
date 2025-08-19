@@ -7,6 +7,8 @@ import ForgetPassword from "../pages/auth/ForgetPassword";
 import CreateNewPassword from "../pages/auth/CreateNewPassword";
 import CitaFinish from "../pages/paciente/CitaFinish";
 import AccessDenied from "../pages/errors/AccessDenied";
+import Agenda from "../pages/medico/Agenda";
+import Cita from "../pages/medico/Cita";
 
 export const freeRoutes = [
   {
@@ -53,14 +55,27 @@ export const publicRoutes = [
     path: "/forgetpassword",
     element: <CreateNewPassword />,
   },
+ 
 ];
 
 export const protectedRoutes = [
   {
     name: "Dashboard",
-    path: "/dashboard-medico",
+    path: "/medico/",
     element: <Dashboard />,
-    roles: ["medico"],
+    roles: ["Medicos"],
+  },
+  {
+    name: "Agenda",
+    path: "/medico/agenda",
+    element: <Agenda />,
+    roles: ["Medicos"],
+  },
+  {
+    name: "Cita",
+    path: "/medico/cita",
+    element: <Cita />,
+    roles: ["Medicos"],
   },
 ];
 
