@@ -23,9 +23,12 @@ const ConfirmarCorreo = () => {
 
       try {
         hasVerified.current = true;
-        const response = await axiosPublic.post("/auth/verify-email/", {
-          token,
-        });
+        const response = await axiosPublic.post(
+          "/auth/email-verifications/verify/",
+          {
+            token,
+          }
+        );
         if (response.status === 200) {
           setEstado("exito");
         } else {
