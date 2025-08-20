@@ -9,12 +9,26 @@ import CitaForm from "../../components/CitaForm";
 import banner1 from "../../assets/images/banners/Home-Banner-1.png";
 import banner2 from "../../assets/images/banners/Home-Banner-2.png";
 import banner3 from "../../assets/images/banners/Home-Banner-3.png";
+import useGetEspecialidades from "../../hooks/useEspecialidad";
 
 const images = [banner1, banner2, banner3,];
 
 export default function Home() {
   const CitaFormRef = useRef(null);
   const [doctoresDisponibles, setDoctoresDisponibles] = useState([]);
+
+  const {
+    data: especialidades,
+    loading: loadingE,
+    error: errE,
+    refetch: refetchEspecialidades,
+  } = useGetEspecialidades();
+
+  if (especialidades) {
+    console.log('ya ta')
+  } else {
+    console.log('todavia no esta ;(')
+  }
 
   // lista de ejemplo (NO la seteamos aquí directamente)
   const listaDoctores = [
@@ -70,28 +84,29 @@ export default function Home() {
 
       {/* FORMULARIO */}
       <div ref={CitaFormRef} className="mt-8 relative z-20">
-        <CitaForm
-          specialties={[
-            "Cardiología", "Pediatría", "Ginecologia", "Pediatra",
-            "Dermatologo", "Traumatologo Y Ortopedista", "Gastroenterologo",
-            "Otorrino", "Psicologo", "Neurologo", "Psiquiatra",
-            "Oftalmologo", "Urologo", "Neumologo"
-          ]}
-          onSearch={handleSearch}
-        />
+        {loadingE ? (
+          <div className="flex justify-center items-center py-6">
+            <span className="loader"></span>
+          </div>
+        ) : (
+          <CitaForm
+            specialties={especialidades?.results || []}
+            onSearch={handleSearch}
+          />
+        )}
       </div>
 
       {/* LISTA DE DOCTORES */}
       {doctoresDisponibles.length > 0 && (
         <div className="mt-8">
-            <DoctorList 
-            doctores={doctoresDisponibles}  
-            date={selectedDate}   // ✅ PASAMOS LA FECHA
-            />
+          <DoctorList
+            doctores={doctoresDisponibles}
+            selectedDate={selectedDate}
+            onChoose={handleChooseDoctor}
+          />
         </div>
       )}
       <Footer />
     </div>
-
   );
 }
