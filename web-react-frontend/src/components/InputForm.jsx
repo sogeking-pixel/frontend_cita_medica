@@ -1,4 +1,4 @@
-function InputForm({ label, type = "text", value, onChange, placeholder, name, id, autoComplete = "off" }) {
+function InputForm({ label, type = "text", value, onChange, placeholder, name, id, autoComplete = "off", className ="", readOnly =false, disabled = false}) {
   return (
     <>
      <label
@@ -14,8 +14,10 @@ function InputForm({ label, type = "text", value, onChange, placeholder, name, i
         type={type}
         value={value}
         onChange={onChange}
-        className="w-full px-4 py-2 rounded-2xl bg-zinc-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
+        readOnly={readOnly}
+        className={`w-full px-4 py-2 rounded-2xl bg-zinc-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-400 ${className}`}
         placeholder={placeholder}
+        disabled = {disabled}
       />
       
     </>
