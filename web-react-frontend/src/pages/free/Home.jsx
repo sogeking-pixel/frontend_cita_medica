@@ -18,9 +18,9 @@ export default function Home() {
 
   // lista de ejemplo (NO la seteamos aquí directamente)
   const listaDoctores = [
-    { id: 1, nombre: "Juan E. Pérez", especialidad: "Cardiología", experience: 12, price: 120 },
-    { id: 2, nombre: "María L. Gómez", especialidad: "Pediatría", experience: 8, price: 90 },
-    { id: 3, nombre: "Carlos F. Torres", especialidad: "Dermatología", experience: 15, price: 110 },
+    { id: 1, nombre: "Juan Emilio Pérez Tocto", especialidad: "Cardiología", experience: 12, price: 120 },
+    { id: 2, nombre: "María Laura Gómez Loayza", especialidad: "Pediatría", experience: 8, price: 90 },
+    { id: 3, nombre: "Carlos Fernando Torres Escudero", especialidad: "Dermatología", experience: 15, price: 110 },
   ];
 
   // Esta función será llamada por CitaForm cuando se pulse "Buscar"
@@ -79,7 +79,7 @@ export default function Home() {
         />
       </div>
 
-      {/* LISTA DE DOCTORES (aparece debajo del formulario, sin scroll automático) */}
+      {/* LISTA DE DOCTORES (aparece debajo del formulario) */}
       {doctoresDisponibles.length > 0 && (
         <div className="mt-8">
           <DoctorList 
