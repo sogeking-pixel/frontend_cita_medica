@@ -55,10 +55,6 @@ export const publicRoutes = [
     path: "/forgetpassword",
     element: <CreateNewPassword />,
   },
- 
-];
-
-export const protectedRoutes = [
   {
     name: "Dashboard",
     path: "/medico/",
@@ -77,6 +73,10 @@ export const protectedRoutes = [
     element: <Cita />,
     roles: ["Medicos"],
   },
+
+];
+
+export const protectedRoutes = [
 ];
 
 export function getRoute(name) {
