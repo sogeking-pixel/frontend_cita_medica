@@ -3,7 +3,12 @@ import React, { useState } from "react";
 import AlertMessage from "../AlertMessage";
 import useGetMedicoEspecialidades from "../../hooks/medico/useMedicoEspecialidad";
 
-export default function SelectEspecialidad({ value, onChange, label = "Ver por especialidad:" }) {
+export default function SelectEspecialidad({
+  value,
+  onChange,
+  label = "Ver por especialidad:",
+  extraOptions = [{ value: "", label: "Todas" }], // 👈 opciones por defecto
+}) {
   const {
     data: especialidades,
     loading,
@@ -24,7 +29,14 @@ export default function SelectEspecialidad({ value, onChange, label = "Ver por e
         className="rounded-md border px-3 py-1 bg-white"
         disabled={loading}
       >
-        <option value="">Todas</option>
+          {/* opciones externas personalizables */}
+        {extraOptions.map((opt, i) => (
+          <option key={i} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+
+        {/* opciones dinámicas desde el hook */}
         {(especialidades?.results || []).map((s) => (
           <option key={s.id} value={s.id}>
             {s.nombre || "Sin nombre"}

@@ -554,9 +554,25 @@ export default function Agenda() {
                 </div>
 
                 <SelectEspecialidad
+                label="Elige Especialidad"
                 value={selectedEspecialidad}
                 onChange={setSelectedEspecialidad}
-                label="Elige Especialidad"
+                extraOptions={[
+                  { value: "", label: "Seleccione una opción" },
+                  { "value": "pediatria", "label": "Pediatría" },
+                  { "value": "ginecologia", "label": "Ginecología" },
+                  { "value": "pediatra", "label": "Pediatra" },
+                  { "value": "dermatologo", "label": "Dermatólogo" },
+                  { "value": "traumatologo-ortopedista", "label": "Traumatólogo y Ortopedista" },
+                  { "value": "gastroenterologo", "label": "Gastroenterólogo" },
+                  { "value": "otorrino", "label": "Otorrino" },
+                  { "value": "psicologo", "label": "Psicólogo" },
+                  { "value": "neurologo", "label": "Neurólogo" },
+                  { "value": "psiquiatra", "label": "Psiquiatra" },
+                  { "value": "oftalmologo", "label": "Oftalmólogo" },
+                  { "value": "urologo", "label": "Urólogo" },
+                  { "value": "neumologo", "label": "Neumólogo" }
+                ]}
                 />
 
                 <label className="block mb-3">
