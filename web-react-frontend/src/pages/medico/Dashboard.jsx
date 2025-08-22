@@ -7,6 +7,8 @@ import CardBienvenida from "../../components/medico/CardBienvenida";
 import SelectEspecialidad from "../../components/medico/SelectEspecialidad";
 import useGetDasboard  from "../../hooks/medico/useGetDasboard";
 import useGetMedicoEspecialidades from "../../hooks/medico/useMedicoEspecialidad";
+
+
 import {
   FiUserPlus,
   FiCalendar,
@@ -87,7 +89,9 @@ export default function Dashboard() {
             </AlertMessage>
           )}
 
+        
           <CardBienvenida nombres={"Escudero Alvaro"} />
+          
 
           <SelectEspecialidad
             value={selectedEspecialidad}

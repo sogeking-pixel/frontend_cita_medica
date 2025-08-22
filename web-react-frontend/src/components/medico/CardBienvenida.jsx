@@ -1,19 +1,22 @@
 import React from 'react';
+import DoctorImg from "../../assets/images/WelcomeDoctor1.jpg"; // ajusta la ruta
 
 const CardBienvenida = ({ nombres, children }) => {
   return (
-    <div className="mt-5 w-full bg-[#75ebdb] shadow-lg rounded-xl p-6 mb-10 lg:mb-12">
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
+    <div
+      className="mt-5 w-full  shadow-xl rounded-xl p-6 mb-10 lg:mb-12 bg-cover bg-center"
+      style={{ backgroundImage: `url(${DoctorImg})` }}
+    >
+      <div className="flex items-center lg:justify-end">
+        <div className=" p-6 rounded-xl w-full md:w-1/2 text-center lg:text-right">
+          <h1 className="text-2xl md:text-3xl font-bold text-[#045858e1]">
             ¡Bienvenido de nuevo, Dr. {nombres}! 👋
           </h1>
-          <p className="text-gray-500 mt-1">
+          <p className="text-gray-50 mt-3">
             Gestiona tus pacientes y tareas del día de forma eficiente.
           </p>
+          <div className="mt-3">{children}</div>
         </div>
-
-        <div className="text-right">{children}</div>
       </div>
     </div>
   );
