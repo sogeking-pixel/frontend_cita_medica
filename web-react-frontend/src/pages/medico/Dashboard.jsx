@@ -71,7 +71,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Header />
+      <Header/>
       <div className="w-full min-h-screen font-['Outfit'] bg-[#f5f5f5]">
         <div className="pt-30 pb-20 px-8 sm:px-20 lg:px-52 2xl:px-64 space-y-6">
           {loadingD && (

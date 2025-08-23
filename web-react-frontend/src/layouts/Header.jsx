@@ -1,88 +1,109 @@
+import { useState, useEffect, useRef } from "react";
+import { Link, useLocation } from "react-router-dom"; 
 import Logo from "../assets/icons/logo.svg";
-import NavItem from "../components/NavItem";
-import NavItemSm from "../components/NavItemSm";
 import PhotoPaciente from "../assets/icons/paciente.svg";
 import { getRoute } from "../routes/routesConfig";
 
 export default function Header() {
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const menuRef = useRef(null);
+  
+  // Rutas donde se mostrará el menú de usuario
+  const showUserMenuRoutes = [
+    getRoute("Dashboard").path,
+    getRoute("Cita").path,
+    getRoute("Agenda").path,
+  ];
+
+  // Usa startsWith por si hay subrutas (/dashboard/lo-que-sea)
+  const shouldShowUserMenu = showUserMenuRoutes.some(r =>
+    location.pathname.startsWith(r)
+  );
+
+  // Cerrar menú si se hace click fuera
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (!menuRef.current) return;
+      if (!menuRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  // Cerrar al cambiar de ruta
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
+
+  // Menú fijo de usuario
+  const userMenuItems = [
+    { label: "Mi Perfil", href: "/perfil" },
+    { label: "Configurar Cuenta", href: "/configuracion" },
+    { label: "Cerrar Sesión", href: "/logout" },
+  ];
+
   return (
-     <nav className="bg-gradient-to-t from-[#9cb7c3ff] to-[#63a3a3ff] w-full h-25 shadow-xl z-50 relative">
+    <nav className="bg-gradient-to-t from-[#9cb7c3ff] to-[#63a3a3ff] w-full h-25 shadow-xl z-50 relative">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         {/* Logo + Título */}
-        <a
-          href={getRoute("Dashboard").path}
+        <Link
+          to={getRoute("Dashboard").path}
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
-          <img src={Logo} className="h-16 " alt="Logo" />
+          <img src={Logo} className="h-16" alt="Logo" />
           <span className="self-center text-2xl font-semibold whitespace-nowrap text-white leading-none">
-            Cita 
-            <br />
+            Cita <br />
             Express
           </span>
-        </a>
+        </Link>
 
-        {/* Menú de usuario con imagen */}
-        <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-          <button
-            type="button"
-            className="flex text-sm ring-2 ring-gray-300 rounded-full md:me-0 focus:ring-2 focus:ring-gray-400"
-            id="user-menu-button"
-            aria-expanded="false"
-            data-dropdown-toggle="user-dropdown"
-            data-dropdown-placement="bottom"
-          >
-            <span className="sr-only">Open user menu</span>
-            <img
-              className="w-8 h-8 rounded-full"
-              src={PhotoPaciente}
-              alt="user photo"
-            />
-          </button>
-
-          {/* Dropdown */}
-          <div
-            className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm"
-            id="user-dropdown"
-          >
-            <div className="px-4 py-3">
-              <span className="block text-sm text-gray-900">Bonnie Green</span>
-              <span className="block text-sm text-gray-500 truncate">
-                name@flowbite.com
-              </span>
-            </div>
-            <ul className="py-2" aria-labelledby="user-menu-button">
-              <NavItemSm href={getRoute("Dashboard").path} children="Inicio" />
-              <NavItemSm href={getRoute("Dashboard").path} children="Historial Médico" />
-              <NavItemSm href={getRoute("Dashboard").path} children="Agendar Cita" />
-            </ul>
-          </div>
-
-          {/* Botón hamburguesa (responsive) */}
-          <button
-            data-collapse-toggle="navbar-user"
-            type="button"
-            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-black rounded-lg md:hidden hover:bg-transparent focus:outline-none focus:ring-2 focus:ring-gray-200"
-            aria-controls="navbar-user"
-            aria-expanded="false"
-          >
-            <span className="sr-only">Open main menu</span>
-            <svg
-              className="w-5 h-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 17 14"
+        {/* Menú de usuario con imagen (solo en Dashboard, Cita, Agenda) */}
+        {shouldShowUserMenu && (
+          <div ref={menuRef} className="relative flex items-center md:order-2">
+            {/* Botón Avatar */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();             // evita que el listener global lo cierre
+                setIsOpen((prev) => !prev);
+              }}
+              aria-haspopup="menu"
+              aria-expanded={isOpen}
+              className="flex items-center justify-center w-10 h-10 rounded-full ring-2 ring-gray-300 focus:ring-2 focus:ring-gray-400"
             >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 1h15M1 7h15M1 13h15"
-              />
-            </svg>
-          </button>
-        </div>
+              <span className="sr-only">Abrir menú de usuario</span>
+              <img className="w-9 h-9 rounded-full" src={PhotoPaciente} alt="user photo" />
+            </button>
+
+            {/* Dropdown */}
+            <div
+              className={`absolute right-0 top-full mt-3 z-[999] w-56 bg-white border border-gray-200 rounded-lg shadow-lg
+              transition transform origin-top-right
+              ${isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"}`}
+              role="menu"
+            >
+              <ul className="py-2">
+                {userMenuItems.map((item, idx) => (
+                  <li key={idx}>
+                    <Link
+                      to={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      role="menuitem"
+                    >
+                      {/* 🔘 Placeholder para tus SVGs */}
+                      <span className="w-5 h-5 rounded-full bg-gray-300 shrink-0" />
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
 
         {/* Lista de navegación */}
         <div
@@ -91,33 +112,23 @@ export default function Header() {
         >
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
             <li>
-            <a
-      href="/"
-      className="block py-2 px-4 text-white hover:text-[#20ebc9] text-lg hover:bg-transparent"
-    >
-      Inicio
-    </a>
-  </li>
-  <li>
-    <a
-      href="/"
-      className="block py-2 px-4 text-white hover:text-[#2affdbff] text-lg  hover:bg-transparent"
-    >
-      Agendar Cita
-    </a>
-  </li>
-  <li>
-    <a
-      href="/"
-      className="block py-2 px-4 text-white hover:text-[#2affdbff] text-lg hover:bg-transparent"
-    >
-      ¿Quienes Somos?
-    </a>
-  </li>
-</ul>
+              <Link to="/" className="block py-2 px-4 text-white hover:text-[#20ebc9] text-lg">
+                Inicio
+              </Link>
+            </li>
+            <li>
+              <Link to="/" className="block py-2 px-4 text-white hover:text-[#2affdbff] text-lg">
+                Agendar Cita
+              </Link>
+            </li>
+            <li>
+              <Link to="/" className="block py-2 px-4 text-white hover:text-[#2affdbff] text-lg">
+                ¿Quienes Somos?
+              </Link>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>
   );
 }
-

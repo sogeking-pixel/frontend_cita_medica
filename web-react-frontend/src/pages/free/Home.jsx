@@ -48,6 +48,8 @@ export default function Home() {
   return (
     <div className="w-full min-h-screen font-['Outfit'] bg-[#fbfbfb]">
       {/* NAVBAR */}
+
+
       <Header />
 
       {/* HERO con slideshow */}
