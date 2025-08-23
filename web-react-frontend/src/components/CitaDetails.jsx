@@ -58,12 +58,12 @@ const capitalizedDate = formattedDate
       <div className="flex items-center gap-4 border-b-2 border-gray-200 pb-4 mb-4">
         <img
           src={doctor?.foto || "/doctor.png"}
-          alt={doctor?.nombre || "Doctor"}
+          alt={doctor?.usuario?.nombre_completo || "Doctor"}
           className="w-12 h-12 rounded-lg object-cover"
         />
         <div>
           <h3 className="text-base font-light text-gray-500">
-            {doctor?.nombre || "Nombre no disponible"}
+            {doctor?.usuario?.nombre_completo || "Nombre no disponible"}
           </h3>
           <p className="text-sm text-gray-400">
             {specialty || doctor?.especialidad || "Especialidad no disponible"}
@@ -74,14 +74,19 @@ const capitalizedDate = formattedDate
       {/* Fecha y hora */}
       <div className="space-y-3">
         <div className="flex items-center gap-3 text-gray-400">
-          <img src={calendar} className="w-4 h-4 rounded-full bg-[#62abaa07] inline-block"/>
+          <img
+            src={calendar}
+            className="w-4 h-4 rounded-full bg-[#62abaa07] inline-block"
+          />
           <span className="text-sm ">{capitalizedDate}</span>
         </div>
         <div className="flex items-center gap-3 text-gray-400">
-           <img src={timing} className="w-4 h-4 rounded-full bg-[#62abaa07] inline-block"/>
+          <img
+            src={timing}
+            className="w-4 h-4 rounded-full bg-[#62abaa07] inline-block"
+          />
           <span className="text-sm">{time}</span>
         </div>
-        
       </div>
     </div>
   );

@@ -10,6 +10,8 @@ import banner1 from "../../assets/images/banners/Home-Banner-1.png";
 import banner2 from "../../assets/images/banners/Home-Banner-2.png";
 import banner3 from "../../assets/images/banners/Home-Banner-3.png";
 import useGetEspecialidades from "../../hooks/useEspecialidad";
+import useGetEspecialidadAgenda from "../../hooks/useEspecialidadAgendas";
+import getAgendaSlot from "../../hooks/useAgendaSlot";
 
 const images = [banner1, banner2, banner3,];
 
@@ -24,33 +26,42 @@ export default function Home() {
     refetch: refetchEspecialidades,
   } = useGetEspecialidades();
 
-  if (especialidades) {
-    console.log('ya ta')
-  } else {
-    console.log('todavia no esta ;(')
-  }
+  const {
+    data: especialidadAgendaData,
+    loading: loadingEA,
+    error: errEA,
+    refetch: refetchEspecialidadAgenda,
+  } = useGetEspecialidadAgenda({ autoFetch: false });
 
-  // lista de ejemplo (NO la seteamos aquí directamente)
-  const listaDoctores = [
-    { id: 1, nombre: "Juan Emilio Pérez Tocto", especialidad: "Cardiología", experience: 12, price: 120 },
-    { id: 2, nombre: "María Laura Gómez Loayza", especialidad: "Pediatría", experience: 8, price: 90 },
-    { id: 3, nombre: "Carlos Fernando Torres Escudero", especialidad: "Dermatología", experience: 15, price: 110 },
-  ];
+   const {
+     data: especialidadSlot,
+     loading: loadingS,
+     error: errS,
+     refetch: refetchSlot,
+   } = getAgendaSlot({ autoFetch: false });
 
   // Esta función será llamada por CitaForm cuando se pulse "Buscar"
-  const handleSearch = (formData) => {
+  const handleSearch = async (formData) => {
     console.log("handleSearch recibido:", formData);
-    // por ahora devolvemos la lista de ejemplo (más adelante aquí llamas a tu API)
-    setDoctoresDisponibles(listaDoctores);
+    const result = await refetchEspecialidadAgenda({
+      especialidad_id: formData.specialty,
+      dia: formData.date,
+    });
+    setDoctoresDisponibles(result?.results || []);
     setSelectedDate(formData.date); // Guardar la fecha elegida
   };
 
   const [selectedDate, setSelectedDate] = useState(null);
     
 
-  const handleChooseDoctor = (doctor) => {
-    console.log("Elegiste al doctor:", doctor);
-    // sin scroll automático, según pediste
+  const handleChooseDoctor = async  (agenda) => {
+    console.log("Elegiste la agenda:", agenda);
+    const result = await refetchSlot({
+      agenda_id: agenda.id,
+    });
+
+    return result?.results?.[0];
+
   };
 
   const scrollToForm = () => {

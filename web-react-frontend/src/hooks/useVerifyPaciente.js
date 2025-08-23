@@ -1,23 +1,21 @@
 import { useState, useEffect, useCallback } from "react";
-import { getPublicEspecialidadAgenda } from "../api/especialidadApi";
+import { getPublicPaciente } from "../api/pacienteApi";
 
-export default function getEspecialidadAgenda({
+export default function useVerifyPaciente({
   autoFetch = true,
-  especialidad_id,
-  dia,
+  email
 } = {}) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(Boolean(autoFetch));
   const [error, setError] = useState(null);
 
   const fetch = useCallback(async (params = {}) => {
-    const id = params.especialidad_id ?? especialidad_id;
-    const d = params.dia ?? dia;
-    if (!id || !d) return null;
+    const email = params.email ?? email;
+    if (!email) return null;
     setLoading(true);
     setError(null);
     try {
-      const res = await getPublicEspecialidadAgenda(id, d);
+      const res = await getPublicPaciente({"email": email});
       setData(res?.data ?? null);
       return res?.data ?? null;
     } catch (err) {

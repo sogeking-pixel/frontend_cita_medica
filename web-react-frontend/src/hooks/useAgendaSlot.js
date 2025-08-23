@@ -1,23 +1,21 @@
 import { useState, useEffect, useCallback } from "react";
-import { getPublicEspecialidadAgenda } from "../api/especialidadApi";
+import { getPublicAgendaSlot } from "../api/agendaApi";
 
-export default function getEspecialidadAgenda({
+export default function getAgendaSlot({
   autoFetch = true,
-  especialidad_id,
-  dia,
+  agenda_id
 } = {}) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(Boolean(autoFetch));
   const [error, setError] = useState(null);
 
   const fetch = useCallback(async (params = {}) => {
-    const id = params.especialidad_id ?? especialidad_id;
-    const d = params.dia ?? dia;
-    if (!id || !d) return null;
+    const id = params.agenda_id ?? agenda_id;
+    if (!id ) return null;
     setLoading(true);
     setError(null);
     try {
-      const res = await getPublicEspecialidadAgenda(id, d);
+      const res = await getPublicAgendaSlot(id);
       setData(res?.data ?? null);
       return res?.data ?? null;
     } catch (err) {
