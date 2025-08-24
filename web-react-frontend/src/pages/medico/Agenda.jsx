@@ -3,6 +3,7 @@ import Header from "../../layouts/HeaderMedico";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import SelectEspecialidad from "../../components/medico/SelectEspecialidad";
 
 const localizer = momentLocalizer(moment);
 
@@ -23,6 +24,7 @@ export default function Agenda() {
 
   // UI state
   const [selectedDate, setSelectedDate] = useState(""); // YYYY-MM-DD
+  const [selectedEspecialidad, setSelectedEspecialidad] = useState("");
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showAppointments, setShowAppointments] = useState(false);
 
@@ -550,6 +552,28 @@ export default function Agenda() {
                     Cerrar
                   </button>
                 </div>
+
+                <SelectEspecialidad
+                label="Elige Especialidad"
+                value={selectedEspecialidad}
+                onChange={setSelectedEspecialidad}
+                extraOptions={[
+                  { value: "", label: "Seleccione una opción" },
+                  { "value": "pediatria", "label": "Pediatría" },
+                  { "value": "ginecologia", "label": "Ginecología" },
+                  { "value": "pediatra", "label": "Pediatra" },
+                  { "value": "dermatologo", "label": "Dermatólogo" },
+                  { "value": "traumatologo-ortopedista", "label": "Traumatólogo y Ortopedista" },
+                  { "value": "gastroenterologo", "label": "Gastroenterólogo" },
+                  { "value": "otorrino", "label": "Otorrino" },
+                  { "value": "psicologo", "label": "Psicólogo" },
+                  { "value": "neurologo", "label": "Neurólogo" },
+                  { "value": "psiquiatra", "label": "Psiquiatra" },
+                  { "value": "oftalmologo", "label": "Oftalmólogo" },
+                  { "value": "urologo", "label": "Urólogo" },
+                  { "value": "neumologo", "label": "Neumólogo" }
+                ]}
+                />
 
                 <label className="block mb-3">
                   Modo

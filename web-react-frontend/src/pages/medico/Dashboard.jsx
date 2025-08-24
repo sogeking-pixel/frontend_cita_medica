@@ -4,8 +4,11 @@ import StatCard from "../../components/medico/StatCard";
 import Table from "../../components/medico/table";
 import AlertMessage from "../../components/AlertMessage";
 import CardBienvenida from "../../components/medico/CardBienvenida";
+import SelectEspecialidad from "../../components/medico/SelectEspecialidad";
 import useGetDasboard  from "../../hooks/medico/useGetDasboard";
 import useGetMedicoEspecialidades from "../../hooks/medico/useMedicoEspecialidad";
+
+
 import {
   FiUserPlus,
   FiCalendar,
@@ -68,7 +71,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Header />
+      <Header/>
       <div className="w-full min-h-screen font-['Outfit'] bg-[#f5f5f5]">
         <div className="pt-30 pb-20 px-8 sm:px-20 lg:px-52 2xl:px-64 space-y-6">
           {loadingD && (
@@ -86,51 +89,14 @@ export default function Dashboard() {
             </AlertMessage>
           )}
 
-          <CardBienvenida nombres={"Sanchez Yerson"} />
+        
+          <CardBienvenida nombres={"Escudero Alvaro"} />
+          
 
-          <div className="my-8 flex items-center gap-5">
-            <label htmlFor="select-especialidad" className="text-gray-600">
-              Ver por especialidad:
-            </label>
-
-            <select
-              id="select-especialidad"
-              value={selectedEspecialidad}
-              onChange={(e) => setSelectedEspecialidad(e.target.value)}
-              className="rounded-md border px-3 py-1 bg-white"
-              disabled={loadingE}
-            >
-              <option value="">Todas</option>
-              {(especialidades?.results || []).map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.nombre || "no hay nada"}
-                </option>
-              ))}
-            </select>
-
-            {loadingE && (
-              <span className="text-sm text-gray-500">
-                Cargando especialidades...
-              </span>
-            )}
-
-            {errE && (
-              <AlertMessage title="Error" type="warning">
-                No se pudieron cargar las especialidades.{" "}
-                <button onClick={refetchEspecialidades} className="underline">
-                  Reintentar
-                </button>
-              </AlertMessage>
-            )}
-
-            {selectedEspecialidad && (
-              <span className="ml-2 inline-block bg-blue-50 text-blue-700 px-2 py-1 rounded-full text-sm">
-                Mostrando:{" "}
-                {especialidades.find((e) => e.id === selectedEspecialidad)
-                  ?.nombre || "Seleccionada"}
-              </span>
-            )}
-          </div>
+          <SelectEspecialidad
+            value={selectedEspecialidad}
+            onChange={setSelectedEspecialidad}
+          />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
             <StatCard

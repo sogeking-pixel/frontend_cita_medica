@@ -9,6 +9,9 @@ import CitaFinish from "../pages/paciente/CitaFinish";
 import AccessDenied from "../pages/errors/AccessDenied";
 import Agenda from "../pages/medico/Agenda";
 import Cita from "../pages/medico/Cita";
+import Perfil from "../pages/medico/Perfil";
+import CuentaConfig from "../pages/medico/CuentaConfig";
+
 
 export const freeRoutes = [
   {
@@ -55,10 +58,6 @@ export const publicRoutes = [
     path: "/forgetpassword",
     element: <CreateNewPassword />,
   },
- 
-];
-
-export const protectedRoutes = [
   {
     name: "Dashboard",
     path: "/medico/",
@@ -77,6 +76,23 @@ export const protectedRoutes = [
     element: <Cita />,
     roles: ["Medicos"],
   },
+  {
+    name: "Perfil",
+    path: "/medico/Perfil",
+    element: <Perfil />,
+    roles: ["Medicos"],
+  },
+  {
+    name: "CuentaConfig",
+    path: "/medico/CuentaConfig",
+    element: <CuentaConfig />,
+    roles: ["Medicos"],
+  },
+
+
+];
+
+export const protectedRoutes = [
 ];
 
 export function getRoute(name) {

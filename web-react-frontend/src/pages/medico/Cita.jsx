@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Header from "../../layouts/HeaderMedico";
+import SelectEspecialidad from "../../components/medico/SelectEspecialidad";
 
 // CitasMedico.jsx
 // Página de administración de citas para el médico.
@@ -14,6 +15,7 @@ export default function Cita() {
   const [appointments, setAppointments] = useState([]);
   const [filterDate, setFilterDate] = useState("");
   const [filterStatus, setFilterStatus] = useState(""); // '', 'booked','confirmed','attended','cancelled'
+  const [filterEspecialidad, setFilterEspecialidad] = useState("");
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const PER_PAGE = 12;
@@ -32,6 +34,7 @@ export default function Cita() {
   function resetFilters() {
     setFilterDate("");
     setFilterStatus("");
+    setFilterEspecialidad("");
     setQuery("");
     setPage(1);
   }
@@ -52,6 +55,8 @@ export default function Cita() {
     if (filterDate)
       list = list.filter((a) => a.startAt.slice(0, 10) === filterDate);
     if (filterStatus) list = list.filter((a) => a.status === filterStatus);
+    if (filterEspecialidad)
+      list = list.filter((a) => a.especialidadId === filterEspecialidad);
     if (query) {
       const q = query.toLowerCase();
       list = list.filter(
@@ -63,7 +68,7 @@ export default function Cita() {
     // ordenar por startAt asc
     list.sort((x, y) => x.startAt.localeCompare(y.startAt));
     return list;
-  }, [appointments, filterDate, filterStatus, query]);
+  }, [appointments, filterDate, filterStatus, filterEspecialidad, query]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
   const pageItems = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
@@ -84,7 +89,7 @@ export default function Cita() {
     <>
       <Header />
       <div className="w-full min-h-screen font-['Outfit'] bg-[#f5f5f5] pt-26 p-6">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-2xl font-semibold">Citas</h1>
             <div className="text-right">
@@ -97,19 +102,20 @@ export default function Cita() {
           </div>
 
           <div className="bg-white rounded-2xl shadow p-5 mb-6">
-            <div className="flex gap-3 flex-wrap items-end">
-              <label className="text-sm">
-                Fecha
+            <div className="flex gap-6 flex-wrap items-center">
+              {/* Filtro Fecha */}
+              <div className="flex items-center gap-2 text-sm">
+               <label >Fecha:</label>
                 <input
                   type="date"
-                  className="ml-2 border rounded p-1"
+                  className="rounded p-1"
                   value={filterDate}
                   onChange={(e) => setFilterDate(e.target.value)}
                 />
-              </label>
+              </div>
 
-              <label className="text-sm">
-                Estado
+            <div className="flex items-center gap-2 text-sm">
+              <label>Estado:</label>
                 <select
                   className="ml-2 border rounded p-1"
                   value={filterStatus}
@@ -121,7 +127,17 @@ export default function Cita() {
                   <option value="attended">Attended</option>
                   <option value="cancelled">Cancelled</option>
                 </select>
-              </label>
+              </div>
+
+              
+             <div className="flex items-center gap-2 text-sm">
+              <SelectEspecialidad
+                value={filterEspecialidad}
+                onChange={setFilterEspecialidad}
+                label="Ver por especialidad:"
+                extraOptions={[{ value: "", label: "Todas" }]} // igual que en Dashboard
+              />
+              </div>
 
               <label className="flex-1 text-sm">
                 Buscar paciente
@@ -133,6 +149,7 @@ export default function Cita() {
                 />
               </label>
 
+                  {/* Botones */}
               <div className="ml-auto flex gap-2">
                 <button
                   onClick={resetFilters}
