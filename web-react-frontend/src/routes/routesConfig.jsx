@@ -59,6 +59,12 @@ export const publicRoutes = [
     path: "/forgetpassword",
     element: <CreateNewPassword />,
   },
+ 
+
+
+];
+
+export const protectedRoutes = [
   {
     name: "Dashboard",
     path: "/medico/",
@@ -89,16 +95,6 @@ export const publicRoutes = [
     element: <CuentaConfig />,
     roles: ["Medicos"],
   },
-  {
-  name: "chooseTimeDoc",
-  path: "/choose-time-doc",
-  element: <ChooseTimeDoc />,
-  
-  },
-
-];
-
-export const protectedRoutes = [
 ];
 
 export function getRoute(name) {
