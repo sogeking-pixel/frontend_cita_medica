@@ -9,7 +9,7 @@ export default function Table({
   title="Por default"
 }) {
   return (
-    <div className={`bg-white shadow-lg rounded-xl p-6 ${className}`}>
+    <div className={`bg-white shadow-lg rounded-xl rounded-tr-xs rounded-tl-xs p-6 ${className}`}>
       <h2 className="text-xl font-bold text-[#045858e1] mb-4 ">{title}</h2>
       <div className="overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-600">

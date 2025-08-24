@@ -9,6 +9,9 @@ import CitaFinish from "../pages/paciente/CitaFinish";
 import AccessDenied from "../pages/errors/AccessDenied";
 import Agenda from "../pages/medico/Agenda";
 import Cita from "../pages/medico/Cita";
+import Perfil from "../pages/medico/Perfil";
+import CuentaConfig from "../pages/medico/CuentaConfig";
+
 
 export const freeRoutes = [
   {
@@ -73,6 +76,19 @@ export const publicRoutes = [
     element: <Cita />,
     roles: ["Medicos"],
   },
+  {
+    name: "Perfil",
+    path: "/medico/Perfil",
+    element: <Perfil />,
+    roles: ["Medicos"],
+  },
+  {
+    name: "CuentaConfig",
+    path: "/medico/CuentaConfig",
+    element: <CuentaConfig />,
+    roles: ["Medicos"],
+  },
+
 
 ];
 
