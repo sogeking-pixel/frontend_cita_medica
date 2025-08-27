@@ -1,23 +1,18 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState} from "react";
 import { getPublicPaciente } from "../api/pacienteApi";
 
-export default function useVerifyPaciente({
-  autoFetch = true,
-  email
-} = {}) {
+export default function useVerifyPaciente() {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(Boolean(autoFetch));
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetch = useCallback(async (params = {}) => {
-    const email = params.email ?? email;
+  const verifyPaciente = async (email) => {
     if (!email) return null;
     setLoading(true);
     setError(null);
     try {
       const res = await getPublicPaciente({"email": email});
       setData(res?.data ?? null);
-      return res?.data ?? null;
     } catch (err) {
       setError(err);
       setData(null);
@@ -25,11 +20,7 @@ export default function useVerifyPaciente({
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
 
-  useEffect(() => {
-    if (autoFetch) fetch().catch(() => {});
-  }, [autoFetch, fetch]);
-
-  return { data, loading, error, refetch: fetch };
+  return { data, verifyPaciente, loading, error };
 }

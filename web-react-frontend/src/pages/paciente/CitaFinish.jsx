@@ -8,14 +8,18 @@ import CitaDetails from "../../components/CitaDetails";
 import Header from "../../layouts/Header";
 import Footer from "../../layouts/Footer";
 import useVerifyPaciente from "../../hooks/useVerifyPaciente";
+import useNewUserCita from "../../hooks/useNewUserCita";
+import AlertMessage from "../../components/AlertMessage";
 
 function CitaFinish() {
+
   const [motivo, setMotivo] = useState("");
   const [correoPrimerForm, setCorreoPrimerForm] = useState("");
-  const [mostrarValidacion, setMostrarValidacion] = useState(false);
-  const [mostrarPersonalForm, setMostrarPersonalForm] = useState(false);
+  const [errorVisible, setErrorVisible] = useState(false);
+  const [mensajeError, setMensajeError] = useState("");
+  const [step, setStep] = useState(1);
+  const nextStep = () => setStep((prev) => prev<3? prev + 1: prev);
 
-  // Estados para segundo formulario
   const [dni, setDni] = useState("");
   const [nombres, setNombres] = useState("");
   const [apellidos, setApellidos] = useState("");
@@ -24,26 +28,30 @@ function CitaFinish() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { doctor, specialty, date, time } = location.state || {};
+  const { doctor, specialty, date, agenda, time } = location.state || {};
 
   const {
     data: pacienteData,
+    verifyPaciente: verifyPaciente,
     loading: loadingP,
     error: errP,
-    refetch: refetchVerifyPaciente,
-  } = useVerifyPaciente({ autoFetch: false });
+  } = useVerifyPaciente();
 
-  // --- Cuando recibimos datos del paciente ---
+  const {
+    data: citaData,
+    crearCita: crearCita,
+    loading: loadingC,
+    error: errC,
+  } = useNewUserCita();
+
   useEffect(() => {
     if (pacienteData?.exists) {
-      // Rellenar con los datos del backend (enmascarados o no)
       setDni(pacienteData.paciente.usuario.dni ?? "");
       setNombres(pacienteData.paciente.usuario.nombres ?? "");
       setApellidos(pacienteData.paciente.usuario.apellidos ?? "");
       setFechaNacimiento(pacienteData.paciente.fecha_nacimiento ?? "");
       setTelefono(pacienteData.paciente.usuario.apellidos ?? "");
     } else {
-      // Si no existe, limpiar campos para que el user los llene
       setDni("");
       setNombres("");
       setApellidos("");
@@ -52,36 +60,50 @@ function CitaFinish() {
     }
   }, [pacienteData]);
 
-  // ---- Manejo del 1er formulario ----
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!motivo || !correoPrimerForm) return;
-
     try {
-      await refetchVerifyPaciente({ email: correoPrimerForm });
-      setMostrarPersonalForm(true);
-    } catch (err) {
-      console.error("Error verificando paciente", err);
+      await verifyPaciente(correoPrimerForm);
+      nextStep();
+    } catch (error) {
+      setErrorVisible(true);
+      setMensajeError("Error al verificar el correo");
     }
+    
   };
 
-  // ---- Manejo del 2do formulario ----
-  const handleFinalizar = () => {
-    console.log({
+  const handleFinalizar = async (e) => {
+    e.preventDefault();
+    if (!dni || !nombres || !apellidos || !fechaNacimiento || !telefono) return;
+    const pacientePayload = {
+      usuario: {
+        email: correoPrimerForm,
+        nombres: nombres,
+        apellidos: apellidos,
+        dni: dni,
+        direccion: "",
+      },
+      fecha_nacimiento: fechaNacimiento,
+    };
+    const payloadFinal = {
+      paciente: pacientePayload,
+      agenda_id: agenda.id,
+      fecha_hora_establecida: new Date(`${date}T${time}:00.000Z`).toISOString(),
       motivo,
-      correoPrimerForm,
-      dni,
-      nombres,
-      apellidos,
-      fechaNacimiento,
-      telefono,
-    });
-
-    setMostrarValidacion(true);
+    };
+    try {
+      await crearCita(payloadFinal);
+      nextStep();
+    } catch (error) {
+      setErrorVisible(true);
+      setMensajeError("Error en los datos del paciente");
+    } 
   };
 
-  // ---- Validación final ----
-  const handleValidacionContinuar = () => {
+  const handleValidacionContinuar = (e) => {
+    e.preventDefault();
     navigate(getRoute("Inicio").path);
   };
 
@@ -89,12 +111,9 @@ function CitaFinish() {
     <>
       <Header />
       <div className="min-h-screen flex flex-col items-center px-4 bg-[#fcfcfc] font-['Outfit']">
-        {mostrarValidacion ? (
-          <ValidateEmail onContinue={handleValidacionContinuar} />
-        ) : !mostrarPersonalForm ? (
-          // PRIMER FORMULARIO
+        {step === 1 && (
           <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-8 mt-8">
-            <div className="flex border-b-[2.5px] border-[#37373730] pb-3 mb-8">
+            <div className="flex border-b-[2.5px] border-[#37373730] pb-3 mb-3">
               <div className="px-4 py-2 bg-[#62abaa] text-white rounded-full mr-3 text-xl flex items-center justify-center w-10 h-9 font-bold">
                 3
               </div>
@@ -102,22 +121,37 @@ function CitaFinish() {
                 Registrar Cita
               </h2>
             </div>
+            {errP && (
+              <AlertMessage
+                type="danger"
+                title="Error"
+                show={errorVisible}
+                onClose={() => setErrorVisible(false)}
+              >
+                {mensajeError}
+              </AlertMessage>
+            )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6 mt-6">
               {/* Motivo */}
               <div>
                 <label className="block text-gray-700 text-base font-medium mb-3">
                   Motivo de la cita
                 </label>
-                <textarea
-                  name="motivo"
-                  value={motivo}
-                  onChange={(e) => setMotivo(e.target.value)}
-                  maxLength={180}
-                  rows={7}
-                  className="rounded-xl px-4 py-2 w-full bg-zinc-100 shadow-lg text-sm text-gray-700 resize-none"
-                  placeholder="Escribe el motivo de tu cita aquí..."
-                />
+                <div className="relative">
+                  <textarea
+                    name="motivo"
+                    value={motivo}
+                    onChange={(e) => setMotivo(e.target.value)}
+                    maxLength={180}
+                    rows={7}
+                    className="rounded-xl px-4 py-2 w-full  focus:outline-none focus:ring-2 focus:ring-teal-400 bg-zinc-100 shadow-lg text-sm text-gray-700 resize-none"
+                    placeholder="Escribe el motivo de tu cita aquí..."
+                  ></textarea>
+                  <div className="absolute bottom-2 right-4 text-[10px] text-gray-500">
+                    {180 - motivo.length} caracteres restantes
+                  </div>
+                </div>
                 <div className="text-center mt-2">
                   <button
                     type="button"
@@ -144,8 +178,9 @@ function CitaFinish() {
               </Button>
             </form>
           </div>
-        ) : (
-          // SEGUNDO FORMULARIO + RESUMEN
+        )}
+
+        {step === 2 && (
           <div className="w-full max-w-4xl mt-8 mb-8 flex flex-col md:flex-row gap-6">
             {/* Formulario */}
             <div className="flex-1 bg-white rounded-2xl shadow-lg p-5 px-8">
@@ -265,6 +300,8 @@ function CitaFinish() {
             </div>
           </div>
         )}
+
+        {step === 3 && <ValidateEmail onContinue={handleValidacionContinuar} />}
       </div>
       <Footer />
     </>
