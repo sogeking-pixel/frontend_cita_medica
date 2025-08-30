@@ -68,14 +68,14 @@ function CitaFinish() {
           <ValidateEmail onContinue={handleValidacionContinuar} />
          ) : !mostrarPersonalForm ? (
           // PRIMER FORMULARIO
-          <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-8 mt-8">
+          <div className="bg-white rounded-2xl shadow-lg w-full max-w-lg p-8 mt-8">
             {/* Cabecera */}
             <div className="flex border-b-[2.5px] border-[#37373730] pb-3 mb-8">
               <div className="px-4 py-2 bg-[#62abaa] text-white rounded-full mr-3 text-xl flex items-center justify-center w-10 h-9 font-bold">
                 3
               </div>
               <h2 className="text-2xl font-semibold text-[#62abaa]">
-                Finalizar Cita
+                Registrar Cita
               </h2>
             </div>
 
@@ -103,7 +103,7 @@ function CitaFinish() {
                   </div>
                 </div>
 
-                <div className="text-center mt-2">
+                <div className="text-center mt-2 mb-10">
                     <button
                       type="button"
                       onClick={() => setMotivo("Quiero una revisión general")}
@@ -126,7 +126,7 @@ function CitaFinish() {
                 onChange={(e) => setCorreoPrimerForm(e.target.value)}
               />
 
-              <Button type="submit" className="w-full mt-4">
+              <Button type="submit" className="w-full mt-15">
                 Continuar
               </Button>
             </form>
@@ -223,7 +223,7 @@ function CitaFinish() {
                 onChange={(e) => setTelefono(e.target.value)}
               />
 
- {/* Párrafo nuevo */}
+            {/* Párrafo nuevo */}
               <p className="text-sm text-gray-700">
                 Al realizar tu primera reserva, crearemos una cuenta para ti automáticamente.
               </p>
