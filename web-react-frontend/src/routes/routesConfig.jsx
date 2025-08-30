@@ -11,6 +11,7 @@ import Agenda from "../pages/medico/Agenda";
 import Cita from "../pages/medico/Cita";
 import Perfil from "../pages/medico/Perfil";
 import CuentaConfig from "../pages/medico/CuentaConfig";
+import ChooseTimeDoc from "../pages/medico/Choose-time-Doc";
 
 
 export const freeRoutes = [
@@ -88,7 +89,12 @@ export const publicRoutes = [
     element: <CuentaConfig />,
     roles: ["Medicos"],
   },
-
+  {
+  name: "chooseTimeDoc",
+  path: "/choose-time-doc",
+  element: <ChooseTimeDoc />,
+  
+  },
 
 ];
 

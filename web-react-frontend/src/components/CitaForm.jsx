@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import lupa from "../assets/icons/lupa.svg";
-
+import { getRoute } from "../routes/routesConfig";
 
 export default function CitaForm({
   title = "Agendar Cita Médica",
@@ -8,6 +9,8 @@ export default function CitaForm({
   specialties = [],
   onSearch
 }) {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     specialty: "",
     type: "",
@@ -22,11 +25,12 @@ export default function CitaForm({
     setTouched((prev) => ({ ...prev, [name]: true }));
   };
 
-  const handleSubmit = () => {
+ const handleSubmit = () => {
     if (formData.specialty && formData.date) {
+      // Paso 1: ejecutar búsqueda si es necesario
       onSearch?.(formData);
+ 
     } else {
-      // Mark all fields as touched to show validation
       setTouched({ specialty: true, date: true });
     }
   };
