@@ -16,7 +16,7 @@ export default function PerfilDoc({ doctor }) {
       {/* Imagen con overlay */}
       <div className="relative">
         {/* Imagen del doctor  */}
-        <div className="w-full h-48  flex items-center justify-center text-gray-500 text-sm ">
+        <div className="w-full  flex items-center justify-center text-gray-500 text-sm ">
          {doctor.foto ? (
             <img
               src={doctor.foto}
@@ -41,7 +41,7 @@ export default function PerfilDoc({ doctor }) {
 
       {/* Información / lista */}
       <div className="p-4 flex-1 bg">
-        <ul className="space-y-5 text-gray-700 text-xl ">
+        <ul className="space-y-5 text-gray-700 text-lg ">
           <li className="flex items-start gap-2">
             <img src={Check} alt="check icon" className="w-8 h-8 mt-1" />
             <span>Médico Cirujano con formación universitaria completa</span>

@@ -29,14 +29,7 @@ export default function CitaForm({
     if (formData.specialty && formData.date) {
       // Paso 1: ejecutar búsqueda si es necesario
       onSearch?.(formData);
-
-      // Paso 2: navegar al siguiente page pasando la fecha
-      navigate(getRoute("Choose-time-doc").path, {
-        state: {
-          date: formData.date,       // 👈 aquí va la fecha seleccionada
-          specialty: formData.specialty // opcional, si la necesitas luego
-        },
-      });
+ 
     } else {
       setTouched({ specialty: true, date: true });
     }
