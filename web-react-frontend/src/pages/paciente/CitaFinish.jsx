@@ -4,6 +4,7 @@ import { getRoute } from "../../routes/routesConfig";
 import InputForm from "../../components/InputForm";
 import Button from "../../components/Button";
 import ValidateEmail from "../../components/ValidateEmail";
+import SuccessMessage from "../../components/SuccessMessage";
 import CitaDetails from "../../components/CitaDetails";
 import Header from "../../layouts/Header";
 import Footer from "../../layouts/Footer";
@@ -50,7 +51,7 @@ function CitaFinish() {
       setNombres(pacienteData.paciente.usuario.nombres ?? "");
       setApellidos(pacienteData.paciente.usuario.apellidos ?? "");
       setFechaNacimiento(pacienteData.paciente.fecha_nacimiento ?? "");
-      setTelefono(pacienteData.paciente.usuario.apellidos ?? "");
+      setTelefono(pacienteData.paciente.usuario.telefonos[0].numero ?? "");
     } else {
       setDni("");
       setNombres("");
@@ -77,29 +78,34 @@ function CitaFinish() {
   const handleFinalizar = async (e) => {
     e.preventDefault();
     if (!dni || !nombres || !apellidos || !fechaNacimiento || !telefono) return;
-    const pacientePayload = {
-      usuario: {
-        email: correoPrimerForm,
-        nombres: nombres,
-        apellidos: apellidos,
-        dni: dni,
-        direccion: "",
-      },
-      fecha_nacimiento: fechaNacimiento,
-    };
-    const payloadFinal = {
-      paciente: pacientePayload,
-      agenda_id: agenda.id,
-      fecha_hora_establecida: new Date(`${date}T${time}:00.000Z`).toISOString(),
-      motivo,
-    };
+
+    const payload = pacienteData?.exists
+      ? {
+          email: correoPrimerForm,
+          agenda_id: agenda.id,
+          fecha_hora_establecida: new Date(`${date}T${time}:00.000Z`).toISOString(),
+          motivo,
+        }
+      : {
+          email: correoPrimerForm,
+          nombres,
+          apellidos,
+          dni,
+          fecha_nacimiento: fechaNacimiento,
+          telefono,
+          agenda_id: agenda.id,
+          fecha_hora_establecida: new Date(`${date}T${time}:00.000Z`).toISOString(),
+          motivo,
+        };
+
     try {
-      await crearCita(payloadFinal);
+      await crearCita(payload);
       nextStep();
     } catch (error) {
       setErrorVisible(true);
+      console.error(error);
       setMensajeError("Error en los datos del paciente");
-    } 
+    }
   };
 
   const handleValidacionContinuar = (e) => {
@@ -112,7 +118,7 @@ function CitaFinish() {
       <Header />
       <div className="min-h-screen flex flex-col items-center px-4 bg-[#fcfcfc] font-['Outfit']">
         {step === 1 && (
-          <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-8 mt-8">
+          <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-8 mt-16">
             <div className="flex border-b-[2.5px] border-[#37373730] pb-3 mb-3">
               <div className="px-4 py-2 bg-[#62abaa] text-white rounded-full mr-3 text-xl flex items-center justify-center w-10 h-9 font-bold">
                 3
@@ -174,7 +180,14 @@ function CitaFinish() {
               />
 
               <Button type="submit" className="w-full mt-4">
-                {loadingP ? "Verificando..." : "Continuar"}
+                {loadingP ? (
+                  <div className="flex items-center space-x-2 justify-center">
+                    <span className="loader border-t-transparent border-white border-2 w-4 h-4 rounded-full animate-spin"></span>
+                    <span>Verificando...</span>
+                  </div>
+                ) : (
+                  "Continuar"
+                )}
               </Button>
             </form>
           </div>
@@ -192,6 +205,17 @@ function CitaFinish() {
                   Información Personal
                 </h2>
               </div>
+
+              {errC && (
+                <AlertMessage
+                  type="danger"
+                  title="Error"
+                  show={errorVisible}
+                  onClose={() => setErrorVisible(false)}
+                >
+                  {mensajeError}
+                </AlertMessage>
+              )}
 
               <form className="space-y-6">
                 <InputForm
@@ -284,7 +308,14 @@ function CitaFinish() {
                   className="w-full mt-4"
                   onClick={handleFinalizar}
                 >
-                  Agendar
+                  {loadingC ? (
+                    <div className="flex items-center space-x-2 justify-center">
+                      <span className="loader border-t-transparent border-white border-2 w-4 h-4 rounded-full animate-spin"></span>
+                      <span>Creando Cita...</span>
+                    </div>
+                  ) : (
+                    "Agendar"
+                  )}
                 </Button>
               </form>
             </div>
@@ -300,8 +331,32 @@ function CitaFinish() {
             </div>
           </div>
         )}
-
-        {step === 3 && <ValidateEmail onContinue={handleValidacionContinuar} />}
+        {/* ADDED HANDLER FOR ERROR WHEN BACKEND IS DESCONECT */}
+        {step === 3 &&
+          (citaData?.verificate ? (
+            <SuccessMessage
+              onClose={handleValidacionContinuar}
+              message={
+                <>
+                  Su cita se separó correctamente. Se le envió un correo a{" "}
+                  <strong>{correoPrimerForm}</strong> con el resumen de la cita.
+                </>
+              }
+              title="Cita registrada con éxito"
+              buttonText="Volver al inicio"
+              className={"mt-18"}
+            />
+          ) : (
+            <ValidateEmail
+              onContinue={handleValidacionContinuar}
+              message={
+                "Este usuario todavía no se encuentra registrado, se le enviará un correo para validar su identidad y confirmar su cita."
+              }
+              title={"Verificando Correo!"}
+              buttonContent={"Volver al inicio"}
+              className={"mt-18"}
+            />
+          ))}
       </div>
       <Footer />
     </>
