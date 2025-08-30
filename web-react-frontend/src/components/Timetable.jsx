@@ -20,7 +20,7 @@ export default function Timetable({ doctor, date }) {
   const generateTimeSlots = () => {
     const slots = [];
     const start = 8;
-    const end = 22;
+    const end = 20;
     for (let hour = start; hour < end; hour++) {
       slots.push(`${hour.toString().padStart(2, "0")}:00`);
       slots.push(`${hour.toString().padStart(2, "0")}:30`);
@@ -38,24 +38,16 @@ export default function Timetable({ doctor, date }) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-        Selecciona un horario con {doctor.nombre}
-      </h2>
-
-      <p className="text-gray-600 mb-4">
-        Fecha seleccionada:{" "}
-        <span className="font-medium text-blue-600">{date}</span>
-      </p>
+    <div className="max-w-5xl mx-auto ">
 
       {/* Horarios */}
-      <div className="bg-white rounded-xl shadow p-6">
-        <div className="grid grid-cols-4 gap-3">
+      <div className=" rounded-xl  p-3">
+        <div className="grid grid-cols-3 gap-3">
           {timeSlots.map((time) => (
             <div
               key={time}
               onClick={() => setSelectedTime(time)}
-              className={`cursor-pointer border rounded-xl py-2 text-sm text-center transition
+              className={`cursor-pointer border rounded-2xl py-2 text-base text-center transition
                 ${
                   selectedTime === time
                     ? "bg-emerald-200 border-emerald-400 font-semibold"
@@ -68,8 +60,8 @@ export default function Timetable({ doctor, date }) {
         </div>
 
         {/* Confirmar */}
-        <div className="flex justify-end mt-6">
-          <Button onClick={handleConfirmClick} disabled={!selectedTime}>
+        <div className="flex mt-6 md:justify-end">
+          <Button onClick={handleConfirmClick} disabled={!selectedTime}className="w-full md:w-auto">
             Confirmar horario
           </Button>
         </div>

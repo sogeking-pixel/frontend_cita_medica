@@ -7,9 +7,17 @@ import { getRoute } from "../routes/routesConfig";
 const DoctorList = ({ doctores, date }) => {
   const navigate = useNavigate();
 
-  const handleChooseDoctor = (doctor) => {
-    navigate("/choose-time-doc", { state: { doctor, date } });
-  };
+const handleChooseDoctor = (doctor) => {
+  navigate("/choose-time-doc", { 
+    state: { 
+      doctor: { 
+        ...doctor, 
+        foto: doctor.foto || Doctor1   // ✅ siempre llevará foto (propia o default) 
+      }, 
+      date 
+    } 
+  });
+};
 
 
   return (
