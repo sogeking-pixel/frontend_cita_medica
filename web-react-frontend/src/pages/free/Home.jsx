@@ -81,13 +81,14 @@ export default function Home() {
         />
       </div>
 
-      {/* LISTA DE DOCTORES */}
+      {/* LISTA DE DOCTORES (aparece debajo del formulario) */}
       {doctoresDisponibles.length > 0 && (
         <div className="mt-8">
-            <DoctorList 
-            doctores={doctoresDisponibles}  
-            date={selectedDate}   // ✅ PASAMOS LA FECHA
-            />
+          <DoctorList 
+          doctores={doctoresDisponibles} 
+          selectedDate={selectedDate} 
+          onChoose={handleChooseDoctor} 
+          />
         </div>
       )}
       <Footer />
