@@ -33,7 +33,7 @@ const infoCards = [
 
 export default function InfoCards() {
   return (
-    <div className="relative z-20 -mt-20 flex flex-wrap justify-center gap-14 px-4 md:px-8 ">
+    <div className="relative z-20 -mt-20 flex flex-wrap justify-center gap-14 px-4 md:px-8 card-appear">
       {infoCards.map((card, index) => (
         <div
           key={index}

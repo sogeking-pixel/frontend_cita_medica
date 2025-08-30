@@ -31,6 +31,11 @@ export const freeRoutes = [
     path: "/denegado",
     element: <AccessDenied />,
   },
+  {
+    name: "elegir-tiempo-doctor",
+    path: "/elegir-tiempo-doctor",
+    element: <ChooseTimeDoc />,
+  },
 ];
 
 export const publicRoutes = [

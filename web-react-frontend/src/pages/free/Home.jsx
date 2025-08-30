@@ -11,13 +11,12 @@ import banner2 from "../../assets/images/banners/Home-Banner-2.png";
 import banner3 from "../../assets/images/banners/Home-Banner-3.png";
 import useGetEspecialidades from "../../hooks/useEspecialidad";
 import useGetEspecialidadAgenda from "../../hooks/useEspecialidadAgendas";
-import getAgendaSlot from "../../hooks/useAgendaSlot";
 
 const images = [banner1, banner2, banner3,];
 
 export default function Home() {
   const CitaFormRef = useRef(null);
-  const [doctoresDisponibles, setDoctoresDisponibles] = useState([]);
+  const [agendasDisponibles, setAgendasDisponibles] = useState([]);
 
   const {
     data: especialidades,
@@ -33,12 +32,9 @@ export default function Home() {
     refetch: refetchEspecialidadAgenda,
   } = useGetEspecialidadAgenda({ autoFetch: false });
 
-   const {
-     data: especialidadSlot,
-     loading: loadingS,
-     error: errS,
-     refetch: refetchSlot,
-   } = getAgendaSlot({ autoFetch: false });
+  
+  const [selectedSpeciality, setselectedSpeciality] = useState(null);
+
 
   // Esta función será llamada por CitaForm cuando se pulse "Buscar"
   const handleSearch = async (formData) => {
@@ -47,20 +43,21 @@ export default function Home() {
       especialidad_id: formData.specialty,
       dia: formData.date,
     });
-    setDoctoresDisponibles(result?.results || []);
-    setSelectedDate(formData.date); // Guardar la fecha elegida
+    setAgendasDisponibles(result?.results || []);
+    setSelectedDate(formData.date);
+    setselectedSpeciality(
+      especialidades.results.find((s) => s.id == formData.specialty)
+        ?.nombre
+    );// Guardar la fecha elegida
   };
 
   const [selectedDate, setSelectedDate] = useState(null);
+
     
 
   const handleChooseDoctor = async  (agenda) => {
-    console.log("Elegiste la agenda:", agenda);
-    const result = await refetchSlot({
-      agenda_id: agenda.id,
-    });
-
-    return result?.results?.[0];
+    console.log("Elegiste la agenda:", agenda, agenda.id);
+  //todo hacer que se reenvie eso como parametro a choose-time, ademas que el manejo del slot debe estar en la page choose-time, mas no el doctorlist, y devolver el localtion a citafisch, de lo se haga en sumitn en doctor list, replicar el sumibt en choose-time 
 
   };
 
@@ -73,7 +70,6 @@ export default function Home() {
   return (
     <div className="w-full min-h-screen font-['Outfit'] bg-[#fbfbfb]">
       {/* NAVBAR */}
-
 
       <Header />
 
@@ -108,12 +104,12 @@ export default function Home() {
       </div>
 
       {/* LISTA DE DOCTORES */}
-      {doctoresDisponibles.length > 0 && (
-        <div className="mt-8">
+      {agendasDisponibles.length > 0 && (
+        <div className="mt-4">
           <DoctorList
-            doctores={doctoresDisponibles}
+            agendas={agendasDisponibles}
             selectedDate={selectedDate}
-            onChoose={handleChooseDoctor}
+            specialty={selectedSpeciality}
           />
         </div>
       )}

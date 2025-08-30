@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import lupa from "../assets/icons/lupa.svg";
-import { getRoute } from "../routes/routesConfig";
 
 export default function CitaForm({
   title = "Agendar Cita Médica",
@@ -9,12 +7,11 @@ export default function CitaForm({
   specialties = [],
   onSearch
 }) {
-  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     specialty: "",
     type: "",
-    date: ""
+    date: "",
   });
 
   const [touched, setTouched] = useState({});
@@ -27,7 +24,6 @@ export default function CitaForm({
 
  const handleSubmit = () => {
     if (formData.specialty && formData.date) {
-      // Paso 1: ejecutar búsqueda si es necesario
       onSearch?.(formData);
  
     } else {
@@ -39,8 +35,8 @@ export default function CitaForm({
 
 
   return (
-    <div className="flex justify-center items-start py-4 mt-35 mb-10">
-      <div className="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-6xl">
+    <div className="flex justify-center items-start py-4 px-10 mt-35 mb-2">
+      <div className="bg-white rounded-3xl shadow-2xl p-7 sm:py-10 sm:px-12 w-full max-w-5xl fade-in-up">
         {/* Cabecera */}
         <div className="flex border-b-[2.5px] border-[#37373730] pb-3 mb-4">
           <div className="px-4 py-2 bg-[#62abaa] text-white rounded-full mr-3 text-xl flex items-center justify-center w-10 h-9">
@@ -98,11 +94,11 @@ export default function CitaForm({
           </div>
 
           {/* Botón */}
-          <div className="md:col-span-1 flex justify-end mt-9">
+          <div className="md:col-span-1 flex mt-9">
             <button
               onClick={handleSubmit}
               disabled={!isFormValid}
-              className={`flex items-center justify-center gap-2 px-6 py-2 rounded-2xl ml-auto transition-colors shadow-md
+              className={`flex justify-center items-center md:gap-2 px-6 py-2 rounded-2xl  transition-colors shadow-md w-100
                 ${
                   isFormValid
                     ? "bg-[#62abaa] text-white hover:bg-[#519999]"

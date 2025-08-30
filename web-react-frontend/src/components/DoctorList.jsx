@@ -1,16 +1,13 @@
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Doctor1 from "../assets/images/Doctor1.jpg"
-import Button from "../components/Button";
 import { getRoute } from "../routes/routesConfig";
+import DoctorItem from "./DoctorItem";
 
-const DoctorList = ({ doctores, selectedDate, onChoose }) => { // onChoose añadido por si lo usas
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [selectedDoctor, setSelectedDoctor] = useState(null);
-  const [selectedAgenda, setSelectedAgenda] = useState(null);
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const navigate = useNavigate();
+const DoctorList = ({ agendas, specialty }) => {
 
-//  Función parseDate 
+  const navigate = useNavigate();
+
+  //  Función parseDate
   const parseDate = (dateStr) => {
     if (!dateStr) return new Date();
     if (dateStr.includes("-")) return new Date(`${dateStr}T00:00:00`);
@@ -21,29 +18,14 @@ const DoctorList = ({ doctores, selectedDate, onChoose }) => { // onChoose añad
     return new Date(dateStr);
   };
 
-   useEffect(() => {
-    setCurrentDate(parseDate(selectedDate));
-  }, [selectedDate]);
-
-  // ✅ Confirmar cita
-  const handleConfirmClick = () => {
-    if (!selectedDoctor || !selectedTime || !selectedAgenda) return;
-
-    navigate(getRoute("CitaFinish").path, {
-      state: {
-        doctor: {
-          ...selectedDoctor,
-          foto: selectedDoctor.imagen || Doctor1, // fallback
-        },
-        specialty: selectedDoctor.especialidad,
-        date: selectedDate,
-        agenda: selectedAgenda,
-        time: selectedTime,
-      },
-    });
+  const handleChooseAgenda = (agenda) => {
+    if (!agenda) return;
+    navigate(
+      `${getRoute("elegir-tiempo-doctor").path}?agenda=${encodeURI(agenda.id)}`
+    );
   };
 
-   //  Generar horarios
+  //  Generar horarios
   const generateTimeSlots = (start, end, timespace, slots_ocupados = []) => {
     const slots = [];
     if (!start || !end || !timespace) return slots;
@@ -138,63 +120,42 @@ const DoctorList = ({ doctores, selectedDate, onChoose }) => { // onChoose añad
   };
 
   return (
-    <div className="pb-60 px-3 bg-gradient-to-t from-[#e4f5f8c8]">
-  <div className="bg-white rounded-2xl shadow-2xl p-6 max-w-[1500px] mx-auto">
-    {/* Cabecera */}
-    <div className="flex items-center border-b-[3px] border-gray-200 pb-3 mb-4">
-      <div className="flex items-center justify-center w-10 h-9 rounded-full bg-[#62abaa] text-white text-lg font-medium mr-3">
-        2
-      </div>
-      <h3 className="text-2xl font-semibold text-[#62abaa]">Elegir Doctor</h3>
-    </div>
-
-      {/* Lista de doctores */}
-      <div className="space-y-3">
-        {doctores.map((doc) => (
-          <div
-            key={doc.id}
-            className="flex items-center gap-4 p-4 bg-[#fbf9f9] rounded-2xl shadow-md border border-gray-200 transition"
-          >
-            {/* Avatar */}
-            <img
-              src={doc.foto || Doctor1}
-              alt={doc.nombre}
-              className="w-20 h-20 rounded-full object-cover"
-            />
-
-                {/* Info */}
-                <div className="flex-1">
-                  {/* Nombre + experiencia */}
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <p className="text-base font-semibold text-gray-900">
-                      {doc.medico.usuario.nombre_completo || "hola"}
-                    </p>
-                    {doc.experience !== undefined && (
-                      <p className="text-sm text-gray-500 mr-9 ">
-                        {doc.experience} {doc.experience === 1 ? "año" : "años"}{" "}
-                        de experiencia
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Especialidad */}
-                  <p className="text-sm  text-gray-700">
-                    {doc.especialidad || "Especialidad"}
-                  </p>
-                </div>
-
-            {/* Botón Elegir */}
-            <button
-              onClick={() => handleChooseDoctor(doc)}
-              className="bg-[#62abaa] hover:bg-[#4f9b95] text-white px-4 py-2 rounded-xl"
-            >
-              Elegir
-            </button>
+    <div className="pb-20 px-10 bg-gradient-to-t from-[#e4f5f8c8]  ">
+      <div className="bg-white rounded-2xl shadow-2xl p-5 md:py-10 md:px-12 max-w-5xl mx-auto fade-in-up">
+        {/* Cabecera */}
+        <div className="flex items-center border-b-[3px] border-gray-200 pb-3 mb-4">
+          <div className="flex items-center justify-center w-10 h-9 rounded-full bg-[#62abaa] text-white text-lg font-medium mr-3">
+            2
           </div>
-        ))}
+          <h3 className="text-2xl font-semibold text-[#62abaa]">
+            Elegir Doctor
+          </h3>
+        </div>
+
+        {/* Lista de doctores */}
+        <div className="space-y-3">
+          {agendas.map((agenda) => (
+            <DoctorItem
+              key={agenda.id}
+              agenda_id={agenda.id}
+              doctor_image={agenda.medico.imagen}
+              doctor_name={agenda.medico.usuario.nombre_completo}
+              agenda_hora_start={agenda.hora_inicio}
+              agenda_hora_end={agenda.hora_fin}
+              specialty={specialty}
+              button={
+                <button
+                  onClick={() => handleChooseAgenda(agenda)}
+                  className="bg-[#62abaa] hover:bg-[#4f9b95] text-white px-4 py-2 rounded-xl"
+                >
+                  Elegir
+                </button>
+              }
+            />
+          ))}
+        </div>
       </div>
     </div>
-  </div>
   );
 };
 

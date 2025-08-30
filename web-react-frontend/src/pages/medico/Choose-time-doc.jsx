@@ -1,16 +1,18 @@
 import React, { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import Header from "../../layouts/Header";
 import Timetable from "../../components/Timetable";
 import PerfilDoc from "../../components/PerfilDoc";
 import Footer from "../../layouts/Footer";
 
 export default function ChooseTimeDoc() {
-  const location = useLocation();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const agendaId = searchParams.get("agenda");
+  const [agendaData, setAgendaData] = useState(null);
 
   // Leer doctor y date desde location.state
-  const { doctor, date } = location.state || {};
+  const { doctor, date, specialty, agenda } = location.state || {};
 
   // Si falta doctor o date, redirigir al Home (evita navegar durante render)
   useEffect(() => {
@@ -85,7 +87,7 @@ export default function ChooseTimeDoc() {
 
           {/* Horarios disponibles */}
           <div className="col-span-2 bg-white shadow-lg rounded-2xl">
-          <div className="py-6 text-center  mb-4 shadow-md  mb-5">
+          <div className="py-6 text-center shadow-md  mb-5">
             <h2 className="text-xl font-light text-gray-400">Horarios Disponibles</h2>
           </div>
             <Timetable doctor={doctor} date={date} />

@@ -71,7 +71,7 @@ export default function PerfilDoc({ doctor }) {
 
       {/* Botón centrado */}
       <div className="p-3 mflex justify-center">
-        <button className="w-full border-2 border-[#3e7c88] text-[#3e7c88] py-1 rounded-xl hover:bg-[#3e7c88] hover:text-white transition hover:rounded-4xl transition-all duration-600">
+        <button className="w-full border-2 border-[#3e7c88] text-[#3e7c88] py-1 rounded-xl hover:bg-[#3e7c88] hover:text-white hover:rounded-4xl transition-all duration-600">
           Ver detalles
         </button>
       </div>
