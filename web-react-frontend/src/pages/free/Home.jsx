@@ -17,14 +17,14 @@ export default function Home() {
   const CitaFormRef = useRef(null);
   const [agendasDisponibles, setAgendasDisponibles] = useState([]);
 
-  const {
+  const { //para especialidades
     data: especialidades,
     loading: loadingE,
     error: errE,
     refetch: refetchEspecialidades,
   } = useGetEspecialidades();
 
-  const {
+  const { //para lista de doctores
     data: especialidadAgendaData,
     loading: loadingEA,
     error: errEA,
@@ -92,7 +92,7 @@ export default function Home() {
       <div ref={CitaFormRef} className="mt-8 relative z-20">
         {loadingE ? (
           <div className="flex justify-center items-center py-6">
-            <span className="loader"></span>
+            <span className="loader">TU VIEJA CALATITA</span>
           </div>
         ) : (
           <CitaForm
