@@ -105,7 +105,7 @@ function Login() {
                     {loading ? (
                       <div className="flex items-center space-x-2 justify-center">
                         <span className="loader border-t-transparent border-white border-2 w-4 h-4 rounded-full animate-spin"></span>
-                        <span>Creando...</span>
+                        <span>Verificando...</span>
                       </div>
                     ) : (
                       "Ingresar"
@@ -116,7 +116,7 @@ function Login() {
             </div>
           </div>
 
-          <div className="w-full flex justify-center">
+          {/* <div className="w-full flex justify-center">
             <div className="text-gray-500 text-sm">
               ¿No tienes una cuenta?{" "}
               <a
@@ -126,7 +126,7 @@ function Login() {
                 Regístrate
               </a>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
