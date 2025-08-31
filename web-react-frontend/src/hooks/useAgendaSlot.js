@@ -17,6 +17,7 @@ export default function getAgendaSlot({
     try {
       const res = await getPublicAgendaSlot(id);
       setData(res?.data ?? null);
+      console.log(res?.data)
       return res?.data ?? null;
     } catch (err) {
       setError(err);

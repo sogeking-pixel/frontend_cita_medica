@@ -1,17 +1,17 @@
 import { useState, useCallback } from "react";
-import { getPublicPaciente } from "../api/pacienteApi";
+import { getPublicAgenda } from "../api/agendaApi";
 
-export default function useVerifyPaciente() {
+export default function useGetAgenda() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const verifyPaciente = useCallback(async (email) => {
-    if (!email) return null;
+  const getAgenda = useCallback(async (id) => {
+    if (!id) return null;
     setLoading(true);
     setError(null);
     try {
-      const res = await getPublicPaciente({"email": email});
+      const res = await getPublicAgenda(id);
       setData(res?.data ?? null);
     } catch (err) {
       setError(err);
@@ -22,5 +22,5 @@ export default function useVerifyPaciente() {
     }
   },[]);
 
-  return { data, verifyPaciente, loading, error };
+  return { data, getAgenda, loading, error };
 }

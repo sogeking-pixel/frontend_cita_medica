@@ -29,7 +29,7 @@ function CitaFinish() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { doctor, specialty, date, agenda, time } = location.state || {};
+  const { doctor, especialidad, date, agenda, time } = location.state || {};
 
   const {
     data: pacienteData,
@@ -118,7 +118,7 @@ function CitaFinish() {
       <Header />
       <div className="min-h-screen flex flex-col items-center px-4 bg-[#fcfcfc] font-['Outfit']">
         {step === 1 && (
-          <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-8 mt-16">
+          <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-8 mt-16 card-appear">
             <div className="flex border-b-[2.5px] border-[#37373730] pb-3 mb-3">
               <div className="px-4 py-2 bg-[#62abaa] text-white rounded-full mr-3 text-xl flex items-center justify-center w-10 h-9 font-bold">
                 3
@@ -196,7 +196,7 @@ function CitaFinish() {
         {step === 2 && (
           <div className="w-full max-w-4xl mt-8 mb-8 flex flex-col md:flex-row gap-6">
             {/* Formulario */}
-            <div className="flex-1 bg-white rounded-2xl shadow-lg p-5 px-8">
+            <div className="flex-1 bg-white rounded-2xl shadow-lg p-5 px-8 card-appear">
               <div className="flex border-b-[2.5px] border-[#37373730] pb-3 mb-8">
                 <div className="px-4 py-2 bg-[#62abaa] text-white rounded-full mr-3 text-xl flex items-center justify-center w-10 h-9 font-bold">
                   4
@@ -324,7 +324,7 @@ function CitaFinish() {
             <div className="md:w-auto">
               <CitaDetails
                 doctor={doctor}
-                specialty={specialty}
+                specialty={especialidad.nombre ?? null}
                 date={date}
                 time={time}
               />

@@ -1,18 +1,17 @@
-// src/hooks/useNewUserCita.js
 import { useState, useCallback } from "react";
-import { postPublicPacienteCitaSinRegistrar } from "../api/pacienteApi";
+import { getPublicMedicoEspecialidad} from "../api/medicoEspecialidadApi";
 
-export default function useNewUserCita() {
+export default function useGetMedicoEspecialidad() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const crearCita = useCallback( async (payload) => {
-      if (!payload) return null;
+  const getMedicoEspecialidad = useCallback(async (id) => {
+      if (!id) return null;
       setLoading(true);
       setError(null);
       try {
-        const res = await postPublicPacienteCitaSinRegistrar(payload);
+        const res = await getPublicMedicoEspecialidad(id);
         setData(res?.data ?? null);
       } catch (err) {
         setError(err);
@@ -23,5 +22,5 @@ export default function useNewUserCita() {
       }
     },[])
 
-  return { data, crearCita, loading, error };
+  return { data, getMedicoEspecialidad, loading, error };
 }
