@@ -9,34 +9,56 @@ import CitaForm from "../../components/CitaForm";
 import banner1 from "../../assets/images/banners/Home-Banner-1.png";
 import banner2 from "../../assets/images/banners/Home-Banner-2.png";
 import banner3 from "../../assets/images/banners/Home-Banner-3.png";
+import useGetEspecialidades from "../../hooks/useEspecialidad";
+import useGetEspecialidadAgenda from "../../hooks/useEspecialidadAgendas";
 
 const images = [banner1, banner2, banner3,];
 
 export default function Home() {
   const CitaFormRef = useRef(null);
-  const [doctoresDisponibles, setDoctoresDisponibles] = useState([]);
+  const [agendasDisponibles, setAgendasDisponibles] = useState([]);
 
-  // lista de ejemplo (NO la seteamos aquí directamente)
-  const listaDoctores = [
-    { id: 1, nombre: "Juan Emilio Pérez Tocto", especialidad: "Cardiología", experience: 12, price: 120 },
-    { id: 2, nombre: "María Laura Gómez Loayza", especialidad: "Pediatría", experience: 8, price: 90 },
-    { id: 3, nombre: "Carlos Fernando Torres Escudero", especialidad: "Dermatología", experience: 15, price: 110 },
-  ];
+  const {
+    data: especialidades,
+    loading: loadingE,
+    error: errE,
+    refetch: refetchEspecialidades,
+  } = useGetEspecialidades();
+
+  const {
+    data: especialidadAgendaData,
+    loading: loadingEA,
+    error: errEA,
+    refetch: refetchEspecialidadAgenda,
+  } = useGetEspecialidadAgenda({ autoFetch: false });
+
+  
+  const [selectedSpeciality, setselectedSpeciality] = useState(null);
+
 
   // Esta función será llamada por CitaForm cuando se pulse "Buscar"
-  const handleSearch = (formData) => {
+  const handleSearch = async (formData) => {
     console.log("handleSearch recibido:", formData);
-    // por ahora devolvemos la lista de ejemplo (más adelante aquí llamas a tu API)
-    setDoctoresDisponibles(listaDoctores);
-    setSelectedDate(formData.date); // Guardar la fecha elegida
+    const result = await refetchEspecialidadAgenda({
+      especialidad_id: formData.specialty,
+      dia: formData.date,
+    });
+    setAgendasDisponibles(result?.results || []);
+    setSelectedDate(formData.date);
+    setselectedSpeciality(
+      especialidades.results.find((s) => s.id == formData.specialty)
+        ?.nombre
+    );// Guardar la fecha elegida
   };
 
   const [selectedDate, setSelectedDate] = useState(null);
+
     
 
-  const handleChooseDoctor = (doctor) => {
-    console.log("Elegiste al doctor:", doctor);
-    // sin scroll automático, según pediste
+  const handleChooseDoctor = async  (agenda) => {
+    console.log("Elegiste la agenda:", agenda, agenda.id);
+  //todo hacer que se reenvie eso como parametro a choose-time, ademas que el manejo del slot debe estar en la page choose-time, mas no el doctorlist, y devolver el localtion a citafisch, de lo se haga en sumitn en doctor list, replicar el sumibt en choose-time 
+
   };
 
   const scrollToForm = () => {
@@ -48,7 +70,6 @@ export default function Home() {
   return (
     <div className="w-full min-h-screen font-['Outfit'] bg-[#fbfbfb]">
       {/* NAVBAR */}
-
 
       <Header />
 
@@ -70,28 +91,29 @@ export default function Home() {
 
       {/* FORMULARIO */}
       <div ref={CitaFormRef} className="mt-8 relative z-20">
-        <CitaForm
-          specialties={[
-            "Cardiología", "Pediatría", "Ginecologia", "Pediatra",
-            "Dermatologo", "Traumatologo Y Ortopedista", "Gastroenterologo",
-            "Otorrino", "Psicologo", "Neurologo", "Psiquiatra",
-            "Oftalmologo", "Urologo", "Neumologo"
-          ]}
-          onSearch={handleSearch}
-        />
+        {loadingE ? (
+          <div className="flex justify-center items-center py-6">
+            <span className="loader"></span>
+          </div>
+        ) : (
+          <CitaForm
+            specialties={especialidades?.results || []}
+            onSearch={handleSearch}
+          />
+        )}
       </div>
 
       {/* LISTA DE DOCTORES */}
-      {doctoresDisponibles.length > 0 && (
-        <div className="mt-8">
-            <DoctorList 
-            doctores={doctoresDisponibles}  
-            date={selectedDate}   // ✅ PASAMOS LA FECHA
-            />
+      {agendasDisponibles.length > 0 && (
+        <div className="mt-4">
+          <DoctorList
+            agendas={agendasDisponibles}
+            selectedDate={selectedDate}
+            specialty={selectedSpeciality}
+          />
         </div>
       )}
       <Footer />
     </div>
-
   );
 }

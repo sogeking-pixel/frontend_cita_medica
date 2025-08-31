@@ -107,7 +107,7 @@ export default function AlertMessage({ type = "info", title, children, show = tr
   return (
     <div
       role="alert"
-      className={`mt-3 relative flex flex-col w-full p-3 text-sm ${text} ${bg} rounded-md`}
+      className={`mt-3 relative flex flex-col w-full fadeInUp p-3 text-sm ${text} ${bg} rounded-md`}
     >
       <p className="flex text-base">
         {icon}
@@ -115,7 +115,7 @@ export default function AlertMessage({ type = "info", title, children, show = tr
       </p>
       <p className="ml-4 p-3">{children}</p>
       <button
-        onClick={ onClose }
+        onClick={onClose}
         aria-label="Cerrar alerta"
         className={`flex items-center justify-center transition-all w-8 h-8 rounded-md ${text}  ${bg_hover} active:bg-white/10 absolute top-1.5 right-1.5`}
         type="button"
