@@ -50,7 +50,7 @@ export default function CitaForm({
 
         {/* Contenido dinámico */}
         {loading ? (
-          // LOADING centrado dentro de la caja
+          // LOADING 
           <div className="flex justify-center items-center">
             <Lottie animationData={Load} style={{ height: 100 }} loop={true} />
           </div>

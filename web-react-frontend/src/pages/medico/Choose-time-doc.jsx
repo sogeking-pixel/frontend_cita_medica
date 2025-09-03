@@ -8,6 +8,10 @@ import { getRoute } from "../../routes/routesConfig";
 import useGetAgenda from "../../hooks/useAgenda";
 import useGetMedicoEspecialidad from "../../hooks/useMedicoEspecialidad";
 import { formatLocalDateString } from "../../utils/formtDateToString"
+import Lottie from "lottie-react";
+import Load from "../../assets/animations/Loading2.json";
+import Loader from "../../assets/animations/ItemLoad.json";
+
 
 export default function ChooseTimeDoc() {
 
@@ -64,17 +68,26 @@ export default function ChooseTimeDoc() {
       {/* Contenido principal */}
       <div className="max-w-6xl mx-auto p-6 mt-7 mb-15">
         <div className="bg-white shadow-lg rounded-2xl p-6 mb-10 text-center md:text-left card-appear">
-          <h1 className="text-2xl font-bold mb-2 text-gray-600">
-            Selecciona un horario con{" "}
-            <span className="text-[#3e7c88]">
-              {dataMedicoEspecialidad?.medico?.usuario?.nombre_completo ?? ""}
-            </span>
-          </h1>
+          {loadingA || loadingM ? (
+            // Loader centrado dentro del box "Contenido principal"
+            <div className="flex items-center justify-center max-h-[80px]">
+              <Lottie animationData={Load} style={{ height: 120 }} loop />
+            </div>
+          ) : (
+            <>
+              <h1 className="text-2xl font-bold mb-2 text-gray-600">
+                Selecciona un horario con{" "}
+                <span className="text-[#3e7c88]">
+                  {dataMedicoEspecialidad?.medico?.usuario?.nombre_completo ?? ""}
+                </span>
+              </h1>
 
-          <p className="text-gray-600 mb-1">
-            Fecha seleccionada:{" "}
-            <span className="font-medium">{capitalizedDate ?? ""}</span>
-          </p>
+              <p className="text-gray-600 mb-1">
+                Fecha seleccionada:{" "}
+                <span className="font-medium">{capitalizedDate ?? ""}</span>
+              </p>
+            </>
+          )}
         </div>
 
         {/* Sección con PerfilDoc (izquierda) y Timetable (derecha) */}
@@ -89,16 +102,27 @@ export default function ChooseTimeDoc() {
 
           {/* Horarios disponibles */}
           <div className="card-appear col-span-4 bg-white shadow-lg rounded-2xl">
-            <div className="py-6 text-center shadow-md  mb-5">
+            <div className="py-6 text-center shadow-md mb-5">
               <h2 className="text-xl font-medium text-gray-600">
                 Horarios Disponibles
               </h2>
             </div>
-            <Timetable
-              doctor={dataMedicoEspecialidad?.medico ?? null}
-              especialidad={dataMedicoEspecialidad?.especialidad ?? null}
-              agenda={dataAgenda ?? null}
-            />
+
+            {loadingA || loadingM ? (
+              <div className="flex justify-center items-center py-16">
+                <Lottie animationData={Loader} style={{ height: 400 }} loop />
+              </div>
+            ) : dataAgenda ? (
+              <Timetable
+                doctor={dataMedicoEspecialidad?.medico ?? null}
+                especialidad={dataMedicoEspecialidad?.especialidad ?? null}
+                agenda={dataAgenda}
+              />
+            ) : (
+              <div className="text-center p-10">
+                No se pudo cargar la agenda.
+              </div>
+            )}
           </div>
         </div>
       </div>

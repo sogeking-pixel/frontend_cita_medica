@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import { getRoute } from "../routes/routesConfig";
 import useGetAgendaSlot from "../hooks/useAgendaSlot"; // Asegúrate de que la ruta sea correcta
+import Lottie from "lottie-react";
+import Loader from "../assets/animations/Load.json";
 
 export default function Timetable({ doctor, especialidad, agenda }) {
   const navigate = useNavigate();
@@ -73,8 +75,14 @@ export default function Timetable({ doctor, especialidad, agenda }) {
     refetch(agenda?.id);
   };
 
+
+    //Visualizar el Loader al detectar agemda  y condicional por si no se ha seleccionado una agenda
   if (!agenda) {
-    return (
+    return loading ? (
+      <div className="flex justify-center items-center py-16">
+        <Lottie animationData={Load} style={{ height: 180 }} loop />
+      </div>
+    ) : (
       <div className="text-center p-10">
         No se ha proporcionado una agenda válida.
       </div>
@@ -92,6 +100,7 @@ export default function Timetable({ doctor, especialidad, agenda }) {
   return (
     <div className="max-w-5xl mx-auto">
       <div className="rounded-xl px-10 pb-10 pt-5">
+        {/* Cabecera fija */}
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">Seleccione un horario</h3>
           <Button onClick={handleRefresh} variant="outline" disabled={loading}>
@@ -99,9 +108,11 @@ export default function Timetable({ doctor, especialidad, agenda }) {
           </Button>
         </div>
 
-        {/* 3. Renderizamos los horarios y aplicamos estilos según su estado */}
+        {/* Loader o lista de horarios */}
         {loading && !bookedSlots ? (
-          <div className="text-center">Cargando horarios...</div>
+          <div className="flex justify-center items-center py-16">
+            <Lottie animationData={Loader} style={{ height: 180 }} loop />
+          </div>
         ) : (
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
             {timeSlots.map((time) => {

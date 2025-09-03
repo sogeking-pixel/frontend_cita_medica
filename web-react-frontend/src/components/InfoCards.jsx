@@ -37,7 +37,7 @@ export default function InfoCards() {
       {infoCards.map((card, index) => (
         <div
           key={index}
-          className=" group w-full max-w-xs rounded-[60px] bg-white px-4 py-8 shadow-lg transition hover:shadow-2xl"
+          className=" group w-full max-w-xs rounded-[60px] bg-white px-6 py-7  shadow-lg transition hover:shadow-2xl"
         >
           {/* Icono imagen de fondo */}
           <div className="mx-auto mb-4 h-22 w-22 transition-all duration-300 group-hover:scale-125 ">

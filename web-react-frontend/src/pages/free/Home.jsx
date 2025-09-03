@@ -103,6 +103,7 @@ export default function Home() {
             agendas={agendasDisponibles}
             selectedDate={selectedDate}
             specialty={selectedSpeciality}
+            loading= {loadingEA}
           />
         </div>
       <Footer />

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getRoute } from "../routes/routesConfig";
 import DoctorItem from "./DoctorItem";
+import Lottie from "lottie-react";
+import Load from "../assets/animations/Load.json";
 
-const DoctorList = ({ agendas, specialty }) => {
+const DoctorList = ({ agendas, specialty, loading = false}) => {
 
   const navigate = useNavigate();
 
@@ -138,39 +140,46 @@ const DoctorList = ({ agendas, specialty }) => {
         </h3>
       </div>
 
-      {/* Contenido */}
-      {agendas.length > 0 ? (
-        <div className="space-y-3">
-          {agendas.map((agenda) => (
-            <DoctorItem
-              key={agenda.id}
-              agenda_id={agenda.id}
-              doctor_image={agenda.medico.imagen}
-              doctor_name={agenda.medico.usuario.nombre_completo}
-              agenda_hora_start={agenda.hora_inicio}
-              agenda_hora_end={agenda.hora_fin}
-              specialty={specialty}
-              button={
-                <button
-                  onClick={() => handleChooseAgenda(agenda)}
-                  className="bg-[#62abaa] hover:bg-[#4f9b95] text-white px-4 py-2 rounded-xl"
-                >
-                  Elegir
-                </button>
-              }
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="flex justify-center items-center py-10">
-          <p className="text-gray-300 text-lg font-normal text-center">
-            Por favor complete los datos respectivos
-          </p>
-        </div>
-      )}
+        {/* Contenido dinámico */}
+        {loading ? (
+          // 👇 Loader centrado
+          <div className="flex justify-center items-center py-10">
+            <Lottie animationData={Load} style={{ height: 120 }} loop />
+          </div>
+        ) : agendas.length > 0 ? (
+          // 👇 Lista de doctores
+          <div className="space-y-3">
+            {agendas.map((agenda) => (
+              <DoctorItem
+                key={agenda.id}
+                agenda_id={agenda.id}
+                doctor_image={agenda.medico.imagen}
+                doctor_name={agenda.medico.usuario.nombre_completo}
+                agenda_hora_start={agenda.hora_inicio}
+                agenda_hora_end={agenda.hora_fin}
+                specialty={specialty}
+                button={
+                  <button
+                    onClick={() => handleChooseAgenda(agenda)}
+                    className="bg-[#62abaa] hover:bg-[#4f9b95] text-white px-4 py-2 rounded-xl"
+                  >
+                    Elegir
+                  </button>
+                }
+              />
+            ))}
+          </div>
+        ) : (
+          // 👇 Mensaje vacío
+          <div className="flex justify-center items-center py-10">
+            <p className="text-gray-300 text-lg font-normal text-center">
+              Por favor complete los datos respectivos
+            </p>
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
 
 };
 
