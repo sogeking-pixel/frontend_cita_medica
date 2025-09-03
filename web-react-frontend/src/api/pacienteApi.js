@@ -7,3 +7,6 @@ export const postPublicPacienteCitaSinRegistrar = (payload) =>
 
 export const postPublicPacienteCitaRegistrado = (payload) =>
   axiosPublic.post(`/pacientes/create-cita/`, payload);
+
+export const postConfirmPaciente = (payload) =>
+  axiosPublic.post(`/citas/confirmar-paciente/`, payload);

@@ -12,6 +12,7 @@ import Cita from "../pages/medico/Cita";
 import Perfil from "../pages/medico/Perfil";
 import CuentaConfig from "../pages/medico/CuentaConfig";
 import ChooseTimeDoc from "../pages/medico/Choose-time-Doc";
+import ConfirmarPaciente from "../pages/paciente/ConfirmarPaciente";
 
 
 export const freeRoutes = [
@@ -35,6 +36,11 @@ export const freeRoutes = [
     name: "elegir-tiempo-doctor",
     path: "/elegir-tiempo-doctor",
     element: <ChooseTimeDoc />,
+  },
+  {
+    name: "confirmar-paciente",
+    path: "/confirmar-paciente-cita",
+    element: <ConfirmarPaciente />,
   },
 ];
 
