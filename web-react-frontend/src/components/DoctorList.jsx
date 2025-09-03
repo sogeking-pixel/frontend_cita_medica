@@ -120,19 +120,26 @@ const DoctorList = ({ agendas, specialty }) => {
   };
 
   return (
-    <div className="pb-20 px-10 bg-gradient-to-t from-[#e4f5f8c8]  ">
-      <div className="bg-white rounded-2xl shadow-2xl p-5 md:py-10 md:px-12 max-w-5xl mx-auto fade-in-up">
-        {/* Cabecera */}
-        <div className="flex items-center border-b-[3px] border-gray-200 pb-3 mb-4">
-          <div className="flex items-center justify-center w-10 h-9 rounded-full bg-[#62abaa] text-white text-lg font-medium mr-3">
-            2
-          </div>
-          <h3 className="text-2xl font-semibold text-[#62abaa]">
-            Elegir Doctor
-          </h3>
+  <div className="pb-20 px-10 bg-gradient-to-t from-[#e4f5f8c8]">
+    <div className="bg-white rounded-2xl shadow-2xl p-5 md:py-10 md:px-12 max-w-5xl mx-auto fade-in-up">
+      {/* Cabecera */}
+      <div className="flex items-center border-b-[2px] border-gray-200 pb-3 mb-4">
+        <div
+          className={`flex items-center justify-center w-10 h-9 rounded-full text-white text-lg font-medium mr-3 
+          ${agendas.length > 0 ? "bg-[#62abaa]" : "bg-gray-300"}`}
+        >
+          2
         </div>
+        <h3
+          className={`text-2xl font-semibold 
+          ${agendas.length > 0 ? "text-[#62abaa]" : "text-gray-400"}`}
+        >
+          Elegir Doctor
+        </h3>
+      </div>
 
-        {/* Lista de doctores */}
+      {/* Contenido */}
+      {agendas.length > 0 ? (
         <div className="space-y-3">
           {agendas.map((agenda) => (
             <DoctorItem
@@ -154,9 +161,17 @@ const DoctorList = ({ agendas, specialty }) => {
             />
           ))}
         </div>
-      </div>
+      ) : (
+        <div className="flex justify-center items-center py-10">
+          <p className="text-gray-300 text-lg font-normal text-center">
+            Por favor complete los datos respectivos
+          </p>
+        </div>
+      )}
     </div>
-  );
+  </div>
+);
+
 };
 
 export default DoctorList;

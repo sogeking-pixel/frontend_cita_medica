@@ -17,14 +17,14 @@ export default function Home() {
   const CitaFormRef = useRef(null);
   const [agendasDisponibles, setAgendasDisponibles] = useState([]);
 
-  const { //para especialidades
+  const { //para el input de especialidades especialidades
     data: especialidades,
     loading: loadingE,
     error: errE,
     refetch: refetchEspecialidades,
   } = useGetEspecialidades();
 
-  const { //para lista de doctores
+  const { //para DoctorList ( lista de doctores)
     data: especialidadAgendaData,
     loading: loadingEA,
     error: errEA,
@@ -90,20 +90,14 @@ export default function Home() {
 
       {/* FORMULARIO */}
       <div ref={CitaFormRef} className="mt-8 relative z-20">
-        {loadingE ? (
-          <div className="flex justify-center items-center py-6">
-            <span className="loader">TU VIEJA CALATITA</span>
-          </div>
-        ) : (
-          <CitaForm
-            specialties={especialidades?.results || []}
-            onSearch={handleSearch}
-          />
-        )}
+        <CitaForm
+          specialties={especialidades?.results || []}
+          onSearch={handleSearch}
+          loading={loadingE}   // 👈 pasamos el loading al CitaForm
+        />
       </div>
 
       {/* LISTA DE DOCTORES */}
-      {agendasDisponibles.length > 0 && (
         <div className="mt-4">
           <DoctorList
             agendas={agendasDisponibles}
@@ -111,7 +105,6 @@ export default function Home() {
             specialty={selectedSpeciality}
           />
         </div>
-      )}
       <Footer />
     </div>
   );
