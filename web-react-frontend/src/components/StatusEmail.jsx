@@ -2,7 +2,7 @@ import Lottie from "lottie-react";
 import Button from "./Button";
 import { useEffect, useState } from "react";
 
-const StatusEmail = ({ estado, onVolverInicio, animations }) => {
+const StatusEmail = ({ estado, onVolverInicio, animations, message=null }) => {
   const [currentEstado, setCurrentEstado] = useState(estado);
   const [show, setShow] = useState(true);
 
@@ -24,7 +24,7 @@ const StatusEmail = ({ estado, onVolverInicio, animations }) => {
 
   return (
     <div
-      key={currentEstado} 
+      key={currentEstado}
       className={`flex flex-col items-center text-center transition-opacity duration-500 ease-in-out ${
         show ? "opacity-100" : "opacity-0"
       }`}
@@ -34,7 +34,9 @@ const StatusEmail = ({ estado, onVolverInicio, animations }) => {
         style={{ height: 150 }}
         loop={currentEstado === "verificando"}
       />
-      <p className="text-gray-600 mb-6 max-w-sm">{mensajes[currentEstado]}</p>
+      <p className="text-gray-600 mb-6 max-w-sm">
+        {message || mensajes[currentEstado]}
+      </p>
       {currentEstado === "exito" && (
         <div className="transition-opacity duration-500 ease-in-out">
           <Button onClick={onVolverInicio}>Volver al Inicio</Button>
