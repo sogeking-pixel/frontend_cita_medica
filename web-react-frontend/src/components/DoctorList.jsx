@@ -69,76 +69,25 @@ const DoctorList = ({ agendas, specialty, loading = false}) => {
     return slots;
   };
 
-  const [timeSlots, setTimeSlots] = useState([]);
-  const [loadingSlots, setLoadingSlots] = useState(false);
-  const handleSelectAgenda = async (agenda) => {
-    setSelectedDoctor(agenda.medico);
-    const { conMedico, ...sinMedico } = agenda;
-    setSelectedAgenda(sinMedico);
-    setSelectedTime(null);
-
-    setLoadingSlots(true);
-    let occupiedResp = [];
-
-    try {
-      // onChoose es la función que dispara la petición (handleChooseDoctor en el padre)
-      const resp = await onChoose?.(agenda);
-
-      // Intentamos extraer un array de slots ocupados de varias formas posibles
-      if (!resp) {
-        occupiedResp = [];
-      } else if (Array.isArray(resp)) {
-        occupiedResp = resp;
-      } else if (Array.isArray(resp?.results)) {
-        occupiedResp = resp.results;
-      } else if (Array.isArray(resp?.slots)) {
-        occupiedResp = resp.slots;
-      } else if (Array.isArray(resp?.occupied_slots)) {
-        occupiedResp = resp.occupied_slots;
-      } else if (Array.isArray(resp?.horarios_ocupados)) {
-        occupiedResp = resp.horarios_ocupados;
-      } else if (Array.isArray(resp?.time_slots)) {
-        occupiedResp = resp.time_slots;
-      } else {
-        // Si la estructura es otra, intenta detectar campos con strings dentro
-        // (fallback: buscar cualquier array dentro del objeto)
-        const arrays = Object.values(resp).filter((v) => Array.isArray(v));
-        occupiedResp = arrays.length ? arrays[0] : [];
-      }
-    } catch (err) {
-      console.error("Error al obtener slots ocupados:", err);
-      occupiedResp = [];
-    }
-
-    const slots = generateTimeSlots(
-      agenda.hora_inicio,
-      agenda.hora_fin,
-      agenda.time_slot_minutes,
-      occupiedResp
-    );
-
-    setTimeSlots(slots);
-    setLoadingSlots(false);
-  };
 
   return (
-  <div className="pb-20 px-10 bg-gradient-to-t from-[#e4f5f8c8]">
-    <div className="bg-white rounded-2xl shadow-2xl p-5 md:py-10 md:px-12 max-w-5xl mx-auto fade-in-up">
-      {/* Cabecera */}
-      <div className="flex items-center border-b-[2px] border-gray-200 pb-3 mb-4">
-        <div
-          className={`flex items-center justify-center w-10 h-9 rounded-full text-white text-lg font-medium mr-3 
+    <div className="pb-50 px-10 bg-gradient-to-t from-[#e4f5f8c8]">
+      <div className="bg-white rounded-2xl shadow-2xl p-5 md:py-10 md:px-12 max-w-5xl xl:w-[1000px]  mx-auto fade-in-up">
+        {/* Cabecera */}
+        <div className="flex items-center border-b-[2px] border-gray-200 pb-3 mb-4">
+          <div
+            className={`flex items-center justify-center w-10 h-9 rounded-full text-white text-lg font-medium mr-3 
           ${agendas.length > 0 ? "bg-[#62abaa]" : "bg-gray-300"}`}
-        >
-          2
-        </div>
-        <h3
-          className={`text-2xl font-semibold 
+          >
+            2
+          </div>
+          <h3
+            className={`text-2xl font-semibold 
           ${agendas.length > 0 ? "text-[#62abaa]" : "text-gray-400"}`}
-        >
-          Elegir Doctor
-        </h3>
-      </div>
+          >
+            Elegir Doctor
+          </h3>
+        </div>
 
         {/* Contenido dinámico */}
         {loading ? (
