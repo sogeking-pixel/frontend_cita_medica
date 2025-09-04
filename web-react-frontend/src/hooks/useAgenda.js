@@ -12,7 +12,9 @@ export default function useGetAgenda() {
     setError(null);
     try {
       const res = await getPublicAgenda(id);
-      setData(res?.data ?? null);
+      const agendaData = res?.data ?? null;
+      setData(agendaData);
+      return agendaData; 
     } catch (err) {
       setError(err);
       setData(null);

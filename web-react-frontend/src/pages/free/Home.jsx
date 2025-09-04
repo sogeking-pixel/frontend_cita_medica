@@ -90,13 +90,13 @@ export default function Home() {
       </div>
 
       {/* INFO SECTION 👇 */}
-      <div className="mt-30 relative z-20 px-4 md:px-55">
+      <div className=" my-10 md:my-30 relative z-20 px-4 md:px-55">
         <Infosection />
       </div>
 
 
       {/* FORMULARIO */}
-      <div ref={CitaFormRef} className="mt-80 relative z-20">
+      <div ref={CitaFormRef} className="md:mt-70 relative z-20">
         <CitaForm
           specialties={especialidades?.results || []}
           onSearch={handleSearch}

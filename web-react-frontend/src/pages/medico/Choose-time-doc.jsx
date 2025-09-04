@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import Header from "../../layouts/Header";
 import Timetable from "../../components/Timetable";
@@ -14,7 +14,7 @@ import Loader from "../../assets/animations/ItemLoad.json";
 
 
 export default function ChooseTimeDoc() {
-
+  const alreadyCalled = useRef(false);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -36,25 +36,30 @@ export default function ChooseTimeDoc() {
 
 
   useEffect(() => {
-    if (agendaId) {
-      getAgenda(agendaId).catch((err) => {
-        console.error("Error al obtener la agenda, redirigiendo:", err);
+    if (alreadyCalled.current) return;
+    alreadyCalled.current = true;
+    if (!agendaId) {
+      navigate(getRoute("Inicio").path); return;
+    }
+    
+    const getAgendaFuntion = async () => {
+      try {
+        console.log(agendaId)
+
+        const resultData = await getAgenda(agendaId);
+        console.log("Respuesta getAgenda:", resultData);
+
+        if (!resultData || !resultData.medico_especialidad)
+          throw new Error("Agenda no encontrada");
+        await getMedicoEspecialidad(resultData.medico_especialidad);
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
         navigate(getRoute("Inicio").path);
-      });
-    } else {
-      navigate(getRoute("Inicio").path);
-    }
-  }, [agendaId, getAgenda, navigate]);
+      }
+    };
 
-
-  useEffect(() => {
-
-    if (dataAgenda?.medico_especialidad) {
-      getMedicoEspecialidad(dataAgenda.medico_especialidad).catch((err) => {
-        console.error("Error al obtener el médico/especialidad:", err);
-      });
-    }
-  }, [dataAgenda, getMedicoEspecialidad]);
+    getAgendaFuntion();
+  }, [agendaId, navigate]);
 
 
   const capitalizedDate = formatLocalDateString(dataAgenda?.fecha);
@@ -67,7 +72,8 @@ export default function ChooseTimeDoc() {
 
       {/* Contenido principal */}
       <div className="max-w-6xl mx-auto p-6 mt-7 mb-15">
-        <div className="bg-white shadow-lg rounded-2xl p-6 mb-10 text-center md:text-left card-appear">
+        <div className={`bg-white shadow-lg rounded-2xl p-6 mb-10 text-center md:text-left ${!(loadingA || loadingM) && "card-appear"
+            }`}>
           {loadingA || loadingM ? (
             // Loader centrado dentro del box "Contenido principal"
             <div className="flex items-center justify-center max-h-[80px]">
@@ -78,7 +84,8 @@ export default function ChooseTimeDoc() {
               <h1 className="text-2xl font-bold mb-2 text-gray-600">
                 Selecciona un horario con{" "}
                 <span className="text-[#3e7c88]">
-                  {dataMedicoEspecialidad?.medico?.usuario?.nombre_completo ?? ""}
+                  {dataMedicoEspecialidad?.medico?.usuario?.nombre_completo ??
+                    ""}
                 </span>
               </h1>
 
@@ -101,7 +108,11 @@ export default function ChooseTimeDoc() {
           </div>
 
           {/* Horarios disponibles */}
-          <div className="card-appear col-span-4 bg-white shadow-lg rounded-2xl">
+          <div
+            className={`${
+              !(loadingA || loadingM) && "card-appear"
+            }  col-span-4 bg-white shadow-lg rounded-2xl`}
+          >
             <div className="py-6 text-center shadow-md mb-5">
               <h2 className="text-xl font-medium text-gray-600">
                 Horarios Disponibles
