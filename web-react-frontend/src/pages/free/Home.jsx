@@ -10,6 +10,7 @@ import banner2 from "../../assets/images/banners/Home-Banner-2.png";
 import banner3 from "../../assets/images/banners/Home-Banner-3.png";
 import useGetEspecialidades from "../../hooks/useEspecialidad";
 import useGetEspecialidadAgenda from "../../hooks/useEspecialidadAgendas";
+import Infosection from "../../components/InfoSection";
 
 const images = [banner1, banner2, banner3,];
 
@@ -88,8 +89,14 @@ export default function Home() {
         <InfoCards />
       </div>
 
+      {/* INFO SECTION 👇 */}
+      <div className="mt-30 relative z-20 px-4 md:px-55">
+        <Infosection />
+      </div>
+
+
       {/* FORMULARIO */}
-      <div ref={CitaFormRef} className="mt-8 relative z-20">
+      <div ref={CitaFormRef} className="mt-80 relative z-20">
         <CitaForm
           specialties={especialidades?.results || []}
           onSearch={handleSearch}

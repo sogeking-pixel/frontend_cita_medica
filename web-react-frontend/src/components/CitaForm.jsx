@@ -38,7 +38,7 @@ export default function CitaForm({
 
 
   return (
-    <div className="flex justify-center items-start py-4 px-10 mt-35 mb-2">
+    <div className="flex justify-center items-start py-4 px-10  mb-2">
       <div className="bg-white rounded-3xl shadow-2xl p-7 sm:py-10 sm:px-12 w-full max-w-5xl fade-in-up">
         {/* Cabecera */}
         <div className="flex border-b-[2.5px] border-[#37373730] pb-3 mb-4">
