@@ -30,11 +30,11 @@ export default function Footer() {
           <h3 className="font-bold mb-3 text-xl text-[#2affdbff]">CONTACTO</h3>
           <p>
             <strong className="font-medium">UBICANOS:</strong> <br />
-            Calle. Juan Pablo de Piérola 622
+            XXXXXXXXXXXXXXXX
           </p>
           <p className="mt-2">
             <strong className="font-medium">CELULAR:</strong> <br />
-            958753455
+            XXXXXXXXXXX
           </p>
           <p className="mt-2">
             <strong className="font-medium">EMAIL:</strong> <br />
@@ -63,7 +63,6 @@ export default function Footer() {
             <li>Inicio</li>
             <li>Nosotros</li>
             <li>Especialidades</li>
-            <li>Laboratorio</li>
           </ul>
         </div>
 

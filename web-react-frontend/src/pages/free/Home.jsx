@@ -10,6 +10,7 @@ import banner2 from "../../assets/images/banners/Home-Banner-2.png";
 import banner3 from "../../assets/images/banners/Home-Banner-3.png";
 import useGetEspecialidades from "../../hooks/useEspecialidad";
 import useGetEspecialidadAgenda from "../../hooks/useEspecialidadAgendas";
+import Infosection from "../../components/InfoSection";
 
 const images = [banner1, banner2, banner3,];
 
@@ -17,14 +18,14 @@ export default function Home() {
   const CitaFormRef = useRef(null);
   const [agendasDisponibles, setAgendasDisponibles] = useState([]);
 
-  const {
+  const { //para el input de especialidades especialidades
     data: especialidades,
     loading: loadingE,
     error: errE,
     refetch: refetchEspecialidades,
   } = useGetEspecialidades();
 
-  const {
+  const { //para DoctorList ( lista de doctores)
     data: especialidadAgendaData,
     loading: loadingEA,
     error: errEA,
@@ -88,30 +89,30 @@ export default function Home() {
         <InfoCards />
       </div>
 
+      {/* INFO SECTION 👇 */}
+      <div className="mt-30 relative z-20 px-4 md:px-55">
+        <Infosection />
+      </div>
+
+
       {/* FORMULARIO */}
-      <div ref={CitaFormRef} className="mt-8 relative z-20">
-        {loadingE ? (
-          <div className="flex justify-center items-center py-6">
-            <span className="loader"></span>
-          </div>
-        ) : (
-          <CitaForm
-            specialties={especialidades?.results || []}
-            onSearch={handleSearch}
-          />
-        )}
+      <div ref={CitaFormRef} className="mt-80 relative z-20">
+        <CitaForm
+          specialties={especialidades?.results || []}
+          onSearch={handleSearch}
+          loading={loadingE}   // 👈 pasamos el loading al CitaForm
+        />
       </div>
 
       {/* LISTA DE DOCTORES */}
-      {agendasDisponibles.length > 0 && (
         <div className="mt-4">
           <DoctorList
             agendas={agendasDisponibles}
             selectedDate={selectedDate}
             specialty={selectedSpeciality}
+            loading= {loadingEA}
           />
         </div>
-      )}
       <Footer />
     </div>
   );

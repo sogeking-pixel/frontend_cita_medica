@@ -33,14 +33,14 @@ const infoCards = [
 
 export default function InfoCards() {
   return (
-    <div className="relative z-20 -mt-20 flex flex-wrap justify-center gap-14 px-4 md:px-8 card-appear">
+    <div className="relative z-20 -mt-20 flex flex-wrap justify-center gap-23 px-6 md:px-8 card-appear bg">
       {infoCards.map((card, index) => (
         <div
           key={index}
-          className="w-full max-w-xs rounded-xl bg-white px-6 py-8 shadow-lg transition hover:shadow-2xl"
+          className=" group w-full max-w-xs rounded-[60px] bg-white px-6 py-7  shadow-lg transition hover:shadow-2xl"
         >
-          {/* Div circular  imagen de fondo */}
-          <div className="mx-auto mb-3 h-22 w-22 ">
+          {/* Icono imagen de fondo */}
+          <div className="mx-auto mb-4 h-22 w-22 transition-all duration-300 group-hover:scale-125 ">
             <img
               src={card.image}
               alt={card.title}
@@ -48,10 +48,10 @@ export default function InfoCards() {
             />
           </div>
 
-          <h3 className="text-center text-xl font-semibold text-[#48d7bf]">
+          <h3 className="text-center text-xl font-semibold text-[#48d7bf] transition-all duration-300 group-hover:scale-110">
             {card.title}
           </h3>
-          <p className="mt-3 text-center text-base text-gray-600">
+          <p className="mt-3 text-center text-base text-gray-600  transition-all duration-300 group-hover:scale-105">
             {card.description}
           </p>
         </div>

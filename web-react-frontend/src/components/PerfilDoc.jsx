@@ -2,13 +2,17 @@ import React from "react";
 import Button from "../components/Button";
 import  Check from "../assets/icons/Check.svg"
 import Doctor1 from "../assets/images/Doctor1.jpg";
-
- 
+import Lottie from "lottie-react";
+import Load from "../assets/animations/ItemLoad.json"
 
 export default function PerfilDoc({ doctor, especialidad }) {
   if (!doctor) {
-    return <div>No hay datos del doctor</div>;
-  } // seguridad por si no llega la prop
+    return (
+      <div className="bg-white rounded-2xl shadow-xl flex items-center justify-center h-140">
+        <Lottie animationData={Load} style={{ height: 250 }} loop  />
+      </div>
+    );
+  } 
 
   return (
     <div className="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col card-appear">
