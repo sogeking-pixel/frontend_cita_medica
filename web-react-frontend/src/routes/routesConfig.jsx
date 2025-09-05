@@ -11,7 +11,7 @@ import Agenda from "../pages/medico/Agenda";
 import Cita from "../pages/medico/Cita";
 import Perfil from "../pages/medico/Perfil";
 import CuentaConfig from "../pages/medico/CuentaConfig";
-import ChooseTimeDoc from "../pages/medico/Choose-time-Doc";
+import ChooseTimeDoc from "../pages/medico/Choose-time-doc";
 import ConfirmarPaciente from "../pages/paciente/ConfirmarPaciente";
 
 

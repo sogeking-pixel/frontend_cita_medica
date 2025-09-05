@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../layouts/HeaderMedico";
 import StatCard from "../../components/medico/StatCard";
-import Table from "../../components/medico/table";
+import Table from "../../components/medico/Table";
 import AlertMessage from "../../components/AlertMessage";
 import CardBienvenida from "../../components/medico/CardBienvenida";
 import SelectEspecialidad from "../../components/medico/SelectEspecialidad";
