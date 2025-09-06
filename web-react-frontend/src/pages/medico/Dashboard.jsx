@@ -7,6 +7,8 @@ import CardBienvenida from "../../components/medico/CardBienvenida";
 import SelectEspecialidad from "../../components/medico/SelectEspecialidad";
 import useGetDasboard  from "../../hooks/medico/useGetDasboard";
 import useGetMedicoEspecialidades from "../../hooks/medico/useMedicoEspecialidad";
+import { useAuth } from "../../hooks/useAuth";
+
 
 
 import {
@@ -26,6 +28,9 @@ export default function Dashboard() {
     error: errD,
     refetch: refetchDashboard,
   } = useGetDasboard();
+
+  const { user } = useAuth();
+
   const {
     data: especialidades,
     loading: loadingE,
@@ -71,11 +76,12 @@ export default function Dashboard() {
 
   return (
     <>
-      <Header/>
+      <Header />
       <div className="w-full min-h-screen font-['Outfit'] bg-[#f5f5f5]">
         <div className="pt-30 pb-20 px-8 sm:px-20 lg:px-52 2xl:px-64 space-y-6">
           {loadingD && (
             <div className="text-center py-6">
+              <span className="loader border-t-transparent border-white border-2 w-10 h-10 rounded-full animate-spin"></span>
               Cargando datos del dashboard...
             </div>
           )}
@@ -89,9 +95,7 @@ export default function Dashboard() {
             </AlertMessage>
           )}
 
-        
-          <CardBienvenida nombres={"Escudero Alvaro"} />
-          
+          <CardBienvenida nombres={user.nombres_completos ?? "Paciente Generico"} />
 
           <SelectEspecialidad
             value={selectedEspecialidad}
@@ -104,6 +108,7 @@ export default function Dashboard() {
               title="Citas de Hoy"
               value={citasHoy}
               color="text-blue-500"
+              loading={loadingD}
             />
 
             <StatCard
@@ -111,6 +116,7 @@ export default function Dashboard() {
               title="Citas Completadas (Hoy)"
               value={citasCompletadasHoy}
               color="text-green-500"
+              loading={loadingD}
             />
 
             <StatCard
@@ -118,6 +124,7 @@ export default function Dashboard() {
               title="Nuevos Pacientes (Mes)"
               value={nuevosPacientesMes}
               color="text-indigo-500"
+              loading={loadingD}
             />
 
             <StatCard
@@ -125,6 +132,7 @@ export default function Dashboard() {
               title="Citas Pendientes (Hoy)"
               value={citasPendientesHoy}
               color="text-yellow-500"
+              loading={loadingD}
             />
           </div>
 
@@ -134,6 +142,7 @@ export default function Dashboard() {
             data={proximasCitas}
             keyField="id"
             emptyMessage="No hay citas próximas."
+            loading={loadingD}
           />
         </div>
       </div>
