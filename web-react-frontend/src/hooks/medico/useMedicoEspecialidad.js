@@ -12,10 +12,13 @@ export default function useGetMedicoEspecialidades(autoFetch = true) {
     try {
       const res = await getMedicoEspecialidades();
       setData(res.data);
-      return res.data; 
+      return res.data;
+    }
+    catch (err) {
       setError(err);
       throw err;
-    } finally {
+    }
+    finally {
       setLoading(false);
     }
   }, []);

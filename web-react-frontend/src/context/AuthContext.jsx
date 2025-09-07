@@ -47,9 +47,14 @@ export function AuthProvider({ children }) {
       const res = await axiosPublic.post("/auth/login/", credentials);
       const { access, refresh} = res.data;
       saveTokens(access, refresh)
-      const userData = decodeToken(access);
-      if (!userData) throw new Error("No refresh token available");        
-      setUser(userData);
+      apiClient
+      .get("/me/")
+      .then((res) => {
+        setUser(res.data);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
       return { success: true };
     }
     catch (error) {

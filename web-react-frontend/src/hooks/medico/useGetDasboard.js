@@ -13,9 +13,12 @@ export default function useGetDasboard(autoFetch = true) {
       const res = await getPrivateMedicoDashboard();
       setData(res.data);
       return res.data;
+    }
+    catch (err) {
       setError(err);
       throw err;
-    } finally {
+    }    
+    finally {
       setLoading(false);
     }
   }, []);

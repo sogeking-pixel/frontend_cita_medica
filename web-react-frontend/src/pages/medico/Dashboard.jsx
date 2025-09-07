@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Header from "../../layouts/HeaderMedico";
 import StatCard from "../../components/medico/StatCard";
 import Table from "../../components/medico/Table";
@@ -21,7 +21,8 @@ import {
 } from "react-icons/fi";
 
 export default function Dashboard() {
-  //todo arreglar dashboard fallo hook.js:608 Dashboard fetch falló, usando datos de ejemplo: AbortError: signal is aborted without reason
+  
+  
   const {
     data: dashboard,
     loading: loadingD,
@@ -30,13 +31,7 @@ export default function Dashboard() {
   } = useGetDasboard();
 
   const { user } = useAuth();
-
-  const {
-    data: especialidades,
-    loading: loadingE,
-    error: errE,
-    refetch: refetchEspecialidades,
-  } = useGetMedicoEspecialidades();
+ 
   const [selectedEspecialidad, setSelectedEspecialidad] = useState("");
 
   const columns = [
@@ -55,11 +50,11 @@ export default function Dashboard() {
     {
       title: "Acciones",
       render: (row) => (
-        <td className="text-center">
+        <div className="text-center">
           <button className="font-medium text-blue-600 hover:underline">
             Ver Ficha
           </button>
-        </td>
+        </div>
       ),
     },
   ];
