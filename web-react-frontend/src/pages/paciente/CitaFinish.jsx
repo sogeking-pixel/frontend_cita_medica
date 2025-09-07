@@ -236,7 +236,8 @@ function CitaFinish() {
                   onChange={(e) => setDni(e.target.value)}
                   pattern="\d{8}"
                   required
-                  disabled={pacienteData?.exists}
+                  disabled={pacienteData?.exists || loadingC} //  Se bloquea en proceso al enviar form
+
                 />
 
                 <div className="flex gap-4">
@@ -250,7 +251,7 @@ function CitaFinish() {
                       placeholder="Escribe tus nombres"
                       value={nombres}
                       onChange={(e) => setNombres(e.target.value)}
-                      disabled={pacienteData?.exists}
+                      disabled={pacienteData?.exists || loadingC} //  Se bloquea en proceso al enviar form
                     />
                   </div>
                   <div className="w-1/2">
@@ -263,7 +264,7 @@ function CitaFinish() {
                       placeholder="Escribe tus apellidos"
                       value={apellidos}
                       onChange={(e) => setApellidos(e.target.value)}
-                      disabled={pacienteData?.exists}
+                      disabled={pacienteData?.exists || loadingC} //  Se bloquea en proceso al enviar form
                     />
                   </div>
                 </div>
@@ -274,7 +275,7 @@ function CitaFinish() {
                   type={pacienteData?.exists ? "text" : "date"}
                   value={fechaNacimiento}
                   onChange={(e) => setFechaNacimiento(e.target.value)}
-                  disabled={pacienteData?.exists}
+                  disabled={pacienteData?.exists || loadingC} // Se bloquea en proceso al enviar form
                 />
 
                 <InputForm
@@ -284,7 +285,7 @@ function CitaFinish() {
                   placeholder="Ej: 987654321"
                   value={telefono}
                   onChange={(e) => setTelefono(e.target.value)}
-                  disabled={pacienteData?.exists}
+                  disabled={pacienteData?.exists || loadingC} // Se bloquea en proceso al enviar form
                 />
 
                 <p className="text-sm text-gray-700">
@@ -307,6 +308,7 @@ function CitaFinish() {
                   type="button"
                   className="w-full mt-4"
                   onClick={handleFinalizar}
+                  disabled={loadingC} //  se dehabilita el boton para no volver a reenviar
                 >
                   {loadingC ? (
                     <div className="flex items-center space-x-2 justify-center">
