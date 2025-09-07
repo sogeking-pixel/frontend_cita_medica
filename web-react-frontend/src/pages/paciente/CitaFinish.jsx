@@ -27,6 +27,16 @@ function CitaFinish() {
   const [fechaNacimiento, setFechaNacimiento] = useState("");
   const [telefono, setTelefono] = useState("");
 
+
+  //  Función reutilizable para inputs numéricos y limitar caracteres y usar solo numero
+  const handleNumericInput = (setter, maxLength) => (e) => {
+    const value = e.target.value;
+    if (new RegExp(`^\\d{0,${maxLength}}$`).test(value)) {
+      setter(value);
+    }
+  };
+
+
   const navigate = useNavigate();
   const location = useLocation();
   const { doctor, especialidad, date, agenda, time } = location.state || {};
@@ -233,12 +243,13 @@ function CitaFinish() {
                   type="text"
                   placeholder="Ingrese DNI"
                   value={dni}
-                  onChange={(e) => setDni(e.target.value)}
-                  pattern="\d{8}"
+                  inputMode="numeric"
+                  maxLength={8}
+                  onChange={handleNumericInput(setDni, 8)} //  solo 8 dígitos como max
                   required
-                  disabled={pacienteData?.exists || loadingC} //  Se bloquea en proceso al enviar form
+                  disabled={pacienteData?.exists || loadingC}
+                  />
 
-                />
 
                 <div className="flex gap-4">
                   <div className="w-1/2">
@@ -281,11 +292,14 @@ function CitaFinish() {
                 <InputForm
                   label="Número de contacto"
                   id="telefono"
-                  type="tel"
+                  type="text"
                   placeholder="Ej: 987654321"
                   value={telefono}
-                  onChange={(e) => setTelefono(e.target.value)}
-                  disabled={pacienteData?.exists || loadingC} // Se bloquea en proceso al enviar form
+                  onChange={handleNumericInput(setTelefono, 9)} // solo 9 dígitos como max
+                  inputMode="numeric"
+                  maxLength={9}
+                  required
+                  disabled={pacienteData?.exists || loadingC}
                 />
 
                 <p className="text-sm text-gray-700">
