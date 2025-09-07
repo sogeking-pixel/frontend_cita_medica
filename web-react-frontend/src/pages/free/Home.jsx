@@ -90,7 +90,7 @@ export default function Home() {
       </div>
 
       {/* INFO SECTION 👇 */}
-      <div className=" my-10 md:my-30 relative z-20 px-4 md:px-55">
+      <div className=" my-10 md:my-40 relative z-20 px-4 md:px-55 bg-[#a2e2f230] md:bg-transparent">
         <Infosection />
       </div>
 

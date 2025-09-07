@@ -110,7 +110,7 @@ const DoctorList = ({ agendas, specialty, loading = false}) => {
                 button={
                   <button
                     onClick={() => handleChooseAgenda(agenda)}
-                    className="bg-[#62abaa] hover:bg-[#4f9b95] text-white px-4 py-2 rounded-xl"
+                    className="bg-[#62abaa] hover:bg-[#4f9b95] text-white px-4 py-2 rounded-xl w-full sm:w-auto"
                   >
                     Elegir
                   </button>
