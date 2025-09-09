@@ -123,6 +123,14 @@ function CitaFinish() {
     navigate(getRoute("Inicio").path);
   };
 
+// arriba del return de tu componente
+const today = new Date();
+const yesterday = new Date(today);
+yesterday.setDate(yesterday.getDate() - 1);
+
+// deshabilitamos desde ayer hacia adelante (máximo permitido es "antier")
+const maxBirthdate = yesterday.toISOString().split("T")[0];
+
   return (
     <>
       <Header />
@@ -287,6 +295,8 @@ function CitaFinish() {
                   value={fechaNacimiento}
                   onChange={(e) => setFechaNacimiento(e.target.value)}
                   disabled={pacienteData?.exists || loadingC} // Se bloquea en proceso al enviar form
+                  max={maxBirthdate} //  deshabilita hoy y ayer automáticamente
+                  min="1900-01-01"
                 />
 
                 <InputForm

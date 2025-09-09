@@ -36,6 +36,8 @@ export default function CitaForm({
 
   const isFormValid = formData.specialty && formData.date;
 
+  const today = new Date().toISOString().split("T")[0]; // Funcion para limitar fecha del input date yyyy-mm-dd
+
 
   return (
     <div className="flex justify-center items-center py-4 px-10  mb-2">
@@ -105,13 +107,15 @@ export default function CitaForm({
                   name="date"
                   value={formData.date}
                   onChange={handleChange}
+                  min={today} // 👈 No permite días/meses anteriores
+                  max={`${new Date().getFullYear()}-12-31`} // Limite del año actual
                   className={`w-full px-4 py-2 rounded-xl shadow-lg bg-zinc-100 transition duration-800 text-[#7b7b7b]
-                ${
-                  touched.date && !formData.date
-                    ? "border-red-500"
-                    : "border-gray-300"
-                }
-                focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500`}
+                    ${
+                      touched.date && !formData.date
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    }
+                    focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500`}
                 />
               </div>
 
