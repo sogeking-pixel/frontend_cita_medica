@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
-import { getPublicMedicoEspecialidad} from "../api/medicoEspecialidadApi";
+import { getPublicMedicoEspecialidadDetails } from "../api/medicoEspecialidadApi";
 
-export default function useGetMedicoEspecialidad() {
+export default function useGetMedicoEspecialidadDetails() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -11,7 +11,7 @@ export default function useGetMedicoEspecialidad() {
       setLoading(true);
       setError(null);
       try {
-        const res = await getPublicMedicoEspecialidad(id);
+        const res = await getPublicMedicoEspecialidadDetails(id);
         setData(res?.data ?? null);
       } catch (err) {
         setError(err);

@@ -10,10 +10,13 @@ export const getMedicoEspecialidades = () =>
 export const createMedicoAgenda = (payload) =>
   apiClient.post(`/medicos/me/agendas/`, payload);
 
-export const getMedicoAgendas = () =>
-  apiClient.get(
-    `/medicos/me/agendas/`
-  );
+export const getMedicoAgendas = (date_gte, date_lte) =>
+  apiClient.get(`/medicos/me/agendas/`, {
+    params: {
+      date_gte,
+      date_lte,
+    },
+  });
 
 export const getMedicoEspecialidadAgendas = (especialidad_id) =>
   apiClient.get(
