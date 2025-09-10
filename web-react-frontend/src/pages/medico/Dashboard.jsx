@@ -90,11 +90,14 @@ export default function Dashboard() {
             </AlertMessage>
           )}
 
-          <CardBienvenida nombres={user.nombres_completos ?? "Paciente Generico"} />
+          <CardBienvenida
+            nombres={user.nombres_completos ?? "Paciente Generico"}
+          />
 
           <SelectEspecialidad
             value={selectedEspecialidad}
             onChange={setSelectedEspecialidad}
+            showChoose={true}
           />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
