@@ -40,7 +40,7 @@ export default function CitaForm({
 
 
   return (
-    <div className="flex justify-center items-center py-4 px-10  mb-2">
+    <div className="flex justify-center items-center py-4 px-5  mb-2">
       <div className="">
         <h4 className="text-[#4db5ca] font-semibold mb-2 text-sm sm:text-base">
           Consulta de doctores y horarios
@@ -48,10 +48,11 @@ export default function CitaForm({
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#013030e1]  mb-10">
           Reserva tu cita ahora
         </h2>
+
         <div className="bg-white rounded-3xl shadow-2xl p-7 sm:py-10 sm:px-12  max-w-5xl xl:w-[1000px] fade-in-up">
           {/* Cabecera */}
 
-          <div className="flex border-b-[2.5px] border-[#37373730] pb-3 mb-4">
+          <div className="flex border-b-[2.5px] border-[#37373730] pb-3 mb-5">
             <div className="px-4 py-2 bg-[#62abaa] text-white rounded-full mr-3 text-xl flex items-center justify-center w-10 h-9">
               {step}
             </div>

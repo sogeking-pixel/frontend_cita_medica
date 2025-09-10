@@ -98,20 +98,20 @@ export default function ChooseTimeDoc() {
         </div>
 
         {/* Sección con PerfilDoc (izquierda) y Timetable (derecha) */}
-        <div className="grid grid-cols-1 md:grid-cols-7 sm:gap-15">
-          {/* Perfil del doctor (1/3 del ancho) */}
-          <div className="col-span-3">
+        <div className="grid grid-cols-1 md:grid-cols-7 gap-8 sm:gap-15">
+          {/* Perfil del doctor (1/3 del ancho en desktop, full en móvil) */}
+          <div className="col-span-full md:col-span-3">
             <PerfilDoc
               doctor={dataMedicoEspecialidad?.medico ?? null}
               especialidad={dataMedicoEspecialidad?.especialidad?.nombre ?? ""}
             />
           </div>
 
-          {/* Horarios disponibles */}
+          {/* Horarios disponibles (4/7 en desktop, full en móvil) */}
           <div
             className={`${
               !(loadingA || loadingM) && "card-appear"
-            }  col-span-4 bg-white shadow-lg rounded-2xl`}
+            } col-span-full md:col-span-4 bg-white shadow-lg rounded-2xl`}
           >
             <div className="py-6 text-center shadow-md mb-5">
               <h2 className="text-xl font-medium text-gray-600">
@@ -136,6 +136,7 @@ export default function ChooseTimeDoc() {
             )}
           </div>
         </div>
+
       </div>
       <Footer />
     </div>
