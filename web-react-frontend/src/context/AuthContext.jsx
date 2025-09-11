@@ -7,7 +7,8 @@ import
   saveTokens,
   clearTokens,
   getAccessToken,
-  decodeToken
+  decodeToken,
+  getRefreshToken
 } from "../utils/jwt";
 
 export const AuthContext = createContext();
@@ -46,9 +47,14 @@ export function AuthProvider({ children }) {
       const res = await axiosPublic.post("/auth/login/", credentials);
       const { access, refresh} = res.data;
       saveTokens(access, refresh)
-      const userData = decodeToken(access);
-      if (!userData) throw new Error("No refresh token available");        
-      setUser(userData);
+      apiClient
+      .get("/me/")
+      .then((res) => {
+        setUser(res.data);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
       return { success: true };
     }
     catch (error) {
@@ -58,10 +64,22 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const logout = () => {
-    clearTokens();
-    setUser(null);
-    window.location.href = getRoute("Login").path; 
+  const logout = async () => {
+
+    setLoading(true);
+    try {
+      await apiClient.post(`/auth/logout/`, {"refresh":getRefreshToken()});
+    }
+    catch(err) {
+      console.error('error la puta madre'+err)
+    }
+    finally {
+      clearTokens();
+      setUser(null);
+      setLoading(false);
+      window.location.href = getRoute("Login").path;
+    }    
+    
   };
 
   return (

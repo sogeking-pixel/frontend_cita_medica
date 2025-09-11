@@ -101,6 +101,7 @@ function Login() {
                   <Button
                     className="w-full my-4 onClick={handleLogin}"
                     onClick={handleLogin}
+                    disabled={loading}
                   >
                     {loading ? (
                       <div className="flex items-center space-x-2 justify-center">

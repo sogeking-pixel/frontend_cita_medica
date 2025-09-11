@@ -6,10 +6,13 @@ export default function Table({
   keyField = "id",
   className = "",
   emptyMessage = "No hay datos.",
-  title="Por default"
+  title = "Por default",
+  loading = false
 }) {
   return (
-    <div className={`bg-white shadow-lg rounded-xl rounded-tr-xs rounded-tl-xs p-6 ${className}`}>
+    <div
+      className={`bg-white shadow-lg rounded-xl p-6 ${className}`}
+    >
       <h2 className="text-xl font-bold text-[#045858e1] mb-4 ">{title}</h2>
       <div className="overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-600">
@@ -24,7 +27,17 @@ export default function Table({
           </thead>
 
           <tbody>
-            {data.length === 0 ? (
+            {loading ? (
+              Array.from({ length: 5 }).map((_, ri) => (
+                <tr key={ri} className="border-b">
+                  {columns.map((_, ci) => (
+                    <td key={ci} className="px-6 py-4">
+                      <div className="h-4 bg-gray-300 rounded w-3/4 animate-pulse"></div>
+                    </td>
+                  ))}
+                </tr>
+              ))
+            ) : data.length === 0 ? (
               <tr>
                 <td
                   colSpan={columns.length}

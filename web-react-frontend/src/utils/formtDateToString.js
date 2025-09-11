@@ -21,3 +21,29 @@ export const formatLocalDateString = (input) => {
 
   return formatted.charAt(0).toUpperCase() + formatted.slice(1);
 };
+
+export const formatFechaHora = (input) => {
+  if (!input) return "";
+
+  let date;
+  if (input instanceof Date) date = input;
+  else if (typeof input === "number") date = new Date(input);
+  else if (typeof input === "string") date = new Date(input);
+  else return "";
+
+  if (Number.isNaN(date.getTime())) return "";
+
+  const fecha = date.toLocaleDateString("es-ES", {
+    day: "2-digit",
+    month: "short", // puedes poner 'long' o 'numeric'
+    year: "numeric",
+  });
+
+  const hora = date.toLocaleTimeString("es-ES", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+
+  return `${fecha} · ${hora}`;
+};

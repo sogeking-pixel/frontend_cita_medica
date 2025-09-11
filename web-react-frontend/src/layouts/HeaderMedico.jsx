@@ -1,16 +1,20 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/icons/Logo.svg";
 import NavItemMedico from "../components/medico/NavItem";
 import PhotoPaciente from "../assets/icons/paciente.svg";
 import { getRoute } from "../routes/routesConfig";
 import Flecha from "../assets/icons/Go-to.svg";
+import { useAuth } from "../hooks/useAuth";
+
 
 export default function HeaderMedico() {
   const [openUserMenu, setOpenUserMenu] = useState(false);
   const [openMobileMenu, setOpenMobileMenu] = useState(false);
   const menuRef = useRef(null);
+  const { logout, user} = useAuth();
 
+  const navigate = useNavigate();
   // cierra el dropdown si haces click fuera
   useEffect(() => {
     function onDocClick(e) {
@@ -22,12 +26,19 @@ export default function HeaderMedico() {
     return () => document.removeEventListener("click", onDocClick);
   }, []);
 
+  const handleLogout = async () => {
+    await logout();
+    setOpenUserMenu(false);
+    navigate("/login");
+  }
   // items fijos del menú del médico
   const medicoMenu = [
     { label: "Mi Perfil", to: "/medico/Perfil" },
     { label: "Configurar Cuenta", to: "/medico/CuentaConfig" },
-    { label: "Cerrar Sesión", to: "/login" },
+    { label: "Cerrar Sesión", f: handleLogout},
   ];
+
+  
 
   return (
     <nav className="bg-white w-full h-25 shadow-xl z-50 fixed top-0">
@@ -61,7 +72,7 @@ export default function HeaderMedico() {
             <span className="sr-only">Abrir menú médico</span>
             <img
               className="w-8 h-8 rounded-full"
-              src={PhotoPaciente}
+              src={user.photo ?? PhotoPaciente}
               alt="medico photo"
             />
           </button>
@@ -76,18 +87,20 @@ export default function HeaderMedico() {
               }`}
           >
             <div className="px-4 py-3 border-b border-gray-100">
-              <div className="text-sm font-medium text-gray-900">Dr. Nombre</div>
+              <div className="text-sm font-medium text-gray-900">
+                {user.nombres_completos ?? "Paciente Generico"}
+              </div>
               <div className="text-xs text-gray-500 truncate">
-                medico@ejemplo.com
+                {user.email ?? "coreogenerico@generico.com"}
               </div>
             </div>
 
             <ul className="py-2">
-              {medicoMenu.map((it, i) => (
+              {medicoMenu.map((it, i, f) => (
                 <li key={i}>
                   <Link
                     to={it.to}
-                    onClick={() => setOpenUserMenu(false)}
+                    onClick={it.f ?? (() => setOpenUserMenu(false))}
                     className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition"
                   >
                     <span className="w-5 h-5 rounded-full bg-gray-300 shrink-0" />
@@ -112,7 +125,12 @@ export default function HeaderMedico() {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
             </svg>
           </button>
         </div>
@@ -120,7 +138,9 @@ export default function HeaderMedico() {
         {/* Lista navegación escritorio */}
         <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1">
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
-            <NavItemMedico href={getRoute("Dashboard").path}>Inicio</NavItemMedico>
+            <NavItemMedico href={getRoute("Dashboard").path}>
+              Inicio
+            </NavItemMedico>
             <NavItemMedico href={getRoute("Agenda").path}>Agenda</NavItemMedico>
             <NavItemMedico href={getRoute("Cita").path}>Citas</NavItemMedico>
           </ul>
@@ -146,20 +166,37 @@ export default function HeaderMedico() {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
 
         {/* Opciones navegación */}
         <div className="flex flex-col p-6 px-0  space-y-6 text-xl  font-['Outfit'] font-medium uppercase ">
-          <Link to={getRoute("Dashboard").path} onClick={() => setOpenMobileMenu(false)} className="flex justify-between items-center border-b-1 border-gray-200 mb-0 py-5 px-6">
+          <Link
+            to={getRoute("Dashboard").path}
+            onClick={() => setOpenMobileMenu(false)}
+            className="flex justify-between items-center border-b-1 border-gray-200 mb-0 py-5 px-6"
+          >
             Inicio <img src={Flecha} alt="Ir a inicio" className="w-7 h-7" />
           </Link>
-          <Link to={getRoute("Agenda").path} onClick={() => setOpenMobileMenu(false)} className="flex justify-between items-center border-b-1 border-gray-200   mb-0 py-5 px-6">
+          <Link
+            to={getRoute("Agenda").path}
+            onClick={() => setOpenMobileMenu(false)}
+            className="flex justify-between items-center border-b-1 border-gray-200   mb-0 py-5 px-6"
+          >
             Agenda <img src={Flecha} alt="Ir a Agenda" className="w-7 h-7" />
           </Link>
-          <Link to={getRoute("Cita").path} onClick={() => setOpenMobileMenu(false)} className="flex justify-between items-center border-b-1 border-gray-200  mb-0 py-5 px-6">
+          <Link
+            to={getRoute("Cita").path}
+            onClick={() => setOpenMobileMenu(false)}
+            className="flex justify-between items-center border-b-1 border-gray-200  mb-0 py-5 px-6"
+          >
             Citas <img src={Flecha} alt="Ir a Citas" className="w-7 h-7" />
           </Link>
         </div>

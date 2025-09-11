@@ -7,7 +7,8 @@ export default function SelectEspecialidad({
   value,
   onChange,
   label = "Ver por especialidad:",
-  extraOptions = [{ value: "", label: "Todas" }], // 👈 opciones por defecto
+  extraOptions = [{ value: "", label: "Todas" }],
+  showChoose = false,
 }) {
   const {
     data: especialidades,
@@ -29,7 +30,7 @@ export default function SelectEspecialidad({
         className="rounded-md border px-3 py-1 bg-white"
         disabled={loading}
       >
-          {/* opciones externas personalizables */}
+        {/* opciones externas personalizables */}
         {extraOptions.map((opt, i) => (
           <option key={i} value={opt.value}>
             {opt.label}
@@ -44,9 +45,7 @@ export default function SelectEspecialidad({
         ))}
       </select>
 
-      {loading && (
-        <span className="text-sm text-gray-500">Cargando...</span>
-      )}
+      {loading && <span className="text-sm text-gray-500">Cargando...</span>}
 
       {error && (
         <AlertMessage title="Error" type="warning">
@@ -57,7 +56,7 @@ export default function SelectEspecialidad({
         </AlertMessage>
       )}
 
-      {value && (
+      {value && showChoose && (
         <span className="ml-2 inline-block bg-blue-50 text-blue-700 px-2 py-1 rounded-full text-sm">
           Mostrando:{" "}
           {especialidades?.results?.find((e) => e.id === value)?.nombre ||
