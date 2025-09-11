@@ -75,7 +75,7 @@ export default function ChooseTimeDoc() {
         <div className={`bg-white shadow-lg rounded-2xl p-6 mb-10 text-center md:text-left ${!(loadingA || loadingM) && "card-appear"
             }`}>
           {loadingA || loadingM ? (
-            // Loader centrado dentro del box "Contenido principal"
+            // Loader centrado dentro del box "Contenido principal" 
             <div className="flex items-center justify-center max-h-[80px]">
               <Lottie animationData={Load} style={{ height: 120 }} loop />
             </div>
@@ -98,44 +98,45 @@ export default function ChooseTimeDoc() {
         </div>
 
         {/* Sección con PerfilDoc (izquierda) y Timetable (derecha) */}
-        <div className="grid grid-cols-1 md:grid-cols-7 gap-8 sm:gap-15">
-          {/* Perfil del doctor (1/3 del ancho en desktop, full en móvil) */}
-          <div className="col-span-full md:col-span-3">
-            <PerfilDoc
-              doctor={dataMedicoEspecialidad?.medico ?? null}
-              especialidad={dataMedicoEspecialidad?.especialidad?.nombre ?? ""}
-            />
-          </div>
-
-          {/* Horarios disponibles (4/7 en desktop, full en móvil) */}
-          <div
-            className={`${
-              !(loadingA || loadingM) && "card-appear"
-            } col-span-full md:col-span-4 bg-white shadow-lg rounded-2xl`}
-          >
-            <div className="py-6 text-center shadow-md mb-5">
-              <h2 className="text-xl font-medium text-gray-600">
-                Horarios Disponibles
-              </h2>
-            </div>
-
-            {loadingA || loadingM ? (
-              <div className="flex justify-center items-center py-16">
-                <Lottie animationData={Loader} style={{ height: 400 }} loop />
-              </div>
-            ) : dataAgenda ? (
-              <Timetable
-                doctor={dataMedicoEspecialidad?.medico ?? null}
-                especialidad={dataMedicoEspecialidad?.especialidad ?? null}
-                agenda={dataAgenda}
-              />
-            ) : (
-              <div className="text-center p-10">
-                No se pudo cargar la agenda.
-              </div>
-            )}
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-7 gap-8 sm:gap-4">
+        {/* Perfil del doctor (3/7 en desktop, full en móvil) */}
+        <div className="col-span-full md:col-span-3">
+          <PerfilDoc
+            doctor={dataMedicoEspecialidad?.medico ?? null}
+            especialidad={dataMedicoEspecialidad?.especialidad?.nombre ?? ""}
+          />
         </div>
+
+
+        {/* Horarios disponibles (4/7 en desktop, full en móvil) */}
+        <div
+          className={`${
+            !(loadingA || loadingM) && "card-appear"
+          } col-span-full md:col-span-4 bg-white shadow-lg rounded-2xl`}
+        >
+          <div className="py-6 text-center shadow-md mb-5">
+            <h2 className="text-xl font-medium text-gray-600">
+              Horarios Disponibles
+            </h2>
+          </div>
+
+          {loadingA || loadingM ? (
+            <div className="flex justify-center items-center py-16">
+              <Lottie animationData={Loader} style={{ height: 400 }} loop />
+            </div>
+          ) : dataAgenda ? (
+            <Timetable
+              doctor={dataMedicoEspecialidad?.medico ?? null}
+              especialidad={dataMedicoEspecialidad?.especialidad ?? null}
+              agenda={dataAgenda}
+            />
+          ) : (
+            <div className="text-center p-10">
+              No se pudo cargar la agenda.
+            </div>
+          )}
+        </div>
+      </div>
 
       </div>
       <Footer />
