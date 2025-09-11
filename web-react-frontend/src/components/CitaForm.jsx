@@ -36,9 +36,11 @@ export default function CitaForm({
 
   const isFormValid = formData.specialty && formData.date;
 
+  const today = new Date().toISOString().split("T")[0]; // Funcion para limitar fecha del input date yyyy-mm-dd
+
 
   return (
-    <div className="flex justify-center items-center py-4 px-10  mb-2">
+    <div className="flex justify-center items-center py-4 px-5  mb-2">
       <div className="">
         <h4 className="text-[#4db5ca] font-semibold mb-2 text-sm sm:text-base">
           Consulta de doctores y horarios
@@ -46,10 +48,11 @@ export default function CitaForm({
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#013030e1]  mb-10">
           Reserva tu cita ahora
         </h2>
+
         <div className="bg-white rounded-3xl shadow-2xl p-7 sm:py-10 sm:px-12  max-w-5xl xl:w-[1000px] fade-in-up">
           {/* Cabecera */}
 
-          <div className="flex border-b-[2.5px] border-[#37373730] pb-3 mb-4">
+          <div className="flex border-b-[2.5px] border-[#37373730] pb-3 mb-5">
             <div className="px-4 py-2 bg-[#62abaa] text-white rounded-full mr-3 text-xl flex items-center justify-center w-10 h-9">
               {step}
             </div>
@@ -105,13 +108,15 @@ export default function CitaForm({
                   name="date"
                   value={formData.date}
                   onChange={handleChange}
+                  min={today} // 👈 No permite días/meses anteriores
+                  max={`${new Date().getFullYear()}-12-31`} // Limite del año actual
                   className={`w-full px-4 py-2 rounded-xl shadow-lg bg-zinc-100 transition duration-800 text-[#7b7b7b]
-                ${
-                  touched.date && !formData.date
-                    ? "border-red-500"
-                    : "border-gray-300"
-                }
-                focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500`}
+                    ${
+                      touched.date && !formData.date
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    }
+                    focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500`}
                 />
               </div>
 

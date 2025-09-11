@@ -89,8 +89,8 @@ export default function Home() {
         <InfoCards />
       </div>
 
-      {/* INFO SECTION 👇 */}
-      <div className=" my-10 md:my-30 relative z-20 px-4 md:px-55">
+      {/* INFO SECTION  */}
+      <div className=" my-10 md:my-40 relative z-20 px-4 md:px-55 bg-[#a2e2f230] md:bg-transparent">
         <Infosection />
       </div>
 
@@ -100,7 +100,7 @@ export default function Home() {
         <CitaForm
           specialties={especialidades?.results || []}
           onSearch={handleSearch}
-          loading={loadingE}   // 👈 pasamos el loading al CitaForm
+          loading={loadingE}   //  pasamos el loading al CitaForm
         />
       </div>
 

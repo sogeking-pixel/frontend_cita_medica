@@ -71,7 +71,7 @@ const DoctorList = ({ agendas, specialty, loading = false}) => {
 
 
   return (
-    <div className="pb-50 px-10 bg-gradient-to-t from-[#e4f5f8c8]">
+    <div className="pb-30 md:pb-50 px-5 bg-gradient-to-t from-[#e4f5f8c8]">
       <div className="bg-white rounded-2xl shadow-2xl p-5 md:py-10 md:px-12 max-w-5xl xl:w-[1000px]  mx-auto fade-in-up">
         {/* Cabecera */}
         <div className="flex items-center border-b-[2px] border-gray-200 pb-3 mb-4">
@@ -110,7 +110,7 @@ const DoctorList = ({ agendas, specialty, loading = false}) => {
                 button={
                   <button
                     onClick={() => handleChooseAgenda(agenda)}
-                    className="bg-[#62abaa] hover:bg-[#4f9b95] text-white px-4 py-2 rounded-xl"
+                    className="bg-[#62abaa] hover:bg-[#4f9b95] text-white px-4 py-2 rounded-xl w-full sm:w-auto"
                   >
                     Elegir
                   </button>

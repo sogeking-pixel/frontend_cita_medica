@@ -27,6 +27,16 @@ function CitaFinish() {
   const [fechaNacimiento, setFechaNacimiento] = useState("");
   const [telefono, setTelefono] = useState("");
 
+
+  //  Función reutilizable para inputs numéricos y limitar caracteres y usar solo numero
+  const handleNumericInput = (setter, maxLength) => (e) => {
+    const value = e.target.value;
+    if (new RegExp(`^\\d{0,${maxLength}}$`).test(value)) {
+      setter(value);
+    }
+  };
+
+
   const navigate = useNavigate();
   const location = useLocation();
   const { doctor, especialidad, date, agenda, time } = location.state || {};
@@ -113,6 +123,14 @@ function CitaFinish() {
     navigate(getRoute("Inicio").path);
   };
 
+// arriba del return de tu componente
+const today = new Date();
+const yesterday = new Date(today);
+yesterday.setDate(yesterday.getDate() - 1);
+
+// deshabilitamos desde ayer hacia adelante (máximo permitido es "antier")
+const maxBirthdate = yesterday.toISOString().split("T")[0];
+
   return (
     <>
       <Header />
@@ -195,7 +213,7 @@ function CitaFinish() {
 
         {step === 2 && (
           <div className="w-full max-w-4xl mt-8 mb-8 flex flex-col md:flex-row gap-6">
-            {/* Formulario */}
+            {/* 2 Formulario */}
             <div className="flex-1 bg-white rounded-2xl shadow-lg p-5 px-8 card-appear">
               <div className="flex border-b-[2.5px] border-[#37373730] pb-3 mb-8">
                 <div className="px-4 py-2 bg-[#62abaa] text-white rounded-full mr-3 text-xl flex items-center justify-center w-10 h-9 font-bold">
@@ -233,11 +251,13 @@ function CitaFinish() {
                   type="text"
                   placeholder="Ingrese DNI"
                   value={dni}
-                  onChange={(e) => setDni(e.target.value)}
-                  pattern="\d{8}"
+                  inputMode="numeric"
+                  maxLength={8}
+                  onChange={handleNumericInput(setDni, 8)} //  solo 8 dígitos como max
                   required
-                  disabled={pacienteData?.exists}
-                />
+                  disabled={pacienteData?.exists || loadingC}
+                  />
+
 
                 <div className="flex gap-4">
                   <div className="w-1/2">
@@ -250,7 +270,7 @@ function CitaFinish() {
                       placeholder="Escribe tus nombres"
                       value={nombres}
                       onChange={(e) => setNombres(e.target.value)}
-                      disabled={pacienteData?.exists}
+                      disabled={pacienteData?.exists || loadingC} //  Se bloquea en proceso al enviar form
                     />
                   </div>
                   <div className="w-1/2">
@@ -263,7 +283,7 @@ function CitaFinish() {
                       placeholder="Escribe tus apellidos"
                       value={apellidos}
                       onChange={(e) => setApellidos(e.target.value)}
-                      disabled={pacienteData?.exists}
+                      disabled={pacienteData?.exists || loadingC} //  Se bloquea en proceso al enviar form
                     />
                   </div>
                 </div>
@@ -274,17 +294,22 @@ function CitaFinish() {
                   type={pacienteData?.exists ? "text" : "date"}
                   value={fechaNacimiento}
                   onChange={(e) => setFechaNacimiento(e.target.value)}
-                  disabled={pacienteData?.exists}
+                  disabled={pacienteData?.exists || loadingC} // Se bloquea en proceso al enviar form
+                  max={maxBirthdate} //  deshabilita hoy y ayer automáticamente
+                  min="1900-01-01"
                 />
 
                 <InputForm
                   label="Número de contacto"
                   id="telefono"
-                  type="tel"
+                  type="text"
                   placeholder="Ej: 987654321"
                   value={telefono}
-                  onChange={(e) => setTelefono(e.target.value)}
-                  disabled={pacienteData?.exists}
+                  onChange={handleNumericInput(setTelefono, 9)} // solo 9 dígitos como max
+                  inputMode="numeric"
+                  maxLength={9}
+                  required
+                  disabled={pacienteData?.exists || loadingC}
                 />
 
                 <p className="text-sm text-gray-700">
@@ -307,6 +332,7 @@ function CitaFinish() {
                   type="button"
                   className="w-full mt-4"
                   onClick={handleFinalizar}
+                  disabled={loadingC} //  se dehabilita el boton para no volver a reenviar
                 >
                   {loadingC ? (
                     <div className="flex items-center space-x-2 justify-center">
