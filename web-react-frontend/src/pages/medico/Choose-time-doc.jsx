@@ -6,7 +6,7 @@ import PerfilDoc from "../../components/PerfilDoc";
 import Footer from "../../layouts/Footer";
 import { getRoute } from "../../routes/routesConfig";
 import useGetAgenda from "../../hooks/useAgenda";
-import useGetMedicoEspecialidad from "../../hooks/useMedicoEspecialidad";
+import useGetMedicoEspecialidadDetails from "../../hooks/useMedicoEspecialidadDetails";
 import { formatLocalDateString } from "../../utils/formtDateToString"
 import Lottie from "lottie-react";
 import Load from "../../assets/animations/Loading2.json";
@@ -32,7 +32,7 @@ export default function ChooseTimeDoc() {
     getMedicoEspecialidad,
     loading: loadingM,
     error: errorM,
-  } = useGetMedicoEspecialidad();
+  } = useGetMedicoEspecialidadDetails();
 
 
   useEffect(() => {
