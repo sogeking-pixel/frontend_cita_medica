@@ -8,7 +8,7 @@ export const getMedicoEspecialidades = () =>
   apiClient.get(`/medicos/me/especialidades/`);
 
 export const createMedicoAgenda = (payload) =>
-  apiClient.post(`/medicos/me/agendas/`, payload);
+  apiClient.post(`agendas/`, payload);
 
 export const getMedicoAgendas = (date_gte, date_lte) =>
   apiClient.get(`/medicos/me/agendas/`, {
