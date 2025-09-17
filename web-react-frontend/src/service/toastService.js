@@ -1,5 +1,7 @@
 // notificationService.js
 import { toast } from "react-hot-toast";
+import { FiInfo } from "react-icons/fi";
+import React from "react";
 
 const defaultStyle = {
   style: {
@@ -42,10 +44,10 @@ export const notifyError = (message) => {
 
 export const notifyInfo = (message) => {
   toast(message, {
-    icon: "ℹ️",
+    icon: React.createElement(FiInfo),
     style: {
       ...defaultStyle.style,
-      background: "#4CAFFF",
+      background: "#4db5ca",
       color: "#fff",
     },
   });
