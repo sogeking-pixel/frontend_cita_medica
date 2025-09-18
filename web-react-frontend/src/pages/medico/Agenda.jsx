@@ -11,6 +11,13 @@ import useCreateAgenda from "../../hooks/medico/useCreateAgenda";
 import useGetMedicoEspecialidad from "../../hooks/medico/useGetMedicoEspecialidad";
 import useGetMedicoAgenda from "../../hooks/medico/useGetMedicoAgenda";
 import useGetAgendaCitas from "../../hooks/medico/useAgendaCitas";
+import ShowCitaModal from "../../components/medico/ShowCitaModal";
+import ShareAgendaModal from "../../components/medico/ShareAgendaModal";
+import useEstadoCita from "../../hooks/useEstadoCita";
+import {
+  useChangeCitaToAtendiendo,
+  useChangeCitaToAtendido,
+} from "../../hooks/medico/useChangeCita";
 
 
 export default function Agenda() {
@@ -29,9 +36,20 @@ export default function Agenda() {
   const { getMedicoAgenda } = useGetMedicoAgenda();
   const { agendaCitas } = useGetAgendaCitas();
 
+  const { data: dataEstadosCitas, getAllEstadoCitas } = useEstadoCita();
+  const { pathAtendiendoCita } = useChangeCitaToAtendiendo();
+  const {pathAtendidoCita } = useChangeCitaToAtendido();
+  
+
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showCitaModal, setShowCitaModal] = useState(false);
+  const [showShareAgenda, setShowShareAgenda] = useState(false);
+
   const [selectedAgendas, setSelectedAgendas] = useState({});
   const [selectAgenda, setSelectedAgenda] = useState({})
+  const [selectShareAgenda, setSelectedShareAgenda] = useState({});
+  const [selectCita, setSelectedCita] = useState({})
+
   
   const weekdays = [
     "Lunes",
@@ -74,14 +92,20 @@ export default function Agenda() {
                 agendas={selectedAgendas.allAgendas ?? []}
                 onDelete={() => {}}
                 onView={setSelectedAgenda}
+                onShareAgenda={(agenda) => {
+                  setShowShareAgenda(true);
+                  setSelectedShareAgenda(agenda);
+                }}
               />
 
               {/* Detalle del día seleccionado + resumen y citas */}
               <CitaLists
                 agenda={selectAgenda}
-                citas={[]}
                 loadCita={agendaCitas}
-                showCita={() => {}}
+                showCita={(cita) => {
+                  setShowCitaModal(true);
+                  setSelectedCita(cita);
+                }}
               />
             </div>
           </div>
@@ -96,6 +120,22 @@ export default function Agenda() {
             loadingEsp={loadingEsp}
             especialidadesError={especialidadesError}
             weekdays={weekdays}
+          />
+
+          <ShowCitaModal
+            cita={selectCita}
+            open={showCitaModal}
+            onClose={() => setShowCitaModal(false)}
+            onLoadEstadoCita={getAllEstadoCitas}
+            estadoCita={dataEstadosCitas?.results ?? null}
+            onChangeAtendido={pathAtendidoCita}
+            onChangeAtendiendo={pathAtendiendoCita}
+          />
+
+          <ShareAgendaModal
+            agenda={selectShareAgenda}
+            open={showShareAgenda}
+            onClose={() => setShowShareAgenda(false)}
           />
         </div>
       </div>
