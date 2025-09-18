@@ -18,8 +18,7 @@ export default function PerfilDoc({ doctor, especialidad }) {
 
   return (
     <div className="bg-white rounded-2xl shadow-md p-6 max-w-3xl mx-auto card-appear">
-    
-    {/* Imagen con gradiente y nombre */}
+      {/* Imagen con gradiente y nombre */}
       <div className="bg-white rounded-2xl  max-w-2xl mx-auto flex flex-col sm:flex-row items-center sm:items-center gap-6 p-4 sm:p-0">
         {/* Imagen */}
         <div className="relative w-70 h-70 sm:w-52 sm:h-70 rounded-xl shadow-lg overflow-hidden flex-shrink-0">
@@ -46,32 +45,31 @@ export default function PerfilDoc({ doctor, especialidad }) {
           <p className="text-sm text-gray-500 mb-3">
             {doctor.anios_experiencia || "10"} años de experiencia
           </p>
-          
         </div>
       </div>
-
-    
 
       {/* Acerca */}
       <div className="mt-6 border-t-2 border-gray-200 pt-4">
         <h3 className="font-semibold text-gray-800 mb-2 text-xl">Acerca de</h3>
         <p className="text-gray-600 text-base leading-relaxed">
-          Dr. {doctor.usuario.apellidos} Especialista con más de 10 años de experiencia en{" "}
-          {especialidad || "su especialidad"}. Se dedica a brindar un cuidado personalizado y
-          apoyo constante a sus pacientes durante todo su tratamiento.
+          
+          {doctor.about_me ||
+            `
+          Dr. ${doctor.usuario.apellidos} Especialista con más de 10 años de
+          experiencia en ${especialidad || "su especialidad"}. Se dedica a
+          brindar un cuidado personalizado y apoyo constante a sus pacientes
+          durante todo su tratamiento.`}
+          
         </p>
       </div>
 
-     
-
       {/* Contacto */}
       <div className="mt-6 border-t-2 border-gray-200 pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        
         <div className="p-3 border border-gray-300 rounded-2xl flex items-center gap-3">
           <img src={Phone} alt="Telefono" className="w-5 h-5" />
           <span className="text-gray-700 text-sm">
-              {doctor.usuario.telefonos?.length > 0 
-              ? doctor.usuario.telefonos[0] 
+            {doctor.usuario.telefonos?.length > 0
+              ? doctor.usuario.telefonos[0].numero
               : "Teléfono no registrado"}
           </span>
         </div>

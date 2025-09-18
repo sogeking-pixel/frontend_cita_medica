@@ -2,6 +2,8 @@ import React, { useEffect,  useState, useCallback } from "react";
 import Modal from "../Modal";
 import SelectEspecialidad from "./SelectEspecialidad";
 import moment from "moment";
+import { useAuth } from "../../hooks/useAuth";
+import { notifySuccess, notifyError } from "../../service/toastService";
 
 function minutesFromTime(timeString) {
   if (!timeString) return null;
@@ -38,6 +40,8 @@ export default function CreateAgendaModal({
   especialidadesError,
   weekdays,
 }) {
+
+  const { user } = useAuth();
   const [mode, setMode] = useState("fecha");
   const [date, setDate] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -128,8 +132,10 @@ export default function CreateAgendaModal({
     setIsSubmitting(true);
 
     try {
-      const result = await onSearchMedicoEspecialidad(agendaId);
-      if (result != 1) throw new Error("No valido :/");
+      const result = await onSearchMedicoEspecialidad(user.id, selectedEspecialidad);
+      if (result.count != 1) {
+        throw new Error("No valido :/");
+      }
       const medicoEspecialidadId = result.results[0].id;
       const commonPayload = {
         hora_inicio: startTime,
@@ -156,9 +162,16 @@ export default function CreateAgendaModal({
           fecha: recurringDate,
         }));
       }
+
+      //* no se lo que hace xddxddx
       const results = await Promise.allSettled(
         payloads.map((p) => onCreate(p))
       );
+      if (!results) return;
+      notifySuccess("Se creo correctamente");
+      onClose();
+      resetForm();
+      
     } catch (error) {
      console.error("Error al crear la agenda:", error);
      setFormError(error.message || "Ocurrió un error inesperado.");
@@ -184,6 +197,7 @@ export default function CreateAgendaModal({
 
   return (
     <Modal
+      title="Crear Agenda"
       onClose={onClose}
       buttonAccept={
         <button
@@ -199,6 +213,7 @@ export default function CreateAgendaModal({
         label="Elige Especialidad"
         value={selectedEspecialidad}
         onChange={setSelectedEspecialidad}
+        extraOptions={[{ value: "", label: "Elija una opcion" }]}
       />
       {loadingEsp && (
         <p className="text-sm text-gray-500">Cargando especialidades...</p>

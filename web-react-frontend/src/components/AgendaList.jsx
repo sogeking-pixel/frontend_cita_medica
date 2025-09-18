@@ -1,11 +1,4 @@
-export default function AgendaList({
-  date,
-  agendas,
-  onDelete,
-  onView,
-}) {
-
-
+export default function AgendaList({ date, agendas, onShareAgenda, onView }) {
   return (
     <div className="bg-white rounded-2xl shadow p-5  flex-1">
       <div>
@@ -57,10 +50,10 @@ export default function AgendaList({
               </div>
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => onDelete(s.id)}
+                  onClick={() => onShareAgenda(s)}
                   className="px-2 py-1 border rounded text-xs"
                 >
-                  No se
+                  Compartir
                 </button>
                 <button
                   onClick={() => onView(s)}

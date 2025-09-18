@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import AlertMessage from "../../components/AlertMessage";
 import { useAuth } from "../../hooks/useAuth";
 import { getRoute } from "../../routes/routesConfig";
+import LoadingContent from "../../components/LoadingContent";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -103,31 +104,14 @@ function Login() {
                     onClick={handleLogin}
                     disabled={loading}
                   >
-                    {loading ? (
-                      <div className="flex items-center space-x-2 justify-center">
-                        <span className="loader border-t-transparent border-white border-2 w-4 h-4 rounded-full animate-spin"></span>
-                        <span>Verificando...</span>
-                      </div>
-                    ) : (
-                      "Ingresar"
-                    )}
+                    {loading
+                      ? (<LoadingContent title="Verificando..." />)
+                      : "Ingresar"}
                   </Button>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* <div className="w-full flex justify-center">
-            <div className="text-gray-500 text-sm">
-              ¿No tienes una cuenta?{" "}
-              <a
-                href={getRoute("Register").path}
-                className="text-cyan-500 hover:text-cyan-700 font-semibold"
-              >
-                Regístrate
-              </a>
-            </div>
-          </div> */}
         </div>
       </div>
     </div>
