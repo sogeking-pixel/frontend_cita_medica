@@ -5,6 +5,7 @@ import { getRoute } from "../routes/routesConfig";
 import useGetAgendaSlot from "../hooks/useAgendaSlot"; // Asegúrate de que la ruta sea correcta
 import Lottie from "lottie-react";
 import Loader from "../assets/animations/Load.json";
+import Reload from "../assets/icons/Reload.svg"
 
 export default function Timetable({ doctor, especialidad, agenda }) {
   const navigate = useNavigate();
@@ -103,9 +104,19 @@ export default function Timetable({ doctor, especialidad, agenda }) {
         {/* Cabecera fija */}
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">Seleccione un horario</h3>
-          <Button onClick={handleRefresh} variant="outline" disabled={loading}>
-            {loading ? "Actualizando..." : "Actualizar"}
-          </Button>
+          {/* Ícono funcionando como botón */}
+          <button
+            onClick={handleRefresh}
+            disabled={loading}
+            className="p-2 rounded-full hover:bg-gray-100 transition disabled:opacity-50"
+            aria-label="Actualizar"
+          >
+            {loading ? (
+              <span className="text-sm text-gray-500">Actualizando...</span>
+            ) : (
+              <img src={Reload} alt="Actualizar" className="w-7 h-7" />
+            )}
+          </button>
         </div>
 
         {/* Loader o lista de horarios */}

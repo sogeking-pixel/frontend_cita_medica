@@ -34,20 +34,20 @@ export default function Infosection() {
 
       {/* Columna derecha - texto */}
       <div className="flex-1 text-center md:text-left mt-8 md:mt-0">
-        <h4 className="text-[#4db5ca] font-semibold mb-2 text-sm sm:text-base">
+        <h4 className="text-[#4db5ca] font-semibold mb-2 text-xl sm:text-base">
           Compromiso
         </h4>
-         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#013030e1]  mb-4">
+         <h2 className="text-3xl sm:text-3xl md:text-4xl font-bold text-[#013030e1]  mb-4">
             Nuestros Valores
         </h2>
-        <p className="text-gray-600 mb-6 text-sm sm:text-base leading-relaxed">
+        <p className="text-gray-600 mb-6 text-base sm:text-base leading-relaxed">
             En nuestra plataforma creemos que la salud debe ser accesible, segura y cercana. 
             Nos comprometemos a brindarte un servicio transparente, confiable y respaldado por 
             profesionales altamente calificados. Valoramos tu tiempo y tu bienestar, por eso hemos 
             creado un sistema de citas médicas que une tecnología moderna con una atención humana 
             y personalizada.
         </p>
-        <button className="bg-[#63a3a3ff] text-white px-5 py-2 rounded-4xl hover:bg-[#4fb8f5] transition hover:text-[#d0fff7] text-sm sm:text-base">
+        <button className="bg-[#63a3a3ff] text-white px-5 py-2 rounded-4xl hover:bg-[#4fb8f5] transition hover:text-[#d0fff7]  sm:text-base">
           Conocenos
         </button>
       </div>

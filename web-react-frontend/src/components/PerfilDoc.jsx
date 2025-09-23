@@ -1,7 +1,5 @@
 import React from "react";
 import Doctor1 from "../assets/images/Doctor1.jpg";
-import Lottie from "lottie-react";
-import Load from "../assets/animations/ItemLoad.json";
 import Mail from "../assets/icons/Mail.svg"
 import Phone from "../assets/icons/Phone.svg"
 
@@ -9,12 +7,34 @@ import Phone from "../assets/icons/Phone.svg"
 export default function PerfilDoc({ doctor, especialidad }) {
   if (!doctor) {
     return (
-      <div className="bg-white rounded-2xl shadow-xl flex items-center justify-center h-140">
-        <Lottie animationData={Load} style={{ height: 250 }} loop />
+      <div className="bg-white rounded-2xl shadow-md p-6 max-w-3xl mx-auto">
+        {/* Imagen con gradiente y nombre (skeleton) */}
+        <div className="bg-white rounded-2xl max-w-2xl mx-auto flex flex-col sm:flex-row items-center gap-6 p-4 sm:p-0">
+          <div className="relative w-70 h-70 sm:w-52 sm:h-70 rounded-xl overflow-hidden">
+            <div className="absolute inset-0 bg-gray-300 shimmer"></div>
+          </div>
+          <div className="flex-1 h-10 bg-gray-200 rounded shimmer"></div>
+        </div>
+
+          {/* Acerca (skeleton) */}
+          <div className="mt-6 border-t-2 border-gray-200 pt-4">
+            <div className="relative h-20 w-full rounded-md overflow-hidden">
+              <div className="absolute inset-0 bg-gray-200 shimmer"></div>
+            </div>
+          </div>
+
+        {/* Contacto (skeletons) */}
+        <div className="mt-6 border-t-2 border-gray-200 pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="p-3 border border-gray-100 rounded-2xl h-14 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gray-100 shimmer rounded-2xl"></div>
+          </div>
+          <div className="p-3 border border-gray-100 rounded-2xl h-14 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gray-200 shimmer rounded-2xl"></div>
+          </div>
+        </div>
       </div>
     );
   }
-
 
   return (
     <div className="bg-white rounded-2xl shadow-md p-6 max-w-3xl mx-auto card-appear">
@@ -52,19 +72,17 @@ export default function PerfilDoc({ doctor, especialidad }) {
       <div className="mt-6 border-t-2 border-gray-200 pt-4">
         <h3 className="font-semibold text-gray-800 mb-2 text-xl">Acerca de</h3>
         <p className="text-gray-600 text-base leading-relaxed">
-          
           {doctor.about_me ||
-            `
-          Dr. ${doctor.usuario.apellidos} Especialista con más de 10 años de
+            `Dr. ${doctor.usuario.apellidos} Especialista con más de 10 años de
           experiencia en ${especialidad || "su especialidad"}. Se dedica a
           brindar un cuidado personalizado y apoyo constante a sus pacientes
           durante todo su tratamiento.`}
-          
         </p>
       </div>
 
       {/* Contacto */}
-      <div className="mt-6 border-t-2 border-gray-200 pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="mt-6 border-t-2 border-gray-200 pt-4 grid grid-cols-1 sm:grid-cols-[40%_60%] gap-3">
+        {/* Teléfono: 40% */}
         <div className="p-3 border border-gray-300 rounded-2xl flex items-center gap-3">
           <img src={Phone} alt="Telefono" className="w-5 h-5" />
           <span className="text-gray-700 text-sm">
@@ -73,13 +91,16 @@ export default function PerfilDoc({ doctor, especialidad }) {
               : "Teléfono no registrado"}
           </span>
         </div>
+
+        {/* Correo: 60% */}
         <div className="p-3 border border-gray-300 rounded-2xl flex items-center gap-3">
           <img src={Mail} alt="Correo" className="w-5 h-5" />
-          <span className="text-gray-700 text-sm break-words overflow-hidden ">
+          <span className="text-gray-700 text-sm break-words overflow-hidden">
             {doctor.usuario.email ?? "Correo no disponible"}
           </span>
         </div>
       </div>
+
     </div>
   );
 }
