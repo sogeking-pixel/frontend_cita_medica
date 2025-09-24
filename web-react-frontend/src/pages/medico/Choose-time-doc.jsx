@@ -8,9 +8,8 @@ import { getRoute } from "../../routes/routesConfig";
 import useGetAgenda from "../../hooks/useAgenda";
 import useGetMedicoEspecialidadDetails from "../../hooks/useMedicoEspecialidadDetails";
 import { formatLocalDateString } from "../../utils/formtDateToString"
-import Lottie from "lottie-react";
-import Load from "../../assets/animations/Loading2.json";
-import Loader from "../../assets/animations/ItemLoad.json";
+
+
 
 
 export default function ChooseTimeDoc() {
@@ -76,25 +75,32 @@ export default function ChooseTimeDoc() {
             }`}>
           {loadingA || loadingM ? (
             // Loader centrado dentro del box "Contenido principal" 
-            <div className="flex items-center justify-center max-h-[80px]">
-              <Lottie animationData={Load} style={{ height: 120 }} loop />
-            </div>
-          ) : (
-            <>
-              <h1 className="text-2xl font-bold mb-2 text-gray-600">
-                Selecciona un horario con{" "}
-                <span className="text-[#3e7c88]">
-                  {dataMedicoEspecialidad?.medico?.usuario?.nombre_completo ??
-                    ""}
-                </span>
-              </h1>
+              <div className="space-y-3">
+                {/* Skeleton para el h1 */}
+                <div className="relative h-8 w-3/4 mx-auto md:mx-0 rounded-md overflow-hidden">
+                  <div className="absolute inset-0 bg-gray-200 shimmer"></div>
+                </div>
 
-              <p className="text-gray-600 mb-1">
-                Fecha seleccionada:{" "}
-                <span className="font-medium">{capitalizedDate ?? ""}</span>
-              </p>
-            </>
-          )}
+                {/* Skeleton para el p */}
+                <div className="relative h-5 w-1/2 mx-auto md:mx-0 rounded-md overflow-hidden">
+                  <div className="absolute inset-0 bg-gray-200 shimmer"></div>
+                </div>
+              </div>
+            ) : (
+              <>
+                <h1 className="text-2xl font-bold mb-2 text-gray-600">
+                  Selecciona un horario con{" "}
+                  <span className="text-[#3e7c88]">
+                    {dataMedicoEspecialidad?.medico?.usuario?.nombre_completo ?? ""}
+                  </span>
+                </h1>
+
+                <p className="text-gray-600 mb-1">
+                  Fecha seleccionada:{" "}
+                  <span className="font-medium">{capitalizedDate ?? ""}</span>
+                </p>
+              </>
+            )}
         </div>
 
         {/* Sección con PerfilDoc (izquierda) y Timetable (derecha) */}
@@ -121,9 +127,9 @@ export default function ChooseTimeDoc() {
           </div>
 
           {loadingA || loadingM ? (
-            <div className="flex justify-center items-center py-16">
-              <Lottie animationData={Loader} style={{ height: 400 }} loop />
-            </div>
+            <div className="relative h-[350px] mx-6 rounded-xl overflow-hidden">
+              <div className="absolute inset-0 bg-gray-200 shimmer rounded-xl"></div>
+            </div>  
           ) : dataAgenda ? (
             <Timetable
               doctor={dataMedicoEspecialidad?.medico ?? null}

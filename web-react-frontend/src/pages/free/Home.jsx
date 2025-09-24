@@ -90,9 +90,11 @@ export default function Home() {
       </div>
 
       {/* INFO SECTION  */}
-      <div className=" my-10 md:my-40 relative z-20 px-4 md:px-55 bg-[#a2e2f230] md:bg-transparent">
+      <div className="my-14 md:my-40 relative z-20 px-4 md:px-55
+        bg-[linear-gradient(to_bottom,_#fbfbfb_0%,_#a2e2f230_20%,_#a2e2f230_60%,_#fbfbfb_100%)]">
         <Infosection />
       </div>
+
 
 
       {/* FORMULARIO */}

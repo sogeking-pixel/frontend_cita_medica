@@ -29,11 +29,12 @@ const infoCards = [
       'Valoramos tu tiempo. Usamos agenda previa y protocolos para ofrecer atención puntual y eficiente.',
     image: puntualidad,
   },
+  
 ];
 
 export default function InfoCards() {
   return (
-    <div className="relative z-20 -mt-20 flex flex-wrap justify-center gap-23 px-6 md:px-8 card-appear bg">
+    <div className="relative z-20 -mt-20 flex flex-wrap justify-center gap-15 md:gap-22 px-6 md:px-8 card-appear bg">
       {infoCards.map((card, index) => (
         <div
           key={index}
