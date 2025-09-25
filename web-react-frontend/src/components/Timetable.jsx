@@ -5,7 +5,7 @@ import { getRoute } from "../routes/routesConfig";
 import useGetAgendaSlot from "../hooks/useAgendaSlot"; // Asegúrate de que la ruta sea correcta
 import Lottie from "lottie-react";
 import Loader from "../assets/animations/Load.json";
-import Reload from "../assets/icons/Reload.svg"
+import Reload from "../assets/icons/reload.svg"
 
 export default function Timetable({ doctor, especialidad, agenda }) {
   const navigate = useNavigate();
