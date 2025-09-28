@@ -26,5 +26,5 @@ export const getMedicoEspecialidadAgendas = (especialidad_id) =>
 export const getMedicoAgendaCitas = (agenda_id) =>
   apiClient.get(`/medicos/me/citas/?agenda=${encodeURIComponent(agenda_id)}`);
 
-export const getMedicoCitas = () =>
-  apiClient.get(`/medicos/me/citas/`);
+export const getMedicoCitas = (params) =>
+  apiClient.get(`/medicos/me/citas/`, {params});
