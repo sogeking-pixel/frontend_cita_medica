@@ -1,239 +1,254 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../layouts/HeaderMedico";
-import SelectEspecialidad from "../../components/medico/SelectEspecialidad";
+import { useMedicoCitas } from "../../hooks/medico/useMedicoCitas";
+import ShowCitaModal from "../../components/medico/ShowCitaModal";
+import useEstadoCita from "../../hooks/useEstadoCita";
+import {
+  useChangeCitaToAtendiendo,
+  useChangeCitaToAtendido,
+} from "../../hooks/medico/useChangeCita";
+import useGetMedicoEspecialidades from "../../hooks/medico/useMedicoEspecialidad";
 
-// CitasMedico.jsx
-// Página de administración de citas para el médico.
-// - Lista de citas (lee de localStorage `doctor_appointments`) — reemplazar por API fácilmente
-// - Filtros: fecha, estado, búsqueda por paciente
-// - Acciones rápidas: marcar como atendida, cancelar
-// - Modal de detalle de cita
-
-const APPTS_KEY = "doctor_appointments";
+// Constante para el tamaño de página para mantenerlo consistente
+const PAGE_SIZE = 10;
 
 export default function Cita() {
-  const [appointments, setAppointments] = useState([]);
+  // --- Hooks de Lógica y Datos ---
+  const { pathAtendiendoCita } = useChangeCitaToAtendiendo();
+  const { pathAtendidoCita } = useChangeCitaToAtendido();
+  const { data: dataEstadosCitas, getAllEstadoCitas } = useEstadoCita();
+  const {
+      data: especialidades,
+      refetch,
+    } = useGetMedicoEspecialidades();
+  // Hook principal para obtener las citas
+  const { citas, pagination, loading, error, setParams } = useMedicoCitas({
+    page_size: PAGE_SIZE,
+  });
+
+  // --- Estados locales para los filtros y UI ---
   const [filterDate, setFilterDate] = useState("");
-  const [filterStatus, setFilterStatus] = useState(""); // '', 'booked','confirmed','attended','cancelled'
+  const [filterStatus, setFilterStatus] = useState("");
   const [filterEspecialidad, setFilterEspecialidad] = useState("");
   const [query, setQuery] = useState("");
-  const [page, setPage] = useState(1);
-  const PER_PAGE = 12;
 
-  const [selected, setSelected] = useState(null); // cita seleccionada para modal
+  const [selectedCita, setSelectedCita] = useState(null);
+  const [showCitaModal, setShowCitaModal] = useState(false);
 
+  // Cargar los estados de las citas (para el dropdown) una sola vez
   useEffect(() => {
-    const raw = localStorage.getItem(APPTS_KEY);
-    if (raw) setAppointments(JSON.parse(raw));
+    getAllEstadoCitas();
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem(APPTS_KEY, JSON.stringify(appointments));
-  }, [appointments]);
+  // --- Manejadores de Eventos y Funciones ---
 
-  function resetFilters() {
+  // Consolida los filtros y los envía al hook para una nueva búsqueda
+  const applyFiltersAndFetch = (newPage = 1) => {
+    const paramsToApply = {
+      page: newPage,
+      page_size: PAGE_SIZE,
+      fecha: filterDate,
+      estado: filterStatus,
+      especialidad_id: filterEspecialidad,
+      paciente_q: query,
+    };
+
+    // Limpiamos los parámetros que estén vacíos para no enviarlos a la API
+    Object.keys(paramsToApply).forEach((key) => {
+      if (!paramsToApply[key]) {
+        delete paramsToApply[key];
+      }
+    });
+
+    setParams(paramsToApply);
+  };
+
+  // Limpia los filtros y vuelve a la primera página
+  const resetFilters = () => {
     setFilterDate("");
     setFilterStatus("");
     setFilterEspecialidad("");
     setQuery("");
-    setPage(1);
-  }
+    setParams({ page: 1, page_size: PAGE_SIZE });
+  };
 
-  function markAttended(id) {
-    setAppointments((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, status: "attended" } : a))
-    );
-  }
-  function cancelAppointment(id) {
-    setAppointments((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, status: "cancelled" } : a))
-    );
-  }
+  // Función para abrir el modal con la cita seleccionada
+  const handleShowModal = (cita) => {
+    setSelectedCita(cita);
+    setShowCitaModal(true);
+  };
 
-  const filtered = useMemo(() => {
-    let list = [...appointments];
-    if (filterDate)
-      list = list.filter((a) => a.startAt.slice(0, 10) === filterDate);
-    if (filterStatus) list = list.filter((a) => a.status === filterStatus);
-    if (filterEspecialidad)
-      list = list.filter((a) => a.especialidadId === filterEspecialidad);
-    if (query) {
-      const q = query.toLowerCase();
-      list = list.filter(
-        (a) =>
-          (a.patientName || "").toLowerCase().includes(q) ||
-          (a.patientEmail || "").toLowerCase().includes(q)
-      );
-    }
-    // ordenar por startAt asc
-    list.sort((x, y) => x.startAt.localeCompare(y.startAt));
-    return list;
-  }, [appointments, filterDate, filterStatus, filterEspecialidad, query]);
+  // Función para cerrar el modal
+  const handleCloseModal = () => {
+    setShowCitaModal(false);
+    setSelectedCita(null);
+  };
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
-  const pageItems = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
-
-  const summary = useMemo(() => {
-    const total = appointments.length;
-    const upcoming = appointments.filter(
-      (a) => new Date(a.startAt) >= new Date()
-    ).length;
-    const attended = appointments.filter((a) => a.status === "attended").length;
-    const cancelled = appointments.filter(
-      (a) => a.status === "cancelled"
-    ).length;
-    return { total, upcoming, attended, cancelled };
-  }, [appointments]);
+  // Formatear fecha para que sea más legible
+  const formatDateTime = (isoString) => {
+    if (!isoString) return "-";
+    const date = new Date(isoString);
+    return date.toLocaleString("es-ES", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
 
   return (
     <>
       <Header />
       <div className="w-full min-h-screen font-['Outfit'] bg-[#f5f5f5] pt-26 p-6">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-semibold">Citas</h1>
-            <div className="text-right">
-              <div className="text-xs text-gray-500">Resumen</div>
-              <div className="text-sm">
-                Total: {summary.total} · Próximas: {summary.upcoming} ·
-                Atendidas: {summary.attended} · Canceladas: {summary.cancelled}
-              </div>
-            </div>
-          </div>
+          <h1 className="text-2xl font-semibold mb-6">Citas Médicas</h1>
 
+          {/* Panel de Filtros */}
           <div className="bg-white rounded-2xl shadow p-5 mb-6">
-            <div className="flex gap-6 flex-wrap items-center">
-              {/* Filtro Fecha */}
-              <div className="flex items-center gap-2 text-sm">
-               <label >Fecha:</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 items-end">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Fecha
+                </label>
                 <input
                   type="date"
-                  className="rounded p-1"
+                  className="w-full border rounded p-2 text-sm"
                   value={filterDate}
                   onChange={(e) => setFilterDate(e.target.value)}
                 />
               </div>
 
-            <div className="flex items-center gap-2 text-sm">
-              <label>Estado:</label>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Estado
+                </label>
                 <select
-                  className="ml-2 border rounded p-1"
+                  className="w-full border rounded p-2 text-sm bg-white"
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)}
                 >
                   <option value="">Todos</option>
-                  <option value="booked">Booked</option>
-                  <option value="confirmed">Confirmed</option>
-                  <option value="attended">Attended</option>
-                  <option value="cancelled">Cancelled</option>
+                  {/* Opciones de estado cargadas dinámicamente */}
+                  {dataEstadosCitas?.results?.map((estado) => (
+                    <option key={estado.id} value={estado.id}>
+                      {estado.nombre}
+                    </option>
+                  ))}
                 </select>
               </div>
 
-              
-             <div className="flex items-center gap-2 text-sm">
-              <SelectEspecialidad
-                value={filterEspecialidad}
-                onChange={setFilterEspecialidad}
-                label="Ver por especialidad:"
-                extraOptions={[{ value: "", label: "Todas" }]} // igual que en Dashboard
-              />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Especialidad
+                </label>
+                <select
+                  className="w-full border rounded p-2 text-sm bg-white"
+                  value={filterEspecialidad}
+                  onChange={(e) => setFilterEspecialidad(e.target.value)}
+                >
+                  <option value="">Todos</option>
+                  {/* Opciones de estado cargadas dinámicamente */}
+                  {especialidades?.results?.map((especialidad) => (
+                    <option key={especialidad.id} value={especialidad.id}>
+                      {especialidad.nombre}
+                    </option>
+                  ))}
+                </select>
               </div>
 
-              <label className="flex-1 text-sm">
-                Buscar paciente
+              <div className="xl:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Buscar Paciente
+                </label>
                 <input
-                  className="ml-2 w-full border rounded p-1"
-                  placeholder="Nombre o email"
+                  className="w-full border rounded p-2 text-sm"
+                  placeholder="Nombre, DNI o email del paciente"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                 />
-              </label>
+              </div>
 
-                  {/* Botones */}
-              <div className="ml-auto flex gap-2">
+              <div className="col-span-full flex justify-end gap-3 mt-4">
                 <button
                   onClick={resetFilters}
-                  className="px-3 py-1 border rounded"
+                  className="px-4 py-2 border rounded text-sm font-medium"
                 >
-                  Reset
+                  Limpiar
                 </button>
                 <button
-                  onClick={() => {
-                    setPage(1);
-                  }}
-                  className="px-3 py-1 bg-[#263248] text-white rounded"
+                  onClick={() => applyFiltersAndFetch(1)}
+                  className="px-4 py-2 bg-[#263248] text-white rounded text-sm font-medium"
                 >
-                  Aplicar
+                  Aplicar Filtros
                 </button>
               </div>
             </div>
           </div>
 
+          {/* Tabla de Resultados */}
           <div className="bg-white rounded-2xl shadow p-5">
             <div className="overflow-auto">
               <table className="min-w-full text-left text-sm">
-                <thead>
-                  <tr className="border-b">
-                    <th className="py-2">Fecha / Hora</th>
-                    <th className="py-2">Paciente</th>
-                    <th className="py-2">Motivo / Nota</th>
-                    <th className="py-2">Estado</th>
-                    <th className="py-2">Acciones</th>
+                <thead className="border-b bg-gray-50">
+                  <tr>
+                    <th className="font-semibold p-3">Fecha y Hora</th>
+                    <th className="font-semibold p-3">Paciente</th>
+                    <th className="font-semibold p-3">Motivo</th>
+                    <th className="font-semibold p-3">Estado</th>
+                    <th className="font-semibold p-3">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {pageItems.length === 0 ? (
+                  {loading ? (
                     <tr>
                       <td
-                        colSpan={5}
-                        className="py-4 text-center text-gray-500"
+                        colSpan="5"
+                        className="py-8 text-center text-gray-500"
                       >
-                        No hay citas que coincidan.
+                        Cargando citas...
+                      </td>
+                    </tr>
+                  ) : error ? (
+                    <tr>
+                      <td colSpan="5" className="py-8 text-center text-red-500">
+                        Error al cargar las citas. Intenta de nuevo.
+                      </td>
+                    </tr>
+                  ) : citas.length === 0 ? (
+                    <tr>
+                      <td
+                        colSpan="5"
+                        className="py-8 text-center text-gray-500"
+                      >
+                        No se encontraron citas con los filtros aplicados.
                       </td>
                     </tr>
                   ) : (
-                    pageItems.map((a) => (
-                      <tr key={a.id} className="border-b hover:bg-gray-50">
-                        <td className="py-2">
-                          {a.startAt.slice(0, 10)}{" "}
-                          <span className="text-xs text-gray-500">
-                            {a.startAt.slice(11, 16)}
+                    citas.map((cita) => (
+                      <tr key={cita.id} className="border-b hover:bg-gray-50">
+                        <td className="p-3">
+                          {formatDateTime(cita.fecha_hora_establecida)}
+                        </td>
+                        <td className="p-3">
+                          {cita.paciente?.usuario?.nombre_completo || "N/A"}
+                          <div className="text-xs text-gray-400">
+                            {cita.paciente?.usuario?.email || ""}
+                          </div>
+                        </td>
+                        <td className="p-3">{cita.motivo || "-"}</td>
+                        <td className="p-3">
+                          <span className="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                            {cita.estado?.nombre || "N/A"}
                           </span>
                         </td>
-                        <td className="py-2">
-                          {a.patientName}{" "}
-                          <div className="text-xs text-gray-400">
-                            {a.patientEmail || ""}
-                          </div>
-                        </td>
-                        <td className="py-2">{a.notes || "-"}</td>
-                        <td className="py-2">{a.status}</td>
-                        <td className="py-2">
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => setSelected(a)}
-                              className="px-2 py-1 border rounded text-xs"
-                            >
-                              Ver
-                            </button>
-                            {a.status !== "attended" &&
-                              a.status !== "cancelled" && (
-                                <>
-                                  <button
-                                    onClick={() => markAttended(a.id)}
-                                    className="px-2 py-1 border rounded text-xs"
-                                  >
-                                    Marcar atendida
-                                  </button>
-                                  <button
-                                    onClick={() => cancelAppointment(a.id)}
-                                    className="px-2 py-1 border rounded text-xs"
-                                  >
-                                    Cancelar
-                                  </button>
-                                </>
-                              )}
-                          </div>
+                        <td className="p-3">
+                          <button
+                            onClick={() => handleShowModal(cita)}
+                            className="px-3 py-1 border rounded text-xs font-medium hover:bg-gray-100"
+                          >
+                            Ver Detalles
+                          </button>
                         </td>
                       </tr>
                     ))
@@ -242,31 +257,37 @@ export default function Cita() {
               </table>
             </div>
 
-            {/* pagination */}
-            <div className="mt-4 flex items-center justify-between">
-              <div className="text-sm text-gray-600">
-                Mostrando {(page - 1) * PER_PAGE + 1}–
-                {Math.min(
-                  page * PER_PAGE,
-                  1
-                )}{" "}
-                de {2}
+            {/* Paginación */}
+            <div className="mt-4 flex items-center justify-between text-sm">
+              <div className="text-gray-600">
+                {pagination.count > 0
+                  ? `Mostrando ${
+                      (pagination.current_page - 1) * pagination.page_size + 1
+                    }–${Math.min(
+                      pagination.current_page * pagination.page_size,
+                      pagination.count
+                    )} de ${pagination.count} resultados`
+                  : "No hay resultados"}
               </div>
               <div className="flex gap-2">
                 <button
-                  disabled={page <= 1}
-                  onClick={() => setPage((p) => Math.max(1, p - 1))}
-                  className="px-3 py-1 border rounded"
+                  disabled={loading || !pagination.previous}
+                  onClick={() =>
+                    applyFiltersAndFetch(pagination.current_page - 1)
+                  }
+                  className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Anterior
                 </button>
-                <div className="px-3 py-1 border rounded">
-                  {page} / {totalPages}
+                <div className="px-3 py-1 border rounded text-gray-700">
+                  Página {pagination.current_page} de {pagination.total_pages}
                 </div>
                 <button
-                  disabled={page >= totalPages}
-                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                  className="px-3 py-1 border rounded"
+                  disabled={loading || !pagination.next}
+                  onClick={() =>
+                    applyFiltersAndFetch(pagination.current_page + 1)
+                  }
+                  className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Siguiente
                 </button>
@@ -274,75 +295,17 @@ export default function Cita() {
             </div>
           </div>
 
-          {/* Detail modal */}
-          {selected && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center">
-              <div
-                className="absolute inset-0 bg-black opacity-40"
-                onClick={() => setSelected(null)}
-              ></div>
-              <div className="bg-white rounded-xl shadow-lg z-60 w-full max-w-xl p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-medium">Detalle de cita</h3>
-                  <button
-                    onClick={() => setSelected(null)}
-                    className="text-gray-500"
-                  >
-                    Cerrar
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div>
-                    <div className="text-sm text-gray-500">Paciente</div>
-                    <div className="font-medium">{selected.patientName}</div>
-                    <div className="text-xs text-gray-400">
-                      {selected.patientEmail}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-sm text-gray-500">Fecha / Hora</div>
-                    <div className="font-medium">
-                      {selected.startAt.slice(0, 10)}{" "}
-                      {selected.startAt.slice(11, 16)}
-                    </div>
-                    <div className="text-xs text-gray-400">
-                      Duración: {selected.duration || "-"} min
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <div className="text-sm text-gray-500">Notas</div>
-                  <div className="text-sm">{selected.notes || "-"}</div>
-                </div>
-
-                <div className="flex gap-3 justify-end">
-                  {selected.status !== "attended" && (
-                    <button
-                      onClick={() => {
-                        markAttended(selected.id);
-                        setSelected(null);
-                      }}
-                      className="px-4 py-2 bg-[#263248] text-white rounded"
-                    >
-                      Marcar atendida
-                    </button>
-                  )}
-                  {selected.status !== "cancelled" && (
-                    <button
-                      onClick={() => {
-                        cancelAppointment(selected.id);
-                        setSelected(null);
-                      }}
-                      className="px-4 py-2 border rounded"
-                    >
-                      Cancelar
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
+          {/* Modal */}
+          {selectedCita && (
+            <ShowCitaModal
+              cita={selectedCita}
+              open={showCitaModal}
+              onClose={handleCloseModal}
+              onLoadEstadoCita={getAllEstadoCitas}
+              estadoCita={dataEstadosCitas?.results ?? null}
+              onChangeAtendido={pathAtendidoCita}
+              onChangeAtendiendo={pathAtendiendoCita}
+            />
           )}
         </div>
       </div>
